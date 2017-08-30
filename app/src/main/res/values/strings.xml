@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Watch List</string>
+    <string name="app_name">My WatchList</string>
 
     <string name="top_rate_sort_label">By Top Rate</string>
     <string name="popular_sort_label">By Popular</string>

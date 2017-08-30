@@ -35,7 +35,6 @@ public class VideoDataListRecyclerViewHolder extends RecyclerView.ViewHolder
                 load(videoData.getVideoThumbnailURL()).
                 placeholder(R.drawable.ic_cached_black_48px).
                 error(R.drawable.ic_error_outline_black_48px).
-                centerInside().
                 into(thumbnailVideoImageView);
 
         itemView.setOnClickListener(new View.OnClickListener() {

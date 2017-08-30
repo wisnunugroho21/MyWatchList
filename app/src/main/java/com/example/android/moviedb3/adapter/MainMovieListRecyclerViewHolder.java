@@ -41,7 +41,6 @@ public class MainMovieListRecyclerViewHolder extends RecyclerView.ViewHolder
                 load(movieData.getMoviePosterFullURL()).
                 placeholder(R.drawable.ic_cached_black_48px).
                 error(R.drawable.ic_error_outline_black_48px).
-                centerInside().
                 into(moviePosterImageView);
 
         view.setOnClickListener(new View.OnClickListener() {
