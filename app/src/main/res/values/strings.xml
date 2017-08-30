@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">My Watch List</string>
+
+    <string name="top_rate_sort_label">By Top Rate</string>
+    <string name="popular_sort_label">By Popular</string>
+    <string name="favorite_sort_label">By Favorite</string>
+    <string name="watched_sort_label">By Watched</string>
+
+    <string name="top_rate_label">Top Rate</string>
+    <string name="popular_label">Popular</string>
+
+    <string name="no_conncection">No Internet Connection</string>
+    <string name="tryAgain">Try Again</string>
+    <string name="noData">No Data</string>
+
+    <string name="genre_label">Genre</string>
+    <string name="duration_label">Duration</string>
+    <string name="release_date_label">Release Date</string>
+    <string name="rating_label">Rating</string>
+
+    <string name="review_label">Review</string>
+    <string name="video_label">Video</string>
+    <string name="cast_label">Cast</string>
+    <string name="crew_label">Crew</string>
+
+    <string name="no_review_label">No Review</string>
+    <string name="more_review_label">More Review</string>
+    <string name="more_cast_label">More Cast</string>
+    <string name="more_crew_label">More Crew</string>
+
+    <string name="trailer_label">Trailer</string>
+    <string name="favorite_label">Favorite</string>
+    <string name="un_favorite_label">UnFavorite</string>
+    <string name="watched_label">Watched</string>
+    <string name="un_watched_label">UnWatched</string>
+    <string name="plan_to_watched_label">Plan To Watch</string>
+
+    <string name="sort_label">Sort</string>
+    <string name="title_activity_movie_list">MovieListActivity</string>
+
+
+</resources>
