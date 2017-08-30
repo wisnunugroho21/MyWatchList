@@ -3,10 +3,13 @@ package com.example.android.moviedb3.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -83,6 +86,7 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -90,7 +94,7 @@ public class MovieDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.movie_detail_layout, container, false);
 
         movieDetailLayout = (ScrollView) view.findViewById(R.id.movie_detail_layout);
-        movieDetailToolbar = (Toolbar) view.findViewById(R.id.movie_detail_toolbar);
+        movieDetailToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         coverPosterImageView = (ImageView) view.findViewById(R.id.iv_cover_poster);
         mainMoviePosterImageView = (ImageView) view.findViewById(R.id.iv_main_movie_poster);
         movieTitleTextView = (TextView) view.findViewById(R.id.txt_movie_title);
@@ -113,6 +117,7 @@ public class MovieDetailFragment extends Fragment {
         noDataTextView = (TextView) view.findViewById(R.id.txt_no_data);
 
         SetInitialData(savedInstanceState);
+        SetActionBar();
 
         return view;
     }
@@ -126,6 +131,14 @@ public class MovieDetailFragment extends Fragment {
         outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CREW_LIST_PERSISTANCE_KEY, crewDataArrayList);
         outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_VIDEO_LIST_PERSISTANCE_KEY, videoDataArrayList);
         outState.putInt(MovieDBKeyEntry.MovieDataPersistance.INTERNET_NETWORK_STATE_PERSISTANCE_KEY, internetNetworkState);
+    }
+
+    private void SetActionBar()
+    {
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity.setSupportActionBar(movieDetailToolbar);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void SetMovieDetail(MovieData movieData) {
