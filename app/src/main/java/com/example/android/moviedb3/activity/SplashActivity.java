@@ -69,6 +69,8 @@ public class SplashActivity extends AppCompatActivity {
 
         GetNowShowingMovieList();
         GetComingSoonMovieList();
+        GetPopularMovieList();
+        GetTopRateMovieList();
 
         Handler handler = new Handler();
         handler.postDelayed(visibleLoadingTextRunnable, 5000);
@@ -87,6 +89,22 @@ public class SplashActivity extends AppCompatActivity {
         MovieDataGetter movieDataGetter = new MovieDataGetter(this,
                 new MainMovieListObtainedListener(), new ComingSoonDataDB(this),
                 getInitialOtherComingSoonMovieListDataDB(), MovieDataURL.GetComingSoonURL());
+        movieDataGetter.Execute();
+    }
+
+    private void GetPopularMovieList()
+    {
+        MovieDataGetter movieDataGetter = new MovieDataGetter(this,
+                new MainMovieListObtainedListener(), new PopularDataDB(this),
+                getInitialOtherPopularMovieListDataDB(), MovieDataURL.GetPopularURL());
+        movieDataGetter.Execute();
+    }
+
+    private void GetTopRateMovieList()
+    {
+        MovieDataGetter movieDataGetter = new MovieDataGetter(this,
+                new MainMovieListObtainedListener(), new TopRateDataDB(this),
+                getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL());
         movieDataGetter.Execute();
     }
 
@@ -116,12 +134,38 @@ public class SplashActivity extends AppCompatActivity {
         return dataDBArrayList;
     }
 
+    private ArrayList<DataDB<String>> getInitialOtherPopularMovieListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new TopRateDataDB(this));
+        dataDBArrayList.add(new NowShowingDataDB(this));
+        dataDBArrayList.add(new ComingSoonDataDB(this));
+        dataDBArrayList.add(new FavoriteDataDB(this));
+        dataDBArrayList.add(new WatchlistDataDB(this));
+
+        return dataDBArrayList;
+    }
+
+    private ArrayList<DataDB<String>> getInitialOtherTopRateMovieListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new PopularDataDB(this));
+        dataDBArrayList.add(new NowShowingDataDB(this));
+        dataDBArrayList.add(new ComingSoonDataDB(this));
+        dataDBArrayList.add(new FavoriteDataDB(this));
+        dataDBArrayList.add(new WatchlistDataDB(this));
+
+        return dataDBArrayList;
+    }
+
     private class MainMovieListObtainedListener implements OnAsyncTaskCompleteListener
     {
         @Override
         public void onComplete(boolean isSuccess)
         {
-            if(amountDataObtained >= 2)
+            if(amountDataObtained >= 4)
             {
                 ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, SplashActivity.this));
             }

@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name">My WatchList</string>
 
-    <string name="top_rate_sort_label">By Top Rate</string>
-    <string name="popular_sort_label">By Popular</string>
-    <string name="favorite_sort_label">By Favorite</string>
-    <string name="watched_sort_label">By Watched</string>
-
     <string name="top_rate_label">Top Rate</string>
     <string name="popular_label">Popular</string>
 
@@ -29,7 +24,6 @@
     <string name="more_cast_label">More Cast</string>
     <string name="more_crew_label">More Crew</string>
 
-    <string name="trailer_label">Trailer</string>
     <string name="favorite_label">Favorite</string>
     <string name="un_favorite_label">UnFavorite</string>
     <string name="watched_label">Watched</string>
@@ -39,7 +33,10 @@
     <string name="sort_label">Sort</string>
     <string name="title_activity_movie_list">MovieListActivity</string>
 
+    <string name="home_label">Home</string>
     <string name="top_list_label">Top List</string>
+    <string name="yours_label">Yours</string>
+    <string name="library_label">Library</string>
 
 
 </resources>

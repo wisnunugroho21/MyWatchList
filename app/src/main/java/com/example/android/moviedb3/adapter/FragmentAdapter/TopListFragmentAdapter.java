@@ -66,29 +66,5 @@ public class TopListFragmentAdapter extends FragmentPagerAdapter
         return pageTitle.get(position);
     }
 
-    private ArrayList<DataDB<String>> getInitialOtherPopularMovieListDataDB()
-    {
-        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
 
-        dataDBArrayList.add(new TopRateDataDB(context));
-        dataDBArrayList.add(new NowShowingDataDB(context));
-        dataDBArrayList.add(new ComingSoonDataDB(context));
-        dataDBArrayList.add(new FavoriteDataDB(context));
-        dataDBArrayList.add(new WatchlistDataDB(context));
-
-        return dataDBArrayList;
-    }
-
-    private ArrayList<DataDB<String>> getInitialOtherTopRateMovieListDataDB()
-    {
-        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
-
-        dataDBArrayList.add(new PopularDataDB(context));
-        dataDBArrayList.add(new NowShowingDataDB(context));
-        dataDBArrayList.add(new ComingSoonDataDB(context));
-        dataDBArrayList.add(new FavoriteDataDB(context));
-        dataDBArrayList.add(new WatchlistDataDB(context));
-
-        return dataDBArrayList;
-    }
 }

@@ -78,7 +78,6 @@ public class MovieDetailFragment extends Fragment {
     ArrayList<CrewData> crewDataArrayList;
     ArrayList<VideoData> videoDataArrayList;
 
-    private int internetNetworkState;
     private int numberMovieInfoObtained;
 
     @Override
@@ -128,7 +127,6 @@ public class MovieDetailFragment extends Fragment {
         outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CAST_LIST_PERSISTANCE_KEY, castDataArrayList);
         outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CREW_LIST_PERSISTANCE_KEY, crewDataArrayList);
         outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_VIDEO_LIST_PERSISTANCE_KEY, videoDataArrayList);
-        outState.putInt(MovieDBKeyEntry.MovieDataPersistance.INTERNET_NETWORK_STATE_PERSISTANCE_KEY, internetNetworkState);
     }
 
     private void SetActionBar()
@@ -208,7 +206,6 @@ public class MovieDetailFragment extends Fragment {
         if (numberMovieInfoObtained < 3) {
             numberMovieInfoObtained++;
         } else {
-            internetNetworkState = MovieDBKeyEntry.InternetNetworkState.CONNECTED;
             ShowMovieDetail();
         }
     }
@@ -216,7 +213,6 @@ public class MovieDetailFragment extends Fragment {
     private void SetInitialData(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             BundleDataGetter bundleDataGetter = new BundleDataGetter(savedInstanceState);
-            internetNetworkState = savedInstanceState.getInt(MovieDBKeyEntry.MovieDataPersistance.INTERNET_NETWORK_STATE_PERSISTANCE_KEY);
 
             movieData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY);
             reviewDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_REVIEW_LIST_PERSISTANCE_KEY);
@@ -253,7 +249,6 @@ public class MovieDetailFragment extends Fragment {
                 SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
                 CheckAndShowMovieDetail();
             } catch (NullPointerException e) {
-                internetNetworkState = MovieDBKeyEntry.InternetNetworkState.NOT_CONNECTED;
             }
         }
     }
@@ -267,7 +262,6 @@ public class MovieDetailFragment extends Fragment {
                 SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
                 CheckAndShowMovieDetail();
             } catch (NullPointerException e) {
-                internetNetworkState = MovieDBKeyEntry.InternetNetworkState.NOT_CONNECTED;
             }
         }
     }
@@ -282,22 +276,22 @@ public class MovieDetailFragment extends Fragment {
                 CheckAndShowMovieDetail();
 
             } catch (NullPointerException e) {
-                internetNetworkState = MovieDBKeyEntry.InternetNetworkState.NOT_CONNECTED;
             }
         }
     }
 
     private class VideoDataListObtainedListener implements OnDataObtainedListener<ArrayList<VideoData>> {
         @Override
-        public void onDataObtained(ArrayList<VideoData> videoDatas) {
+        public void onDataObtained(ArrayList<VideoData> videoDatas)
+        {
             try {
                 videoDataArrayList = videoDatas;
 
                 SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(videoDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
                 CheckAndShowMovieDetail();
 
-            } catch (NullPointerException e) {
-                internetNetworkState = MovieDBKeyEntry.InternetNetworkState.NOT_CONNECTED;
+            } catch (NullPointerException e)
+            {
             }
         }
     }

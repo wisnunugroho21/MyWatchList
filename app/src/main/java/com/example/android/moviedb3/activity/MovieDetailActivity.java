@@ -14,8 +14,6 @@ import com.example.android.moviedb3.fragmentShifter.FragmentShifter;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    Toolbar movieDetailToolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -23,7 +21,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
-        FragmentShifter.InitializeFragment(new DefaultFragmentShifter(this, R.id.movie_detail_layout, movieDetailFragment, getIntent().getExtras()));
+        FragmentShifter.InitializeFragment(new DefaultFragmentShifter(getSupportFragmentManager(), R.id.movie_detail_layout, movieDetailFragment, getIntent().getExtras()));
     }
 
 

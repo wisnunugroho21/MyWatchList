@@ -18,6 +18,7 @@ import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MainMovieListRecyclerViewAdapter;
 import com.example.android.moviedb3.dataManager.LoadingDataAsyncTask;
+import com.example.android.moviedb3.dataManager.dataGetter.BundleDataGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.DatabaseMovieDBGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieDataGetter;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
@@ -60,21 +61,39 @@ public class MovieListFragment extends Fragment
         loadingDataProgressBar = (ProgressBar) view.findViewById(R.id.pb_loading_data);
         noDataTextView = (TextView) view.findViewById(R.id.txt_no_data);
 
-        GetMovieList();
+        GetMovieList(savedInstanceState);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_LIST_PERSISTANCE_KEY, movieDataArrayList);
     }
 
     public void setMovieListDB(DataDB<String> movieListDB) {
         this.movieListDB = movieListDB;
     }
 
-    public void GetMovieList()
+    private void GetMovieList(Bundle savedInstanceState)
     {
-        ShowLoadingData();
+        if(savedInstanceState != null)
+        {
+            BundleDataGetter bundleDataGetter = new BundleDataGetter(savedInstanceState);
+            movieDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_LIST_PERSISTANCE_KEY);
 
-        DatabaseMovieDBGetter databaseMovieDBGetter = new DatabaseMovieDBGetter(movieListDB, getContext(), new MainMovieListObtainedListener());
-        databaseMovieDBGetter.execute();
+            SetRecyclerView(movieDataArrayList);
+            ShowRecycleView();
+        }
+
+        else
+        {
+            ShowLoadingData();
+
+            DatabaseMovieDBGetter databaseMovieDBGetter = new DatabaseMovieDBGetter(movieListDB, getContext(), new MainMovieListObtainedListener());
+            databaseMovieDBGetter.execute();
+        }
     }
 
     private void ShowNoDataLayout()

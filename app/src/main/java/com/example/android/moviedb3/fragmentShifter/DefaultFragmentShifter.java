@@ -16,19 +16,19 @@ import com.example.android.moviedb3.R;
 
 public class DefaultFragmentShifter implements IFragmentShifter
 {
-    AppCompatActivity appCompatActivity;
+    FragmentManager fragmentManager;
     int containerViewID;
     Fragment fragment;
     Bundle bundle;
 
-    public DefaultFragmentShifter(AppCompatActivity appCompatActivity, int containerViewID, Fragment fragment) {
-        this.appCompatActivity = appCompatActivity;
+    public DefaultFragmentShifter(FragmentManager fragmentManager, int containerViewID, Fragment fragment) {
+        this.fragmentManager = fragmentManager;
         this.containerViewID = containerViewID;
         this.fragment = fragment;
     }
 
-    public DefaultFragmentShifter(AppCompatActivity appCompatActivity, int containerViewID, Fragment fragment, Bundle bundle) {
-        this.appCompatActivity = appCompatActivity;
+    public DefaultFragmentShifter(FragmentManager fragmentManager, int containerViewID, Fragment fragment, Bundle bundle) {
+        this.fragmentManager = fragmentManager;
         this.containerViewID = containerViewID;
         this.fragment = fragment;
         this.bundle = bundle;
@@ -42,7 +42,6 @@ public class DefaultFragmentShifter implements IFragmentShifter
             fragment.setArguments(bundle);
         }
 
-        FragmentManager fragmentManager = appCompatActivity.getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(containerViewID, fragment).commit();
     }
 
