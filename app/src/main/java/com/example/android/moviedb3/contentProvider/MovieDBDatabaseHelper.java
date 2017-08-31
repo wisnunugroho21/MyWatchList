@@ -54,6 +54,20 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
 
         db.execSQL(SQLITE_CREATE_TOP_RATE_TABLE);
 
+        final String SQLITE_CREATE_NOW_SHOWING_TABLE = "CREATE TABLE " + MovieDBContract.NowShowingDataEntry.TABLE_NOW_SHOWING_DATA + " (" +
+                MovieDBContract.NowShowingDataEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                MovieDBContract.NowShowingDataEntry.COLUMN_MOVIE_ID + " TEXT" +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_NOW_SHOWING_TABLE);
+
+        final String SQLITE_CREATE_COMING_SOON_TABLE = "CREATE TABLE " + MovieDBContract.ComingSoonDataEntry.TABLE_COMING_SOON_DATA + " (" +
+                MovieDBContract.ComingSoonDataEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                MovieDBContract.ComingSoonDataEntry.COLUMN_MOVIE_ID + " TEXT" +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_COMING_SOON_TABLE);
+
 
         final String SQLITE_CREATE_FAVORITE_TABLE = "CREATE TABLE " + MovieDBContract.FavoriteDataEntry.TABLE_FAVORITE_DATA + " (" +
                 MovieDBContract.FavoriteDataEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

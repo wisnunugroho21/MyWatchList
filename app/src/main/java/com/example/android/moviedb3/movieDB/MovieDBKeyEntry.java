@@ -30,10 +30,12 @@ public class MovieDBKeyEntry
 
     public class MovieListState
     {
-        public static final int POPULAR_STATE = 403;
-        public static final int TOP_RATE_STATE = 586;
-        public static final int FAVORITE_STATE = 76;
-        public static final int WATCHED_STATE = 908;
+        public static final String POPULAR_STATE = "403";
+        public static final String TOP_RATE_STATE = "586";
+        public static final String NOW_SHOWING_STATE = "867";
+        public static final String COMING_SOON_STATE = "191";
+        public static final String FAVORITE_STATE = "76";
+        public static final String WATCHED_STATE = "908";
     }
 
     public class InternetNetworkState
@@ -45,7 +47,7 @@ public class MovieDBKeyEntry
     public class AdditionalMovieDetailState
     {
         public static final int REVIEW = 728;
-        public static final int VIEDEO = 737;
+        public static final int VIDEO = 737;
         public static final int CAST = 391;
         public static final int CREW = 469;
     }

@@ -23,7 +23,7 @@ public class DataListFinder<Data extends BaseData> implements IDataFindCheck<Arr
         ArrayList<Data> dataDBArrayList = dataDB.getAllData();
         ArrayList<Data> sameDataArrayList = new ArrayList<>();
 
-        if(dataDBArrayList != null)
+        if(dataDBArrayList != null && !dataDBArrayList.isEmpty())
         {
             for (Data data : dataDBArrayList)
             {

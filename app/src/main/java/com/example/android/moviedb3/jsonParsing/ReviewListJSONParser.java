@@ -29,8 +29,18 @@ public class ReviewListJSONParser implements JSONParser<ArrayList<ReviewData>>
                 JSONObject result = results.getJSONObject(a);
 
                 String id = String.valueOf((int )(Math.random() * Integer.MAX_VALUE + 1000000));
+
                 String reviewerName = result.getString("author");
+                if(reviewerName == null || reviewerName.equals("null") || reviewerName.isEmpty())
+                {
+                    reviewerName = "";
+                }
+
                 String reviewContent = result.getString("content");
+                if(reviewContent == null || reviewContent.equals("null") || reviewContent.isEmpty())
+                {
+                    reviewContent = "";
+                }
 
                 ReviewData reviewData = new ReviewData(id, reviewerName, reviewContent, movieId);
                 reviewDataArrayList.add(reviewData);

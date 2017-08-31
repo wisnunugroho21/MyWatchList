@@ -15,6 +15,8 @@ public class MovieDBContract
     public static final String MOVIE_DATA_PATH = "movieData";
     public static final String POPULAR_DATA_PATH = "popularData";
     public static final String TOP_RATE_DATA_PATH = "topRateData";
+    public static final String NOW_SHOWING_DATA_PATH = "nowShowingData";
+    public static final String COMING_SOON_DATA_PATH = "comingSoonData";
     public static final String FAVORITE_DATA_PATH = "favoriteData";
     public static final String WATCHLIST_DATA_PATH = "watchlistData";
     public static final String REVIEW_DATA_PATH = "reviewData";
@@ -48,6 +50,20 @@ public class MovieDBContract
     {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TOP_RATE_DATA_PATH).build();
         public static final String TABLE_TOP_RATE_DATA = "TopRateData";
+        public static final String COLUMN_MOVIE_ID = "MovieId";
+    }
+
+    public static final class NowShowingDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(NOW_SHOWING_DATA_PATH).build();
+        public static final String TABLE_NOW_SHOWING_DATA = "NowShowingData";
+        public static final String COLUMN_MOVIE_ID = "MovieId";
+    }
+
+    public static final class ComingSoonDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(COMING_SOON_DATA_PATH).build();
+        public static final String TABLE_COMING_SOON_DATA = "ComingSoonData";
         public static final String COLUMN_MOVIE_ID = "MovieId";
     }
 

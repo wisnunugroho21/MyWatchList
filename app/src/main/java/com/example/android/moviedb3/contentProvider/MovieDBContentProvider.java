@@ -26,6 +26,12 @@ public class MovieDBContentProvider extends ContentProvider
     public static final int TOP_RATE = 300;
     public static final int TOP_RATE_ID = 301;
 
+    public static final int NOW_SHOWING = 1000;
+    public static final int NOW_SHOWING_ID = 1001;
+
+    public static final int COMING_SOON = 1100;
+    public static final int COMING_SOON_ID = 1101;
+
     public static final int FAVORITE = 400;
     public static final int FAVORITE_ID = 401;
 
@@ -59,6 +65,12 @@ public class MovieDBContentProvider extends ContentProvider
 
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.TOP_RATE_DATA_PATH, TOP_RATE);
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.TOP_RATE_DATA_PATH + "/#", TOP_RATE_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.NOW_SHOWING_DATA_PATH, NOW_SHOWING);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.NOW_SHOWING_DATA_PATH + "/#", NOW_SHOWING_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.COMING_SOON_DATA_PATH, COMING_SOON);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.COMING_SOON_DATA_PATH + "/#", COMING_SOON_ID);
 
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.FAVORITE_DATA_PATH, FAVORITE);
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.FAVORITE_DATA_PATH + "/#", FAVORITE_ID);
@@ -119,6 +131,26 @@ public class MovieDBContentProvider extends ContentProvider
             case TOP_RATE :
                 returnCursor = sqliteDatabase.query
                         (MovieDBContract.TopRateDataEntry.TABLE_TOP_RATE_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case NOW_SHOWING :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.NowShowingDataEntry.TABLE_NOW_SHOWING_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case COMING_SOON :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.ComingSoonDataEntry.TABLE_COMING_SOON_DATA,
                                 projection,
                                 selection,
                                 selectionArgs,
@@ -256,6 +288,40 @@ public class MovieDBContentProvider extends ContentProvider
                 {
                     returnUri = ContentUris.withAppendedId(
                             MovieDBContract.TopRateDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case NOW_SHOWING :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.NowShowingDataEntry.TABLE_NOW_SHOWING_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.NowShowingDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case COMING_SOON :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.ComingSoonDataEntry.TABLE_COMING_SOON_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.ComingSoonDataEntry.CONTENT_URI, id);
                 }
 
                 else
@@ -419,6 +485,28 @@ public class MovieDBContentProvider extends ContentProvider
                         MovieDBContract.TopRateDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
                 break;
 
+            case NOW_SHOWING :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.NowShowingDataEntry.TABLE_NOW_SHOWING_DATA,
+                        "1", null);
+                break;
+
+            case NOW_SHOWING_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.NowShowingDataEntry.TABLE_NOW_SHOWING_DATA,
+                        MovieDBContract.NowShowingDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
+                break;
+
+            case COMING_SOON :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.ComingSoonDataEntry.TABLE_COMING_SOON_DATA,
+                        "1", null);
+                break;
+
+            case COMING_SOON_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.ComingSoonDataEntry.TABLE_COMING_SOON_DATA,
+                        MovieDBContract.ComingSoonDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
+                break;
+
             case FAVORITE :
                 dataDeleted = sqliteDatabase.delete(MovieDBContract.FavoriteDataEntry.TABLE_FAVORITE_DATA,
                         "1", null);
@@ -523,6 +611,18 @@ public class MovieDBContentProvider extends ContentProvider
                 idData = uri.getPathSegments().get(1);
                 dataUpdated = sqliteDatabase.update(MovieDBContract.TopRateDataEntry.TABLE_TOP_RATE_DATA,
                         values, MovieDBContract.TopRateDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
+                break;
+
+            case NOW_SHOWING_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.NowShowingDataEntry.TABLE_NOW_SHOWING_DATA,
+                        values, MovieDBContract.NowShowingDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
+                break;
+
+            case COMING_SOON_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.ComingSoonDataEntry.TABLE_COMING_SOON_DATA,
+                        values, MovieDBContract.ComingSoonDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
                 break;
 
             case FAVORITE_ID :

@@ -40,8 +40,22 @@ public class VideoListJSONParser implements JSONParser<ArrayList<VideoData>>
                 JSONObject video = videoList.getJSONObject(a);
 
                 String id = String.valueOf((int )(Math.random() * Integer.MAX_VALUE + 1000000));
-                String videoURL = "https://www.youtube.com/watch?v=" + video.getString("key");
-                String videoThumbnailURL = "https://img.youtube.com/vi/" + video.getString("key") + "/0.jpg";
+
+                String videoURL;
+                String videoThumbnailURL;
+
+                String videoID = video.getString("key");
+
+                if(videoID == null || videoID.equals("null") || videoID.isEmpty())
+                {
+                    videoURL = "https://www.youtube.com/";
+                    videoThumbnailURL = "";
+                }
+                else
+                {
+                    videoURL = "https://www.youtube.com/watch?v=" + video.getString("key");
+                    videoThumbnailURL = "https://img.youtube.com/vi/" + video.getString("key") + "/0.jpg";
+                }
 
                 VideoData videoData = new VideoData(id, videoURL, videoThumbnailURL, movieID);
                 videoDataArrayList.add(videoData);

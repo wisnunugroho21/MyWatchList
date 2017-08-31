@@ -1,5 +1,6 @@
 package com.example.android.moviedb3.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +16,9 @@ import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activity.MovieDetailActivity;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
-import com.example.android.moviedb3.adapter.MainMovieListRecyclerViewAdapter;
+import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MainMovieListRecyclerViewAdapter;
+import com.example.android.moviedb3.dataManager.LoadingDataAsyncTask;
+import com.example.android.moviedb3.dataManager.movieDBGetter.DatabaseMovieDBGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieDataGetter;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
@@ -26,6 +29,7 @@ import com.example.android.moviedb3.localDatabase.TopRateDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieData;
+import com.example.android.moviedb3.movieDB.MovieDataURL;
 
 import java.util.ArrayList;
 
@@ -36,6 +40,7 @@ import java.util.ArrayList;
 public class MovieListFragment extends Fragment
 {
     private ArrayList<MovieData> movieDataArrayList;
+    private DataDB<String> movieListDB;
 
     RecyclerView movieListRecyclerView;
     ProgressBar loadingDataProgressBar;
@@ -58,6 +63,18 @@ public class MovieListFragment extends Fragment
         GetMovieList();
 
         return view;
+    }
+
+    public void setMovieListDB(DataDB<String> movieListDB) {
+        this.movieListDB = movieListDB;
+    }
+
+    public void GetMovieList()
+    {
+        ShowLoadingData();
+
+        DatabaseMovieDBGetter databaseMovieDBGetter = new DatabaseMovieDBGetter(movieListDB, getContext(), new MainMovieListObtainedListener());
+        databaseMovieDBGetter.execute();
     }
 
     private void ShowNoDataLayout()
@@ -95,14 +112,6 @@ public class MovieListFragment extends Fragment
         movieListRecyclerView.setLayoutManager(gridLayoutManager);
 
         movieListRecyclerView.setHasFixedSize(true);
-    }
-
-    private void GetMovieList()
-    {
-        ShowLoadingData();
-
-        MovieDataGetter movieDataGetter = new MovieDataGetter(getContext(), new MainMovieListObtainedListener(), new PopularDataDB(getContext()), getInitialOtherMovieListDataDB());
-        movieDataGetter.Execute();
     }
 
     private ArrayList<DataDB<String>> getInitialOtherMovieListDataDB()
@@ -147,7 +156,49 @@ public class MovieListFragment extends Fragment
             }
         }
     }
+
 }
+
+    /*String movieIDURL;
+    DataDB<String> currentMovieIdDB;
+    ArrayList<DataDB<String>> othersMovieIdDB;*/
+
+/*@Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if(movieIDURL.isEmpty() || movieIDURL == null)
+        {
+            movieIDURL = MovieDataURL.GetPopularURL();
+        }
+
+        if(currentMovieIdDB == null)
+        {
+            currentMovieIdDB = new PopularDataDB(getContext());
+        }
+
+        if(othersMovieIdDB == null)
+        {
+            othersMovieIdDB = getInitialOtherMovieListDataDB();
+        }
+    }*/
+
+/*public void setAllMovieIDDataDB(DataDB<String> currentMovieIdDB, ArrayList<DataDB<String>> othersMovieIdDB,
+                                    String movieIDURL)
+    {
+        this.currentMovieIdDB = currentMovieIdDB;
+        this.othersMovieIdDB = othersMovieIdDB;
+        this.movieIDURL = movieIDURL;
+    }
+
+    private void GetMovieList()
+    {
+        ShowLoadingData();
+
+        MovieDataGetter movieDataGetter = new MovieDataGetter(getContext(),
+                new MainMovieListObtainedListener(), currentMovieIdDB, othersMovieIdDB, movieIDURL);
+        movieDataGetter.Execute();
+    }*/
 
 
 

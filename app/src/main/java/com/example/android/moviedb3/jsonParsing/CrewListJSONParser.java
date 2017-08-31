@@ -32,8 +32,18 @@ public class CrewListJSONParser implements JSONParser<ArrayList<CrewData>>
                 JSONObject cast = crewList.getJSONObject(a);
 
                 String id = String.valueOf((int )(Math.random() * Integer.MAX_VALUE + 1000000));
+
                 String crewName = cast.getString("name");
+                if(crewName == null || crewName.equals("null") || crewName.isEmpty())
+                {
+                    crewName = "";
+                }
+
                 String crewPosition = cast.getString("job");
+                if(crewPosition == null || crewPosition.equals("null") || crewPosition.isEmpty())
+                {
+                    crewPosition = "";
+                }
 
                 CrewData crewData = new CrewData(id, crewName, crewPosition, movieID);
                 crewDataArrayList.add(crewData);

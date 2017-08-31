@@ -41,7 +41,7 @@
                         app:srcCompat="@drawable/movie_backdrop_example_342" />
 
                     <android.support.v7.widget.Toolbar
-                        android:id="@+id/toolbar"
+                        android:id="@+id/toolbar_movie_detail"
                         android:layout_width="0dp"
                         android:layout_height="56dp"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -255,21 +255,21 @@
                         android:id="@+id/txt_sypnosis"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:text="A live-action adaptation of Disney's version of the classic 'Beauty and the Beast' tale of a cursed prince and a beautiful young woman who helps him break the spell."
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_tagline"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        android:layout_marginBottom="16dp" />
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_tagline" />
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
 

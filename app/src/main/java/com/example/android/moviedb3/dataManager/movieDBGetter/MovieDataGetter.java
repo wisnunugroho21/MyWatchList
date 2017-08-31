@@ -11,6 +11,7 @@ import com.example.android.moviedb3.dataManager.dataFinderChecker.NoIDListFinder
 import com.example.android.moviedb3.dataManager.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.dataManager.dataGetter.NetworkDataGetterSyncTask;
 import com.example.android.moviedb3.dataManager.dataGetter.NetworkDataListGetterSyncTask;
+import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonNetworkConnection.NetworkConnectionChecker;
 import com.example.android.moviedb3.jsonParsing.MovieDetailJSONParser;
@@ -38,25 +39,42 @@ public class MovieDataGetter implements IMovieDBGetter {
 
     Context context;
     OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener;
+    OnAsyncTaskCompleteListener onAsyncTaskCompleteListener;
 
-    boolean allDataHasBeenObtained;
     DataDB<String> currentMovieListDataDB;
     ArrayList<DataDB<String>> otherMovieListDataDB;
+    String movieIDListURL;
+
+    boolean allDataHasBeenObtained;
     DataDB<MovieData> movieDB;
 
-    public MovieDataGetter(Context context, OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener, DataDB<String> currentMovieListDataDB, ArrayList<DataDB<String>> otherMovieListDataDB) {
+    public MovieDataGetter(Context context, OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener, DataDB<String> currentMovieListDataDB, ArrayList<DataDB<String>> otherMovieListDataDB, String movieIDListURL) {
         this.context = context;
         this.onDataObtainedListener = onDataObtainedListener;
 
-        allDataHasBeenObtained = false;
         this.currentMovieListDataDB = currentMovieListDataDB;
         this.otherMovieListDataDB = otherMovieListDataDB;
+        this.movieIDListURL = movieIDListURL;
+
+        allDataHasBeenObtained = false;
+        movieDB = new MovieDataDB(context);
+    }
+
+    public MovieDataGetter(Context context, OnAsyncTaskCompleteListener onAsyncTaskCompleteListener, DataDB<String> currentMovieListDataDB, ArrayList<DataDB<String>> otherMovieListDataDB, String movieIDListURL) {
+        this.context = context;
+        this.onAsyncTaskCompleteListener = onAsyncTaskCompleteListener;
+
+        this.currentMovieListDataDB = currentMovieListDataDB;
+        this.otherMovieListDataDB = otherMovieListDataDB;
+        this.movieIDListURL = movieIDListURL;
+
+        allDataHasBeenObtained = false;
         movieDB = new MovieDataDB(context);
     }
 
     public void Execute()
     {
-        NetworkDataGetter.GetData(new NetworkDataGetterSyncTask<ArrayList<String>>(new MovieIDListJSONParser(), new OnMovieIDListObtainedListener()), MovieDataURL.GetPopularURL());
+        NetworkDataGetter.GetData(new NetworkDataGetterSyncTask<ArrayList<String>>(new MovieIDListJSONParser(), new OnMovieIDListObtainedListener()), movieIDListURL);
     }
 
     private class OnMovieIDListObtainedListener implements OnDataObtainedListener<ArrayList<String>> {
@@ -65,8 +83,16 @@ public class MovieDataGetter implements IMovieDBGetter {
         {
             if(strings == null || !NetworkConnectionChecker.IsConnect(context))
             {
-                MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
-                movieGetter.execute();
+                if(onDataObtainedListener != null)
+                {
+                    MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
+                    movieGetter.execute();
+                }
+
+                else if(onAsyncTaskCompleteListener != null)
+                {
+                    onAsyncTaskCompleteListener.onComplete(true);
+                }
             }
 
             else
@@ -103,8 +129,16 @@ public class MovieDataGetter implements IMovieDBGetter {
 
             else
             {
-                MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
-                movieGetter.execute();
+                if(onDataObtainedListener != null)
+                {
+                    MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
+                    movieGetter.execute();
+                }
+
+                else if(onAsyncTaskCompleteListener != null)
+                {
+                    onAsyncTaskCompleteListener.onComplete(true);
+                }
             }
         }
     }
@@ -123,13 +157,6 @@ public class MovieDataGetter implements IMovieDBGetter {
         @Override
         protected Void doInBackground(Void... params)
         {
-            currentMovieListDataDB.removeAllData();
-
-            for (String idMovie : idMovieList)
-            {
-                currentMovieListDataDB.addData(idMovie);
-            }
-
             ArrayList<String> deletedIdMovieList = DataFindCheck.CheckData
                     (new NoIDListFinder(idMovieList, currentMovieListDataDB));
 
@@ -148,7 +175,6 @@ public class MovieDataGetter implements IMovieDBGetter {
 
                 if (!isMovieAvaiable)
                 {
-                    currentMovieListDataDB.removeData(idMovie);
                     movieDB.removeData(idMovie);
 
                     ArrayList<ReviewData> reviewDatas = DataFindCheck.CheckData(new DependencyDataListFinder<ReviewData>(new ReviewDataDB(context), idMovie));
@@ -191,14 +217,29 @@ public class MovieDataGetter implements IMovieDBGetter {
                 movieDB.addData(movieData);
             }
 
+            currentMovieListDataDB.removeAllData();
+
+            for (String idMovie : idMovieList)
+            {
+                currentMovieListDataDB.addData(idMovie);
+            }
+
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid)
         {
-            MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
-            movieGetter.execute();
+            if(onDataObtainedListener != null)
+            {
+                MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
+                movieGetter.execute();
+            }
+
+            else if(onAsyncTaskCompleteListener != null)
+            {
+                onAsyncTaskCompleteListener.onComplete(true);
+            }
         }
     }
 
@@ -212,14 +253,17 @@ public class MovieDataGetter implements IMovieDBGetter {
 
             ArrayList<MovieData> expectedMovieDatas = new ArrayList<>();
 
-            for (String idMovie:idMovies)
+            if(movieDatas != null)
             {
-                for (MovieData movieData:movieDatas)
+                for (String idMovie:idMovies)
                 {
-                    if(idMovie.equals(movieData.getId()))
+                    for (MovieData movieData:movieDatas)
                     {
-                        expectedMovieDatas.add(movieData);
-                        break;
+                        if(idMovie.equals(movieData.getId()))
+                        {
+                            expectedMovieDatas.add(movieData);
+                            break;
+                        }
                     }
                 }
             }
@@ -230,7 +274,10 @@ public class MovieDataGetter implements IMovieDBGetter {
         @Override
         protected void onPostExecute(ArrayList<MovieData> movieDatas)
         {
-            onDataObtainedListener.onDataObtained(movieDatas);
+            if(onDataObtainedListener != null)
+            {
+                onDataObtainedListener.onDataObtained(movieDatas);
+            }
         }
     }
 

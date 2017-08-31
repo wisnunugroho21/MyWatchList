@@ -22,7 +22,7 @@ public class SameID_DataListFindCheck<Data extends BaseData> implements IDataFin
     public Boolean CheckData() {
         ArrayList<Data> dataArrayList = dataDB.getAllData();
 
-        if(dataArrayList != null)
+        if(dataArrayList != null && !dataArrayList.isEmpty())
         {
             for (Data data : dataArrayList)
             {

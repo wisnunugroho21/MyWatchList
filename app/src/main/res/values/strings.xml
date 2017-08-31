@@ -38,5 +38,7 @@
     <string name="sort_label">Sort</string>
     <string name="title_activity_movie_list">MovieListActivity</string>
 
+    <string name="top_list_label">Top List</string>
+
 
 </resources>

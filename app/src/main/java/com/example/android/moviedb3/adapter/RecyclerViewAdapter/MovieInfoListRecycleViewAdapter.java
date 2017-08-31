@@ -1,4 +1,4 @@
-package com.example.android.moviedb3.adapter;
+package com.example.android.moviedb3.adapter.RecyclerViewAdapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

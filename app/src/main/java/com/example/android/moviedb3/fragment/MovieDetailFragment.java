@@ -3,13 +3,11 @@ package com.example.android.moviedb3.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,8 +17,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.android.moviedb3.R;
-import com.example.android.moviedb3.adapter.MovieInfoListRecycleViewAdapter;
-import com.example.android.moviedb3.adapter.VideoDataListRecyclerViewAdapter;
+import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
+import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoDataListRecyclerViewAdapter;
 import com.example.android.moviedb3.dataManager.dataGetter.BundleDataGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieDBGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieInfoDataGetter;
@@ -94,7 +92,7 @@ public class MovieDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.movie_detail_layout, container, false);
 
         movieDetailLayout = (ScrollView) view.findViewById(R.id.movie_detail_layout);
-        movieDetailToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        movieDetailToolbar = (Toolbar) view.findViewById(R.id.toolbar_movie_detail);
         coverPosterImageView = (ImageView) view.findViewById(R.id.iv_cover_poster);
         mainMoviePosterImageView = (ImageView) view.findViewById(R.id.iv_main_movie_poster);
         movieTitleTextView = (TextView) view.findViewById(R.id.txt_movie_title);

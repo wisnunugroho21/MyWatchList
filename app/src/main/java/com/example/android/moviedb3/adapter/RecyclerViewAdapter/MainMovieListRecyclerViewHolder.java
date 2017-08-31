@@ -1,4 +1,4 @@
-package com.example.android.moviedb3.adapter;
+package com.example.android.moviedb3.adapter.RecyclerViewAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

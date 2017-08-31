@@ -24,7 +24,7 @@ public class NoIDListFinder implements IDataFindCheck<ArrayList<String>>
         ArrayList<String> idDatabaseList = dataDB.getAllData();
         ArrayList<String> idDifferenceList = new ArrayList<>();
 
-        if(idDatabaseList != null)
+        if(idDatabaseList != null && !idDatabaseList.isEmpty())
         {
             for (String idDatabase:idDatabaseList)
             {

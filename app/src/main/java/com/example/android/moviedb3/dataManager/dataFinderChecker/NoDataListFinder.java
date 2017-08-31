@@ -24,7 +24,7 @@ public class NoDataListFinder<Data extends BaseData> implements IDataFindCheck<A
         ArrayList<String> idDatabaseList = new ArrayList<>();
         ArrayList<String> idDifferenceList = new ArrayList<>();
 
-        if(dataArrayList != null)
+        if(dataArrayList != null && !dataArrayList.isEmpty())
         {
             for (Data data : dataArrayList) {
                 idDatabaseList.add(data.getId());

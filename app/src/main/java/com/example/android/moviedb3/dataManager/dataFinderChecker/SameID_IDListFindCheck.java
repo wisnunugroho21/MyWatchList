@@ -21,7 +21,7 @@ public class SameID_IDListFindCheck implements IDataFindCheck<Boolean> {
     public Boolean CheckData() {
         ArrayList<String> idList = dataDB.getAllData();
 
-        if(idList != null)
+        if(idList != null && !idList.isEmpty())
         {
             for (String id : idList)
             {

@@ -82,7 +82,8 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
         @Override
         protected void onPostExecute(Void aVoid)
         {
-            onDataObtainedListener.onDataObtained(datas);
+            MovieInfoDatabaseGetter movieInfoDatabaseGetter = new MovieInfoDatabaseGetter();
+            movieInfoDatabaseGetter.execute();
         }
     }
 
@@ -94,11 +95,14 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
             ArrayList<Data> dataArrayList = dataDB.getAllData();
             ArrayList<Data> expectedDataArrayList = new ArrayList<>();
 
-            for (Data data:dataArrayList)
+            if(dataArrayList != null)
             {
-                if(movieID.equals(data.getIDDependent()))
+                for (Data data:dataArrayList)
                 {
-                    expectedDataArrayList.add(data);
+                    if(movieID.equals(data.getIDDependent()))
+                    {
+                        expectedDataArrayList.add(data);
+                    }
                 }
             }
 

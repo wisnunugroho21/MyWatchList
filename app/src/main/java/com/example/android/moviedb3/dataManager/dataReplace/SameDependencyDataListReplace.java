@@ -43,7 +43,7 @@ public class SameDependencyDataListReplace<Data extends DependencyData> implemen
         {
             ArrayList<Data> dataDBList = database.getAllData();
 
-            if(datas != null)
+            if(datas != null && !datas.isEmpty())
             {
                 if(dataDBList != null)
                 {
