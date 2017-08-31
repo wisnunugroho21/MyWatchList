@@ -12,6 +12,7 @@
     <string name="no_conncection">No Internet Connection</string>
     <string name="tryAgain">Try Again</string>
     <string name="noData">No Data</string>
+    <string name="stillLoadingLabel">Still Loading...</string>
 
     <string name="genre_label">Genre</string>
     <string name="duration_label">Duration</string>
