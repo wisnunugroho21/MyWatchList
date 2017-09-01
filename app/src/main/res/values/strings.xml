@@ -26,12 +26,11 @@
 
     <string name="favorite_label">Favorite</string>
     <string name="un_favorite_label">UnFavorite</string>
-    <string name="watched_label">Watched</string>
-    <string name="un_watched_label">UnWatched</string>
-    <string name="plan_to_watched_label">Plan To Watch</string>
+    <string name="watchlist_label">WatchList</string>
+    <string name="share_label">Share</string>
 
-    <string name="sort_label">Sort</string>
-    <string name="title_activity_movie_list">MovieListActivity</string>
+    <!--<string name="sort_label">Sort</string>
+    <string name="title_activity_movie_list">MovieListActivity</string>-->
 
     <string name="home_label">Home</string>
     <string name="top_list_label">Top List</string>

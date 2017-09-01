@@ -165,19 +165,25 @@ public class MovieDetailFragment extends Fragment {
 
         taglineTextView.setText(movieData.getTagline());
         synopsisTextView.setText(movieData.getPlotSypnosis());
-
-        noDataTextView.setVisibility(View.GONE);
     }
 
 
     private void ShowLoadingData() {
         loadingDataProgressBar.setVisibility(View.VISIBLE);
-        movieDetailLayout.setVisibility(View.INVISIBLE);
+        movieDetailLayout.setVisibility(View.GONE);
+        noDataTextView.setVisibility(View.GONE);
     }
 
     private void ShowMovieDetail() {
-        loadingDataProgressBar.setVisibility(View.INVISIBLE);
+        loadingDataProgressBar.setVisibility(View.GONE);
         movieDetailLayout.setVisibility(View.VISIBLE);
+        noDataTextView.setVisibility(View.GONE);
+    }
+
+    private void ShowNoData() {
+        loadingDataProgressBar.setVisibility(View.GONE);
+        movieDetailLayout.setVisibility(View.GONE);
+        noDataTextView.setVisibility(View.VISIBLE);
     }
 
     private void SetAdditionalMovieDetailRecyclerView(RecyclerView.Adapter adapter, RecyclerView.LayoutManager layoutManager, RecyclerView recyclerView) {
@@ -210,8 +216,10 @@ public class MovieDetailFragment extends Fragment {
         }
     }
 
-    private void SetInitialData(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
+    private void SetInitialData(Bundle savedInstanceState)
+    {
+        if (savedInstanceState != null)
+        {
             BundleDataGetter bundleDataGetter = new BundleDataGetter(savedInstanceState);
 
             movieData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY);
@@ -227,11 +235,14 @@ public class MovieDetailFragment extends Fragment {
             SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(videoDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
 
             ShowMovieDetail();
-        } else {
+        }
+        else
+        {
             BundleDataGetter bundleDataGetter = new BundleDataGetter(getArguments());
             movieData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY);
 
-            if (movieData != null) {
+            if (movieData != null)
+            {
                 ShowLoadingData();
 
                 SetMovieDetail(movieData);
@@ -240,59 +251,91 @@ public class MovieDetailFragment extends Fragment {
         }
     }
 
-    private class ReviewDataListObtainedListener implements OnDataObtainedListener<ArrayList<ReviewData>> {
+    private class ReviewDataListObtainedListener implements OnDataObtainedListener<ArrayList<ReviewData>>
+    {
         @Override
-        public void onDataObtained(ArrayList<ReviewData> reviewDatas) {
-            try {
-                reviewDataArrayList = reviewDatas;
+        public void onDataObtained(ArrayList<ReviewData> reviewDatas)
+        {
+            if(reviewDatas != null)
+            {
+                if(!reviewDatas.isEmpty())
+                {
+                    reviewDataArrayList = reviewDatas;
 
-                SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
-                CheckAndShowMovieDetail();
-            } catch (NullPointerException e) {
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
+                    CheckAndShowMovieDetail();
+
+                    return;
+                }
             }
+
+            ShowNoData();
         }
     }
 
-    private class CastDataListObtainedListener implements OnDataObtainedListener<ArrayList<CastData>> {
+    private class CastDataListObtainedListener implements OnDataObtainedListener<ArrayList<CastData>>
+    {
         @Override
-        public void onDataObtained(ArrayList<CastData> castDatas) {
-            try {
-                castDataArrayList = castDatas;
+        public void onDataObtained(ArrayList<CastData> castDatas)
+        {
+            if(castDatas != null)
+            {
+                if(!castDatas.isEmpty())
+                {
+                    castDataArrayList = castDatas;
 
-                SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
-                CheckAndShowMovieDetail();
-            } catch (NullPointerException e) {
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
+                    CheckAndShowMovieDetail();
+
+                    return;
+                }
             }
+
+            ShowNoData();
         }
     }
 
-    private class CrewDataListObtainedListener implements OnDataObtainedListener<ArrayList<CrewData>> {
+    private class CrewDataListObtainedListener implements OnDataObtainedListener<ArrayList<CrewData>>
+    {
         @Override
-        public void onDataObtained(ArrayList<CrewData> crewDatas) {
-            try {
-                crewDataArrayList = crewDatas;
+        public void onDataObtained(ArrayList<CrewData> crewDatas)
+        {
+            if(crewDatas != null)
+            {
+                if(!crewDatas.isEmpty())
+                {
+                    crewDataArrayList = crewDatas;
 
-                SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(crewDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
-                CheckAndShowMovieDetail();
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(crewDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
+                    CheckAndShowMovieDetail();
 
-            } catch (NullPointerException e) {
+                    return;
+                }
             }
+
+            ShowNoData();
         }
     }
 
-    private class VideoDataListObtainedListener implements OnDataObtainedListener<ArrayList<VideoData>> {
+    private class VideoDataListObtainedListener implements OnDataObtainedListener<ArrayList<VideoData>>
+    {
         @Override
         public void onDataObtained(ArrayList<VideoData> videoDatas)
         {
-            try {
-                videoDataArrayList = videoDatas;
-
-                SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(videoDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
-                CheckAndShowMovieDetail();
-
-            } catch (NullPointerException e)
+            if(videoDatas != null)
             {
+                if(!videoDatas.isEmpty())
+                {
+                    videoDataArrayList = videoDatas;
+
+                    SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(videoDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
+                    CheckAndShowMovieDetail();
+
+                    return;
+                }
             }
+
+            ShowNoData();
         }
     }
 }
