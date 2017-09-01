@@ -310,7 +310,7 @@
                         android:layout_width="0dp"
                         android:layout_height="75dp"
                         android:drawableTop="@drawable/ic_playlist_add_white_24px"
-                        android:text="@string/watchlist_label"
+                        android:text="@string/my_list_label"
                         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Colored"
                         android:textSize="12sp"
                         app:layout_constraintLeft_toRightOf="@+id/btn_favorite"

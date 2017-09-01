@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="watchlist_option_list">
+        <item>Not Interested</item>
+        <item>Plan to watch</item>
+        <item>Watched</item>
+    </string-array>
+
+    <string-array name="watchlist_upcoming_movie_option_list">
+        <item>Not Interested</item>
+        <item>Plan to watch</item>
+    </string-array>
+</resources>

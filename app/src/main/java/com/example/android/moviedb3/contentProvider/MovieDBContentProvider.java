@@ -38,6 +38,9 @@ public class MovieDBContentProvider extends ContentProvider
     public static final int WATCHLIST = 500;
     public static final int WATCHLIST_ID = 501;
 
+    public static final int PLAN_TO_WATCH = 1200;
+    public static final int PLAN_TO_WATCH_ID = 1201;
+
     public static final int CAST = 600;
     public static final int CAST_ID = 601;
 
@@ -77,6 +80,9 @@ public class MovieDBContentProvider extends ContentProvider
 
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.WATCHLIST_DATA_PATH, WATCHLIST);
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.WATCHLIST_DATA_PATH + "/#", WATCHLIST_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PLAN_TO_WATCH_LIST_DATA_PATH, PLAN_TO_WATCH);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PLAN_TO_WATCH_LIST_DATA_PATH + "/#", PLAN_TO_WATCH_ID);
 
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.CREW_DATA_PATH, CREW);
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.CREW_DATA_PATH + "/#", CREW_ID);
@@ -171,6 +177,16 @@ public class MovieDBContentProvider extends ContentProvider
             case WATCHLIST :
                 returnCursor = sqliteDatabase.query
                         (MovieDBContract.WatchlistDataEntry.TABLE_WATCHLIST_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case PLAN_TO_WATCH :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.PlanToWatchlistDataEntry.TABLE_PLAN_TO_WATCH_LIST_DATA,
                                 projection,
                                 selection,
                                 selectionArgs,
@@ -364,6 +380,23 @@ public class MovieDBContentProvider extends ContentProvider
                 }
                 break;
 
+            case PLAN_TO_WATCH :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.PlanToWatchlistDataEntry.TABLE_PLAN_TO_WATCH_LIST_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.PlanToWatchlistDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
             case CREW :
                 id = sqliteDatabase.insert(
                         MovieDBContract.CrewDataEntry.TABLE_CREW_DATA,
@@ -529,6 +562,17 @@ public class MovieDBContentProvider extends ContentProvider
                         MovieDBContract.WatchlistDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
                 break;
 
+            case PLAN_TO_WATCH :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PlanToWatchlistDataEntry.TABLE_PLAN_TO_WATCH_LIST_DATA,
+                        "1", null);
+                break;
+
+            case PLAN_TO_WATCH_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PlanToWatchlistDataEntry.TABLE_PLAN_TO_WATCH_LIST_DATA,
+                        MovieDBContract.PlanToWatchlistDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
+                break;
+
             case CREW :
                 dataDeleted = sqliteDatabase.delete(MovieDBContract.CrewDataEntry.TABLE_CREW_DATA,
                         "1", null);
@@ -635,6 +679,12 @@ public class MovieDBContentProvider extends ContentProvider
                 idData = uri.getPathSegments().get(1);
                 dataUpdated = sqliteDatabase.update(MovieDBContract.WatchlistDataEntry.TABLE_WATCHLIST_DATA,
                         values, MovieDBContract.WatchlistDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
+                break;
+
+            case PLAN_TO_WATCH_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.PlanToWatchlistDataEntry.TABLE_PLAN_TO_WATCH_LIST_DATA,
+                        values, MovieDBContract.PlanToWatchlistDataEntry.COLUMN_MOVIE_ID + "=?", new String[]{ idData });
                 break;
 
             case CAST_ID :

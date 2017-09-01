@@ -3,6 +3,7 @@ package com.example.android.moviedb3.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +16,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoDataListRecyclerViewAdapter;
 import com.example.android.moviedb3.dataManager.dataGetter.BundleDataGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieDBGetter;
+import com.example.android.moviedb3.dataManager.movieDBGetter.DataInIDListCheckerAsyncTask;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieInfoDataGetter;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonParsing.CastListJSONParser;
@@ -29,6 +32,8 @@ import com.example.android.moviedb3.jsonParsing.ReviewListJSONParser;
 import com.example.android.moviedb3.jsonParsing.VideoListJSONParser;
 import com.example.android.moviedb3.localDatabase.CastDataDB;
 import com.example.android.moviedb3.localDatabase.CrewDataDB;
+import com.example.android.moviedb3.localDatabase.DataDB;
+import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
 import com.example.android.moviedb3.localDatabase.ReviewDataDB;
 import com.example.android.moviedb3.localDatabase.VideoDataDB;
 import com.example.android.moviedb3.movieDB.CastData;
@@ -60,6 +65,11 @@ public class MovieDetailFragment extends Fragment {
     TextView releaseDateTextView;
     TextView taglineTextView;
     TextView synopsisTextView;
+
+    Button favoriteButton;
+    Button watchListButton;
+    Button shareButton;
+
     RecyclerView reviewListRecyclerView;
     Button moreReviewButton;
     TextView noReviewTextView;
@@ -79,6 +89,7 @@ public class MovieDetailFragment extends Fragment {
     ArrayList<VideoData> videoDataArrayList;
 
     private int numberMovieInfoObtained;
+    private Boolean favoriteState;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,6 +112,11 @@ public class MovieDetailFragment extends Fragment {
         releaseDateTextView = (TextView) view.findViewById(R.id.txt_release_date);
         taglineTextView = (TextView) view.findViewById(R.id.txt_tagline);
         synopsisTextView = (TextView) view.findViewById(R.id.txt_sypnosis);
+
+        favoriteButton = (Button) view.findViewById(R.id.btn_favorite);
+        watchListButton = (Button) view.findViewById(R.id.btn_watchlist);
+        shareButton = (Button) view.findViewById(R.id.btn_share);
+
         reviewListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_review_list);
         moreReviewButton = (Button) view.findViewById(R.id.btn_more_review);
         noReviewTextView = (TextView) view.findViewById(R.id.txt_no_review);
@@ -112,6 +128,9 @@ public class MovieDetailFragment extends Fragment {
 
         loadingDataProgressBar = (ProgressBar) view.findViewById(R.id.pb_loading_data);
         noDataTextView = (TextView) view.findViewById(R.id.txt_no_data);
+
+        favoriteButton.setOnClickListener(new FavoriteButtonClickListener());
+        watchListButton.setOnClickListener(new WatchListButtonClickListener());
 
         SetInitialData(savedInstanceState);
         SetActionBar();
@@ -227,6 +246,7 @@ public class MovieDetailFragment extends Fragment {
             castDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CAST_LIST_PERSISTANCE_KEY);
             crewDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CREW_LIST_PERSISTANCE_KEY);
             videoDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_VIDEO_LIST_PERSISTANCE_KEY);
+            favoriteState = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.FAVORITE_STATE_PERSISTANCE_KEY);
 
             SetMovieDetail(movieData);
             SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(reviewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
@@ -235,6 +255,7 @@ public class MovieDetailFragment extends Fragment {
             SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(videoDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
 
             ShowMovieDetail();
+            SetFavoriteLabel(favoriteState);
         }
         else
         {
@@ -246,8 +267,56 @@ public class MovieDetailFragment extends Fragment {
                 ShowLoadingData();
 
                 SetMovieDetail(movieData);
+                SetInitialFavoriteState();
                 SetAllRecyclerView(movieData);
             }
+        }
+    }
+
+    private void SetInitialFavoriteState()
+    {
+        DataInIDListCheckerAsyncTask dataInIDListCheckerAsyncTask = new DataInIDListCheckerAsyncTask(new InitialFavoriteObtainedListener(), new FavoriteDataDB(getContext()), movieData.getId());
+        dataInIDListCheckerAsyncTask.Execute();
+    }
+
+    private boolean FavoriteMovieStateChanged(Boolean favoriteState)
+    {
+        DataDB<String> dataDB = new FavoriteDataDB(MovieDetailFragment.this.getContext());
+
+        if(favoriteState)
+        {
+            favoriteState = false;
+            SetFavoriteLabel(favoriteState);
+
+            dataDB.removeData(movieData.getId());
+            Toast.makeText(MovieDetailFragment.this.getContext(), "Remove this movie from favorite list", Toast.LENGTH_SHORT).show();
+        }
+
+        else
+        {
+            favoriteState = true;
+            SetFavoriteLabel(favoriteState);
+
+            dataDB.addData(movieData.getId());
+            Toast.makeText(MovieDetailFragment.this.getContext(), "Insert this movie to favorite list", Toast.LENGTH_SHORT).show();
+        }
+
+        MovieDetailFragment.this.getActivity().setResult(MovieDBKeyEntry.DatabaseHasChanged.FAVORITE_DATA_CHANGED);
+        return favoriteState;
+    }
+
+    private void SetFavoriteLabel(boolean state)
+    {
+        if (!state)
+        {
+            favoriteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite_white_24px, 0, 0);
+            favoriteButton.setText(R.string.favorite_label);
+        }
+
+        else
+        {
+            favoriteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white_24px, 0, 0);
+            favoriteButton.setText(R.string.un_favorite_label);
         }
     }
 
@@ -336,6 +405,47 @@ public class MovieDetailFragment extends Fragment {
             }
 
             ShowNoData();
+        }
+    }
+
+    private class InitialFavoriteObtainedListener implements OnDataObtainedListener<Boolean>
+    {
+        @Override
+        public void onDataObtained(Boolean aBoolean)
+        {
+            favoriteState = aBoolean;
+            SetFavoriteLabel(favoriteState);
+        }
+    }
+
+    private class FavoriteButtonClickListener implements Button.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            favoriteState = FavoriteMovieStateChanged(favoriteState);
+        }
+    }
+
+    private class WatchListButtonClickListener implements Button.OnClickListener
+    {
+        @Override
+        public void onClick(View v) {
+
+            WatchListDialogFragment watchListDialogFragment = new WatchListDialogFragment();
+            watchListDialogFragment.setMovieID(movieData.getId());
+            watchListDialogFragment.setOnDataObtainedListener(new WatchListHasSelected());
+
+            watchListDialogFragment.show(getActivity().getSupportFragmentManager(), "watchlistbutton");
+        }
+    }
+
+    private class WatchListHasSelected implements OnDataObtainedListener<Integer>
+    {
+        @Override
+        public void onDataObtained(Integer integer)
+        {
+            MovieDetailFragment.this.getActivity().setResult(integer);
         }
     }
 }

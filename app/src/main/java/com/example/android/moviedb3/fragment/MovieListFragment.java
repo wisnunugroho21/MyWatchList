@@ -1,5 +1,6 @@
 package com.example.android.moviedb3.fragment;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -89,11 +90,16 @@ public class MovieListFragment extends Fragment
 
         else
         {
-            ShowLoadingData();
-
-            DatabaseMovieDBGetter databaseMovieDBGetter = new DatabaseMovieDBGetter(movieListDB, getContext(), new MainMovieListObtainedListener());
-            databaseMovieDBGetter.execute();
+            GetMovieListFromDatabase();
         }
+    }
+
+    public void GetMovieListFromDatabase()
+    {
+        ShowLoadingData();
+
+        DatabaseMovieDBGetter databaseMovieDBGetter = new DatabaseMovieDBGetter(movieListDB, getContext(), new MainMovieListObtainedListener());
+        databaseMovieDBGetter.execute();
     }
 
     private void ShowNoDataLayout()
@@ -133,17 +139,6 @@ public class MovieListFragment extends Fragment
         movieListRecyclerView.setHasFixedSize(true);
     }
 
-    private ArrayList<DataDB<String>> getInitialOtherMovieListDataDB()
-    {
-        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
-
-        dataDBArrayList.add(new TopRateDataDB(getContext()));
-        dataDBArrayList.add(new FavoriteDataDB(getContext()));
-        dataDBArrayList.add(new WatchlistDataDB(getContext()));
-
-        return dataDBArrayList;
-    }
-
     private class MainMovieDataChoosedListener implements OnDataChooseListener<MovieData>
     {
         @Override
@@ -168,10 +163,18 @@ public class MovieListFragment extends Fragment
 
             else
             {
-                movieDataArrayList = movieDatas;
+                if(movieDatas.isEmpty())
+                {
+                    ShowNoDataLayout();
+                }
 
-                SetRecyclerView(movieDataArrayList);
-                ShowRecycleView();
+                else
+                {
+                    movieDataArrayList = movieDatas;
+
+                    SetRecyclerView(movieDataArrayList);
+                    ShowRecycleView();
+                }
             }
         }
     }

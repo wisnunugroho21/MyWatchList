@@ -83,6 +83,13 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
 
         db.execSQL(SQLITE_CREATE_WATCHLIST_TABLE);
 
+        final String SQLITE_CREATE_PLAN_TO_WATCH_LIST_TABLE = "CREATE TABLE " + MovieDBContract.PlanToWatchlistDataEntry.TABLE_PLAN_TO_WATCH_LIST_DATA + " (" +
+                MovieDBContract.WatchlistDataEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                MovieDBContract.WatchlistDataEntry.COLUMN_MOVIE_ID + " TEXT" +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_PLAN_TO_WATCH_LIST_TABLE);
+
         final String SQLITE_CREATE_CREW_TABLE = "CREATE TABLE " + MovieDBContract.CrewDataEntry.TABLE_CREW_DATA + " (" +
                 MovieDBContract.CrewDataEntry._ID + " TEXT, " +
                 MovieDBContract.CrewDataEntry.COLUMN_CREW_NAME + " TEXT, " +
@@ -128,6 +135,7 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.TopRateDataEntry.TABLE_TOP_RATE_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.FavoriteDataEntry.TABLE_FAVORITE_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.WatchlistDataEntry.TABLE_WATCHLIST_DATA);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.PlanToWatchlistDataEntry.TABLE_PLAN_TO_WATCH_LIST_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.CrewDataEntry.TABLE_CREW_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.CastDataEntry.TABLE_CAST_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.ReviewDataEntry.TABLE_REVIEW_DATA);

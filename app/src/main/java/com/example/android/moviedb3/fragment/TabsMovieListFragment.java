@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.adapter.FragmentAdapter.HomeFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.TopListFragmentAdapter;
+import com.example.android.moviedb3.adapter.FragmentAdapter.YoursFragmentAdapter;
+import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 
 /**
  * Created by nugroho on 31/08/17.
@@ -22,7 +24,8 @@ import com.example.android.moviedb3.adapter.FragmentAdapter.TopListFragmentAdapt
 
 public class TabsMovieListFragment extends Fragment
 {
-    int fragmentAdapterIndex;
+    int selectedPageIndex = 0;
+    int fragmentAdapterIndex = 0;
     String fragmentTitle;
 
     Toolbar toolbar;
@@ -43,27 +46,36 @@ public class TabsMovieListFragment extends Fragment
         tabLayout = (TabLayout) view.findViewById(R.id.tabs_movie_list);
         tabLayout.setupWithViewPager(viewPager);
 
+        tabLayout.setScrollPosition(selectedPageIndex, 0f, true);
+        viewPager.setCurrentItem(selectedPageIndex);
+
         return view;
     }
 
-    public void setFragmentPagerAdapterIndex(int index)
+    public void setFragmentPagerAdapterIndex(int fragmentAdapterIndex)
     {
-        this.fragmentAdapterIndex = index;
+        this.fragmentAdapterIndex = fragmentAdapterIndex;
+    }
+
+    public void setSelectedPageIndex(int selectedPageIndex)
+    {
+        this.selectedPageIndex = selectedPageIndex;
+    }
+
+    public void setFragmentTitle(String fragmentTitle) {
+        this.fragmentTitle = fragmentTitle;
     }
 
     private FragmentPagerAdapter setFragmentPagerAdapter()
     {
         switch (fragmentAdapterIndex)
         {
-            case 0 : return new HomeFragmentAdapter(getChildFragmentManager(), getContext());
-            case 1 : return new TopListFragmentAdapter(getChildFragmentManager(), getContext());
+            case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeFragmentAdapter(getChildFragmentManager(), getContext());
+            case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListFragmentAdapter(getChildFragmentManager(), getContext());
+            case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursFragmentAdapter(getChildFragmentManager(), getContext());
 
             default: return null;
         }
-    }
-
-    public void setFragmentTitle(String fragmentTitle) {
-        this.fragmentTitle = fragmentTitle;
     }
 
     private void SetActionBar()

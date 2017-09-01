@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class DatabaseMovieDBGetter extends AsyncTask<Void, Void, ArrayList<MovieData>>
 {
-    Context context;
     DataDB<MovieData> movieDB;
     DataDB<String> movieListDB;
     OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener;
@@ -41,7 +40,7 @@ public class DatabaseMovieDBGetter extends AsyncTask<Void, Void, ArrayList<Movie
 
         ArrayList<MovieData> expectedMovieDatas = new ArrayList<>();
 
-        if(movieDatas != null)
+        if(movieDatas != null && idMovies != null)
         {
             for (String idMovie:idMovies)
             {
@@ -55,8 +54,6 @@ public class DatabaseMovieDBGetter extends AsyncTask<Void, Void, ArrayList<Movie
                 }
             }
         }
-
-
 
         return expectedMovieDatas;
     }

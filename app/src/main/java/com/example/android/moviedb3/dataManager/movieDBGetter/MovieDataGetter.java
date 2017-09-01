@@ -38,7 +38,7 @@ import java.util.ArrayList;
 public class MovieDataGetter implements IMovieDBGetter {
 
     Context context;
-    OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener;
+//    OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener;
     OnAsyncTaskCompleteListener onAsyncTaskCompleteListener;
 
     DataDB<String> currentMovieListDataDB;
@@ -48,17 +48,17 @@ public class MovieDataGetter implements IMovieDBGetter {
     boolean allDataHasBeenObtained;
     DataDB<MovieData> movieDB;
 
-    public MovieDataGetter(Context context, OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener, DataDB<String> currentMovieListDataDB, ArrayList<DataDB<String>> otherMovieListDataDB, String movieIDListURL) {
+    /*public MovieDataGetter(Context context, OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener, DataDB<String> currentMovieListDataDB, ArrayList<DataDB<String>> movieListDataDB, String movieIDListURL) {
         this.context = context;
         this.onDataObtainedListener = onDataObtainedListener;
 
         this.currentMovieListDataDB = currentMovieListDataDB;
-        this.otherMovieListDataDB = otherMovieListDataDB;
+        this.movieListDataDB = movieListDataDB;
         this.movieIDListURL = movieIDListURL;
 
         allDataHasBeenObtained = false;
         movieDB = new MovieDataDB(context);
-    }
+    }*/
 
     public MovieDataGetter(Context context, OnAsyncTaskCompleteListener onAsyncTaskCompleteListener, DataDB<String> currentMovieListDataDB, ArrayList<DataDB<String>> otherMovieListDataDB, String movieIDListURL) {
         this.context = context;
@@ -83,13 +83,18 @@ public class MovieDataGetter implements IMovieDBGetter {
         {
             if(strings == null || !NetworkConnectionChecker.IsConnect(context))
             {
-                if(onDataObtainedListener != null)
+                /*if(onDataObtainedListener != null)
                 {
                     MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
                     movieGetter.execute();
                 }
 
                 else if(onAsyncTaskCompleteListener != null)
+                {
+                    onAsyncTaskCompleteListener.onComplete(true);
+                }*/
+
+                if(onAsyncTaskCompleteListener != null)
                 {
                     onAsyncTaskCompleteListener.onComplete(true);
                 }
@@ -129,13 +134,18 @@ public class MovieDataGetter implements IMovieDBGetter {
 
             else
             {
-                if(onDataObtainedListener != null)
+                /*if(onDataObtainedListener != null)
                 {
                     MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
                     movieGetter.execute();
                 }
 
                 else if(onAsyncTaskCompleteListener != null)
+                {
+                    onAsyncTaskCompleteListener.onComplete(true);
+                }*/
+
+                if(onAsyncTaskCompleteListener != null)
                 {
                     onAsyncTaskCompleteListener.onComplete(true);
                 }
@@ -230,7 +240,7 @@ public class MovieDataGetter implements IMovieDBGetter {
         @Override
         protected void onPostExecute(Void aVoid)
         {
-            if(onDataObtainedListener != null)
+            /*if(onDataObtainedListener != null)
             {
                 MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
                 movieGetter.execute();
@@ -239,44 +249,11 @@ public class MovieDataGetter implements IMovieDBGetter {
             else if(onAsyncTaskCompleteListener != null)
             {
                 onAsyncTaskCompleteListener.onComplete(true);
-            }
-        }
-    }
+            }*/
 
-    private class MovieDatabaseGetter extends AsyncTask<Void, Void, ArrayList<MovieData>>
-    {
-        @Override
-        protected ArrayList<MovieData> doInBackground(Void... params) {
-
-            ArrayList<MovieData> movieDatas = movieDB.getAllData();
-            ArrayList<String> idMovies = currentMovieListDataDB.getAllData();
-
-            ArrayList<MovieData> expectedMovieDatas = new ArrayList<>();
-
-            if(movieDatas != null)
+            if(onAsyncTaskCompleteListener != null)
             {
-                for (String idMovie:idMovies)
-                {
-                    for (MovieData movieData:movieDatas)
-                    {
-                        if(idMovie.equals(movieData.getId()))
-                        {
-                            expectedMovieDatas.add(movieData);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return expectedMovieDatas;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<MovieData> movieDatas)
-        {
-            if(onDataObtainedListener != null)
-            {
-                onDataObtainedListener.onDataObtained(movieDatas);
+                onAsyncTaskCompleteListener.onComplete(true);
             }
         }
     }
@@ -358,6 +335,44 @@ public class MovieDataGetter implements IMovieDBGetter {
         {
             *//*AllDataListReplace.SetDataInDatabaseAsyncTask<Data> setDataInDatabaseAsyncTask = new AllDataListReplace.SetDataInDatabaseAsyncTask(datas, database, onDataObtainedListener);
             setDataInDatabaseAsyncTask.execute();*//*
+        }
+    }*/
+
+            /*private class MovieDatabaseGetter extends AsyncTask<Void, Void, ArrayList<MovieData>>
+    {
+        @Override
+        protected ArrayList<MovieData> doInBackground(Void... params) {
+
+            ArrayList<MovieData> movieDatas = movieDB.getAllData();
+            ArrayList<String> idMovies = currentMovieListDataDB.getAllData();
+
+            ArrayList<MovieData> expectedMovieDatas = new ArrayList<>();
+
+            if(movieDatas != null)
+            {
+                for (String idMovie:idMovies)
+                {
+                    for (MovieData movieData:movieDatas)
+                    {
+                        if(idMovie.equals(movieData.getId()))
+                        {
+                            expectedMovieDatas.add(movieData);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return expectedMovieDatas;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<MovieData> movieDatas)
+        {
+            if(onDataObtainedListener != null)
+            {
+                onDataObtainedListener.onDataObtained(movieDatas);
+            }
         }
     }*/
 

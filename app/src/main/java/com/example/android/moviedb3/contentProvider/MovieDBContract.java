@@ -19,6 +19,7 @@ public class MovieDBContract
     public static final String COMING_SOON_DATA_PATH = "comingSoonData";
     public static final String FAVORITE_DATA_PATH = "favoriteData";
     public static final String WATCHLIST_DATA_PATH = "watchlistData";
+    public static final String PLAN_TO_WATCH_LIST_DATA_PATH = "PlanToWatchListData";
     public static final String REVIEW_DATA_PATH = "reviewData";
     public static final String CAST_DATA_PATH = "castData";
     public static final String CREW_DATA_PATH = "crewData";
@@ -78,6 +79,13 @@ public class MovieDBContract
     {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(WATCHLIST_DATA_PATH).build();
         public static final String TABLE_WATCHLIST_DATA = "WatchlistData";
+        public static final String COLUMN_MOVIE_ID = "MovieId";
+    }
+
+    public static class PlanToWatchlistDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PLAN_TO_WATCH_LIST_DATA_PATH).build();
+        public static final String TABLE_PLAN_TO_WATCH_LIST_DATA = "PlanToWatchlistData";
         public static final String COLUMN_MOVIE_ID = "MovieId";
     }
 
