@@ -3,7 +3,6 @@ package com.example.android.moviedb3.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +22,7 @@ import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRec
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoDataListRecyclerViewAdapter;
 import com.example.android.moviedb3.dataManager.dataGetter.BundleDataGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieDBGetter;
-import com.example.android.moviedb3.dataManager.movieDBGetter.DataInIDListCheckerAsyncTask;
+import com.example.android.moviedb3.dataManager.dataFinderChecker.DataInIDListCheckerAsyncTask;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieInfoDataGetter;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonParsing.CastListJSONParser;
@@ -205,6 +204,13 @@ public class MovieDetailFragment extends Fragment {
         noDataTextView.setVisibility(View.VISIBLE);
     }
 
+    private void ShowNoReviews()
+    {
+        reviewListRecyclerView.setVisibility(View.GONE);
+        noReviewTextView.setVisibility(View.VISIBLE);
+        moreReviewButton.setVisibility(View.GONE);
+    }
+
     private void SetAdditionalMovieDetailRecyclerView(RecyclerView.Adapter adapter, RecyclerView.LayoutManager layoutManager, RecyclerView recyclerView) {
         recyclerView.clearFocus();
 
@@ -338,7 +344,8 @@ public class MovieDetailFragment extends Fragment {
                 }
             }
 
-            ShowNoData();
+            ShowNoReviews();
+            CheckAndShowMovieDetail();
         }
     }
 

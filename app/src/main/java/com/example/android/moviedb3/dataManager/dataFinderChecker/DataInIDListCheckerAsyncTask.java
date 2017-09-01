@@ -1,4 +1,4 @@
-package com.example.android.moviedb3.dataManager.movieDBGetter;
+package com.example.android.moviedb3.dataManager.dataFinderChecker;
 
 import android.os.AsyncTask;
 
