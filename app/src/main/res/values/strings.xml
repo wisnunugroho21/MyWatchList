@@ -36,4 +36,6 @@
     <string name="yours_label">Yours</string>
     <string name="library_label">Library</string>
 
+    <string name="all_genre_label">All Genres</string>
+
 </resources>
