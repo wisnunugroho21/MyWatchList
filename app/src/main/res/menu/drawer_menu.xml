@@ -2,12 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/home_drawer_item_menu"
-            android:icon="@drawable/ic_home_black_24px"
-            android:title="@string/home_label"/>
-
-        <item android:title="@string/collection_label">
+        <item android:title="@string/discover_movie_label">
             <menu>
                 <group android:checkableBehavior="single">
                     <item

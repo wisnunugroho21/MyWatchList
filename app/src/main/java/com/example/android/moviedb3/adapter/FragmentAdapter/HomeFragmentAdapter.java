@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.android.moviedb3.fragment.MovieListFragment;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  * Created by nugroho on 31/08/17.
  */
 
-public class HomeFragmentAdapter extends FragmentPagerAdapter
+public class HomeFragmentAdapter extends FragmentStatePagerAdapter
 {
     Context context;
     ArrayList<MovieListFragment> movieListFragments;

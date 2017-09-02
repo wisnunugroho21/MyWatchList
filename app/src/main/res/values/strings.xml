@@ -43,7 +43,7 @@
     <string name="people_label">People</string>
     <string name="settings_label">Setting</string>
     <string name="feedback_label">Send Feedback</string>
-    <string name="collection_label">Collection</string>
+    <string name="discover_movie_label">Discover Movie</string>
     <string name="setting__feedback_label">Setting and Feedback</string>
 
     <string name="title_activity_test">testActivity</string>
