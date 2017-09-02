@@ -23,20 +23,28 @@
         <activity
             android:name=".activity.MovieListActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.TransparentActionBar"/>
+            android:theme="@style/AppTheme.TransparentActionBar" />
 
         <provider
             android:name=".contentProvider.MovieDBContentProvider"
             android:authorities="com.example.android.moviedb3"
             android:exported="false" />
 
-        <activity android:name=".activity.SplashActivity"
+        <activity
+            android:name=".activity.SplashActivity"
             android:theme="@style/AppTheme.TransparentActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".testActivity"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

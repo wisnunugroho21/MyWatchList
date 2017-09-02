@@ -144,7 +144,7 @@ public class MovieListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tabs_activity_movie_layout);
+        setContentView(R.layout.tabs_activity_app_bar_layout);
 
         MovieListFragment movieListFragment = new MovieListFragment();
         FragmentShifter.InitializeFragment(new DefaultFragmentShifter(this, R.id.movie_list_layout, movieListFragment));

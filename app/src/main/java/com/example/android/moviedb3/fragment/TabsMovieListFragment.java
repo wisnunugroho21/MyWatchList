@@ -1,14 +1,20 @@
 package com.example.android.moviedb3.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -31,11 +37,13 @@ public class TabsMovieListFragment extends Fragment
     Toolbar toolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
+    DrawerLayout drawer;
+    NavigationView navigationView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.tabs_activity_movie_layout, container, false);
+        View view = inflater.inflate(R.layout.tabs_activity_layout, container, false);
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_movie_list);
         SetActionBar();
@@ -48,6 +56,11 @@ public class TabsMovieListFragment extends Fragment
 
         tabLayout.setScrollPosition(selectedPageIndex, 0f, true);
         viewPager.setCurrentItem(selectedPageIndex);
+
+        drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) view.findViewById(R.id.nav_view);
+
+        SetNavigationDrawer();
 
         return view;
     }
@@ -83,5 +96,25 @@ public class TabsMovieListFragment extends Fragment
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setTitle(fragmentTitle);
+    }
+
+    private void SetNavigationDrawer()
+    {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(new TabsMovieActionBarDrawer());
+    }
+
+    private class TabsMovieActionBarDrawer implements NavigationView.OnNavigationItemSelectedListener
+    {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item)
+        {
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
     }
 }
