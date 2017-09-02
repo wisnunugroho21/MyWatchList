@@ -6,23 +6,17 @@
         android:id="@+id/home_movie_list_item_menu"
         android:icon="@drawable/ic_home_white_24px"
         android:title="@string/home_label"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/top_list_movie_list_item_menu"
         android:icon="@drawable/ic_trending_up_white_24px"
         android:title="@string/top_list_label"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/library_movie_list_item_menu"
-        android:icon="@drawable/ic_library_books_white_24px"
-        android:title="@string/library_label"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/yours_movie_list_item_menu"
-        android:icon="@drawable/ic_people_white_24px"
-        android:title="@string/yours_label"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_person_white_24px"
+        android:title="@string/mylist_label"
+        app:showAsAction="always" />
 </menu>

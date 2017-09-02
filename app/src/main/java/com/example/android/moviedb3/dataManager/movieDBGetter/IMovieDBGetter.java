@@ -6,5 +6,5 @@ package com.example.android.moviedb3.dataManager.movieDBGetter;
 
 public interface IMovieDBGetter
 {
-    void Execute();
+    void getData();
 }

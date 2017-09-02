@@ -43,7 +43,7 @@ public class MovieListActivity extends AppCompatActivity
 
                 tabsMovieListFragment.setFragmentPagerAdapterIndex(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX);
                 tabsMovieListFragment.setSelectedPageIndex(0);
-                tabsMovieListFragment.setFragmentTitle(getString(R.string.yours_label));
+                tabsMovieListFragment.setFragmentTitle(getString(R.string.mylist_label));
 
                 FragmentShifter.InitializeFragment(new DefaultFragmentShifter(MovieListActivity.this.getSupportFragmentManager(), R.id.main_bottom_navigation_movie_list_layout, tabsMovieListFragment));
                 break;
@@ -54,7 +54,7 @@ public class MovieListActivity extends AppCompatActivity
 
                 tabsMovieListFragment.setFragmentPagerAdapterIndex(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX);
                 tabsMovieListFragment.setSelectedPageIndex(2);
-                tabsMovieListFragment.setFragmentTitle(getString(R.string.yours_label));
+                tabsMovieListFragment.setFragmentTitle(getString(R.string.mylist_label));
 
                 FragmentShifter.InitializeFragment(new DefaultFragmentShifter(MovieListActivity.this.getSupportFragmentManager(), R.id.main_bottom_navigation_movie_list_layout, tabsMovieListFragment));
                 break;
@@ -65,7 +65,7 @@ public class MovieListActivity extends AppCompatActivity
 
                 tabsMovieListFragment.setFragmentPagerAdapterIndex(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX);
                 tabsMovieListFragment.setSelectedPageIndex(1);
-                tabsMovieListFragment.setFragmentTitle(getString(R.string.yours_label));
+                tabsMovieListFragment.setFragmentTitle(getString(R.string.mylist_label));
 
                 FragmentShifter.InitializeFragment(new DefaultFragmentShifter(MovieListActivity.this.getSupportFragmentManager(), R.id.main_bottom_navigation_movie_list_layout, tabsMovieListFragment));
                 break;
@@ -125,13 +125,13 @@ public class MovieListActivity extends AppCompatActivity
                     tabsMovieListFragment = new TabsMovieListFragment();
 
                     tabsMovieListFragment.setFragmentPagerAdapterIndex(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX);
-                    tabsMovieListFragment.setFragmentTitle(getString(R.string.yours_label));
+                    tabsMovieListFragment.setFragmentTitle(getString(R.string.mylist_label));
 
                     FragmentShifter.InitializeFragment(new DefaultFragmentShifter(MovieListActivity.this.getSupportFragmentManager(), R.id.main_bottom_navigation_movie_list_layout, tabsMovieListFragment));
                     return true;
 
-                case R.id.library_movie_list_item_menu :
-                    return true;
+                /*case R.id.library_movie_list_item_menu :
+                    return true;*/
 
                 default:
                     return true;

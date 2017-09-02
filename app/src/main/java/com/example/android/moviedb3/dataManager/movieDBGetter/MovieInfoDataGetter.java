@@ -38,7 +38,7 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
         this.context = context;
     }
 
-    public void Execute()
+    public void getData()
     {
         NetworkDataGetter.GetData(new NetworkDataGetterSyncTask<ArrayList<Data>>(jsonParser, new MovieInfoObtainedListener()), URL);
     }

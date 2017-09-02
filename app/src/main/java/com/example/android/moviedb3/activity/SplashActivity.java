@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
+import com.example.android.moviedb3.dataManager.movieDBGetter.DBGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieDataGetter;
 import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
@@ -60,7 +61,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        stillLoadingTextView = (TextView) findViewById(R.id.txt_still_loading_splash_activity);
+        stillLoadingTextView = (TextView) findViewById(R.id.txt_app_title_splash_activity);
         splashActivityLayout = (ConstraintLayout) findViewById(R.id.splash_activity_layout);
 
         TransitionManager.beginDelayedTransition(splashActivityLayout);
@@ -79,34 +80,30 @@ public class SplashActivity extends AppCompatActivity {
 
     private void GetNowShowingMovieList()
     {
-        MovieDataGetter movieDataGetter = new MovieDataGetter(this,
+        DBGetter.GetData(new MovieDataGetter(this,
                 new MainMovieListObtainedListener(), new NowShowingDataDB(this),
-                getInitialOtherNowShowingMovieListDataDB(), MovieDataURL.GetNowShowingURL());
-        movieDataGetter.Execute();
+                getInitialOtherNowShowingMovieListDataDB(), MovieDataURL.GetNowShowingURL()));
     }
 
     private void GetComingSoonMovieList()
     {
-        MovieDataGetter movieDataGetter = new MovieDataGetter(this,
+        DBGetter.GetData(new MovieDataGetter(this,
                 new MainMovieListObtainedListener(), new ComingSoonDataDB(this),
-                getInitialOtherComingSoonMovieListDataDB(), MovieDataURL.GetComingSoonURL());
-        movieDataGetter.Execute();
+                getInitialOtherComingSoonMovieListDataDB(), MovieDataURL.GetComingSoonURL()));
     }
 
     private void GetPopularMovieList()
     {
-        MovieDataGetter movieDataGetter = new MovieDataGetter(this,
+        DBGetter.GetData(new MovieDataGetter(this,
                 new MainMovieListObtainedListener(), new PopularDataDB(this),
-                getInitialOtherPopularMovieListDataDB(), MovieDataURL.GetPopularURL());
-        movieDataGetter.Execute();
+                getInitialOtherPopularMovieListDataDB(), MovieDataURL.GetPopularURL()));
     }
 
     private void GetTopRateMovieList()
     {
-        MovieDataGetter movieDataGetter = new MovieDataGetter(this,
+        DBGetter.GetData(new MovieDataGetter(this,
                 new MainMovieListObtainedListener(), new TopRateDataDB(this),
-                getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL());
-        movieDataGetter.Execute();
+                getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL()));
     }
 
     private ArrayList<DataDB<String>> getInitialOtherNowShowingMovieListDataDB()

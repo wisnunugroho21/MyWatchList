@@ -38,7 +38,6 @@ import java.util.ArrayList;
 public class MovieDataGetter implements IMovieDBGetter {
 
     Context context;
-//    OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener;
     OnAsyncTaskCompleteListener onAsyncTaskCompleteListener;
 
     DataDB<String> currentMovieListDataDB;
@@ -47,18 +46,6 @@ public class MovieDataGetter implements IMovieDBGetter {
 
     boolean allDataHasBeenObtained;
     DataDB<MovieData> movieDB;
-
-    /*public MovieDataGetter(Context context, OnDataObtainedListener<ArrayList<MovieData>> onDataObtainedListener, DataDB<String> currentMovieListDataDB, ArrayList<DataDB<String>> movieListDataDB, String movieIDListURL) {
-        this.context = context;
-        this.onDataObtainedListener = onDataObtainedListener;
-
-        this.currentMovieListDataDB = currentMovieListDataDB;
-        this.movieListDataDB = movieListDataDB;
-        this.movieIDListURL = movieIDListURL;
-
-        allDataHasBeenObtained = false;
-        movieDB = new MovieDataDB(context);
-    }*/
 
     public MovieDataGetter(Context context, OnAsyncTaskCompleteListener onAsyncTaskCompleteListener, DataDB<String> currentMovieListDataDB, ArrayList<DataDB<String>> otherMovieListDataDB, String movieIDListURL) {
         this.context = context;
@@ -72,7 +59,7 @@ public class MovieDataGetter implements IMovieDBGetter {
         movieDB = new MovieDataDB(context);
     }
 
-    public void Execute()
+    public void getData()
     {
         NetworkDataGetter.GetData(new NetworkDataGetterSyncTask<ArrayList<String>>(new MovieIDListJSONParser(), new OnMovieIDListObtainedListener()), movieIDListURL);
     }
@@ -83,17 +70,6 @@ public class MovieDataGetter implements IMovieDBGetter {
         {
             if(strings == null || !NetworkConnectionChecker.IsConnect(context))
             {
-                /*if(onDataObtainedListener != null)
-                {
-                    MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
-                    movieGetter.execute();
-                }
-
-                else if(onAsyncTaskCompleteListener != null)
-                {
-                    onAsyncTaskCompleteListener.onComplete(true);
-                }*/
-
                 if(onAsyncTaskCompleteListener != null)
                 {
                     onAsyncTaskCompleteListener.onComplete(true);
@@ -134,17 +110,6 @@ public class MovieDataGetter implements IMovieDBGetter {
 
             else
             {
-                /*if(onDataObtainedListener != null)
-                {
-                    MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
-                    movieGetter.execute();
-                }
-
-                else if(onAsyncTaskCompleteListener != null)
-                {
-                    onAsyncTaskCompleteListener.onComplete(true);
-                }*/
-
                 if(onAsyncTaskCompleteListener != null)
                 {
                     onAsyncTaskCompleteListener.onComplete(true);
@@ -240,17 +205,6 @@ public class MovieDataGetter implements IMovieDBGetter {
         @Override
         protected void onPostExecute(Void aVoid)
         {
-            /*if(onDataObtainedListener != null)
-            {
-                MovieDatabaseGetter movieGetter = new MovieDatabaseGetter();
-                movieGetter.execute();
-            }
-
-            else if(onAsyncTaskCompleteListener != null)
-            {
-                onAsyncTaskCompleteListener.onComplete(true);
-            }*/
-
             if(onAsyncTaskCompleteListener != null)
             {
                 onAsyncTaskCompleteListener.onComplete(true);

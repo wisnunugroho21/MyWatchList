@@ -125,6 +125,13 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 ");";
 
         db.execSQL(SQLITE_CREATE_VIDEO_TABLE);
+
+        final String SQLITE_CREATE_GENRE_TABLE = "CREATE TABLE " + MovieDBContract.GenreDataEntry.TABLE_GENRE_DATA + " (" +
+                MovieDBContract.GenreDataEntry._ID + " TEXT, " +
+                MovieDBContract.GenreDataEntry.COLUMN_GENRE_NAME + " TEXT" +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_GENRE_TABLE);
     }
 
     @Override

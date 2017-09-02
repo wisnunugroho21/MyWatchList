@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by nugroho on 31/08/17.
  */
 
-public class DatabaseMovieDBGetter extends AsyncTask<Void, Void, ArrayList<MovieData>>
+public class DatabaseMovieDBGetter implements IMovieDBGetter
 {
     DataDB<MovieData> movieDB;
     DataDB<String> movieListDB;
@@ -27,43 +27,53 @@ public class DatabaseMovieDBGetter extends AsyncTask<Void, Void, ArrayList<Movie
     }
 
     @Override
-    protected ArrayList<MovieData> doInBackground(Void... params) {
+    public void getData()
+    {
+        DatabaseMovieDBGetterAsyncTask databaseMovieDBGetterAsyncTask = new DatabaseMovieDBGetterAsyncTask();
+        databaseMovieDBGetterAsyncTask.execute();
+    }
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private class DatabaseMovieDBGetterAsyncTask extends AsyncTask<Void, Void, ArrayList<MovieData>>
+    {
+        @Override
+        protected ArrayList<MovieData> doInBackground(Void... params) {
 
-        ArrayList<MovieData> movieDatas = movieDB.getAllData();
-        ArrayList<String> idMovies = movieListDB.getAllData();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        ArrayList<MovieData> expectedMovieDatas = new ArrayList<>();
+            ArrayList<MovieData> movieDatas = movieDB.getAllData();
+            ArrayList<String> idMovies = movieListDB.getAllData();
 
-        if(movieDatas != null && idMovies != null)
-        {
-            for (String idMovie:idMovies)
+            ArrayList<MovieData> expectedMovieDatas = new ArrayList<>();
+
+            if(movieDatas != null && idMovies != null)
             {
-                for (MovieData movieData:movieDatas)
+                for (String idMovie:idMovies)
                 {
-                    if(idMovie.equals(movieData.getId()))
+                    for (MovieData movieData:movieDatas)
                     {
-                        expectedMovieDatas.add(movieData);
-                        break;
+                        if(idMovie.equals(movieData.getId()))
+                        {
+                            expectedMovieDatas.add(movieData);
+                            break;
+                        }
                     }
                 }
             }
+
+            return expectedMovieDatas;
         }
 
-        return expectedMovieDatas;
-    }
-
-    @Override
-    protected void onPostExecute(ArrayList<MovieData> movieDatas)
-    {
-        if(onDataObtainedListener != null)
+        @Override
+        protected void onPostExecute(ArrayList<MovieData> movieDatas)
         {
-            onDataObtainedListener.onDataObtained(movieDatas);
+            if(onDataObtainedListener != null)
+            {
+                onDataObtainedListener.onDataObtained(movieDatas);
+            }
         }
     }
 }

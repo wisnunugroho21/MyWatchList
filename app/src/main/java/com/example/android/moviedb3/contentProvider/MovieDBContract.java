@@ -3,6 +3,8 @@ package com.example.android.moviedb3.contentProvider;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.example.android.moviedb3.movieDB.BaseData;
+
 /**
  * Created by nugroho on 26/07/17.
  */
@@ -24,6 +26,7 @@ public class MovieDBContract
     public static final String CAST_DATA_PATH = "castData";
     public static final String CREW_DATA_PATH = "crewData";
     public static final String VIDEO_DATA_PATH = "videoData";
+    public static final String GENRE_DATA_PATH = "genreData";
 
     public static final class MovieDataEntry implements BaseColumns
     {
@@ -123,6 +126,13 @@ public class MovieDBContract
         public static final String COLUMN_VIDEO_URL = "VideoURL";
         public static final String COLUMN_VIDEO_THUMBNAIL_URL = "VideoThumbnailURL";
         public static final String COLUMN_MOVIE_ID = "MovieId";
+    }
+
+    public static class GenreDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(GENRE_DATA_PATH).build();
+        public static final String TABLE_GENRE_DATA = "GenreData";
+        public static final String COLUMN_GENRE_NAME = "GenreName";
     }
 
 }

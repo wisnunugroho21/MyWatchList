@@ -20,6 +20,7 @@ import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MainMovieListRecyclerViewAdapter;
 import com.example.android.moviedb3.dataManager.LoadingDataAsyncTask;
 import com.example.android.moviedb3.dataManager.dataGetter.BundleDataGetter;
+import com.example.android.moviedb3.dataManager.movieDBGetter.DBGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.DatabaseMovieDBGetter;
 import com.example.android.moviedb3.dataManager.movieDBGetter.MovieDataGetter;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
@@ -98,8 +99,7 @@ public class MovieListFragment extends Fragment
     {
         ShowLoadingData();
 
-        DatabaseMovieDBGetter databaseMovieDBGetter = new DatabaseMovieDBGetter(movieListDB, getContext(), new MainMovieListObtainedListener());
-        databaseMovieDBGetter.execute();
+        DBGetter.GetData(new DatabaseMovieDBGetter(movieListDB, getContext(), new MainMovieListObtainedListener()));
     }
 
     private void ShowNoDataLayout()
@@ -219,7 +219,7 @@ public class MovieListFragment extends Fragment
 
         MovieDataGetter movieDataGetter = new MovieDataGetter(getContext(),
                 new MainMovieListObtainedListener(), currentMovieIdDB, othersMovieIdDB, movieIDURL);
-        movieDataGetter.Execute();
+        movieDataGetter.getData();
     }*/
 
 

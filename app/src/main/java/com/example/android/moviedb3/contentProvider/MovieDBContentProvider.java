@@ -53,6 +53,9 @@ public class MovieDBContentProvider extends ContentProvider
     public static final int VIDEO = 900;
     public static final int VIDEO_ID = 901;
 
+    public static final int GENRE = 1300;
+    public static final int GENRE_ID = 1301;
+
     private MovieDBDatabaseHelper movieDBDatabaseHelper;
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
@@ -95,6 +98,9 @@ public class MovieDBContentProvider extends ContentProvider
 
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.VIDEO_DATA_PATH, VIDEO);
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.VIDEO_DATA_PATH + "/#", VIDEO_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_DATA_PATH, GENRE);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_DATA_PATH + "/#", GENRE_ID);
 
         return uriMatcher_;
     }
@@ -233,6 +239,16 @@ public class MovieDBContentProvider extends ContentProvider
                                 null,
                                 null, sortOrder);
 
+                break;
+
+            case GENRE :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.GenreDataEntry.TABLE_GENRE_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
                 break;
 
             default:
@@ -465,6 +481,23 @@ public class MovieDBContentProvider extends ContentProvider
                 }
                 break;
 
+            case GENRE :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.GenreDataEntry.TABLE_GENRE_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.GenreDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -617,6 +650,17 @@ public class MovieDBContentProvider extends ContentProvider
                         MovieDBContract.VideoDataEntry._ID + "=?", new String[]{ idData });
                 break;
 
+            case GENRE :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreDataEntry.TABLE_GENRE_DATA,
+                        "1", null);
+                break;
+
+            case GENRE_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreDataEntry.TABLE_GENRE_DATA,
+                        MovieDBContract.GenreDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -709,6 +753,12 @@ public class MovieDBContentProvider extends ContentProvider
                 idData = uri.getPathSegments().get(1);
                 dataUpdated = sqliteDatabase.update(MovieDBContract.VideoDataEntry.TABLE_VIDEO_DATA,
                         values, MovieDBContract.VideoDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case GENRE_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.GenreDataEntry.TABLE_GENRE_DATA,
+                        values, MovieDBContract.GenreDataEntry._ID + "=?", new String[]{ idData });
                 break;
 
             default:
