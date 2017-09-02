@@ -55,6 +55,11 @@ public class MovieDataURL {
         return "https://api.themoviedb.org/3/movie/" + idMovie + "?api_key=" + API_KEY;
     }
 
+    public static String GetGenreListURL()
+    {
+        return "https://api.themoviedb.org/3/genre/movie/list?api_key=" + API_KEY;
+    }
+
 
 
 }

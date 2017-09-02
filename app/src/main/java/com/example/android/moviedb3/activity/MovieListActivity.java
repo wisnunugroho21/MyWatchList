@@ -17,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.android.moviedb3.R;
+import com.example.android.moviedb3.activityShifter.ActivityLauncher;
+import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
 import com.example.android.moviedb3.adapter.FragmentAdapter.HomeFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.TopListFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.YoursFragmentAdapter;
@@ -81,6 +83,16 @@ public class MovieListActivity extends AppCompatActivity
                 SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
                         MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -162,6 +174,13 @@ public class MovieListActivity extends AppCompatActivity
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item)
         {
+            switch (item.getItemId())
+            {
+                case R.id.genre_drawer_item_menu :
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, MovieListActivity.this));
+                    break;
+            }
+
             drawer.closeDrawer(GravityCompat.START);
             return true;
         }

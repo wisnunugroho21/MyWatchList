@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.moviedb3.R;
+import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
+import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.movieDB.GenreData;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 public class GenreDataListRecyclerViewAdapter extends RecyclerView.Adapter<GenreDataListRecyclerViewHolder>
 {
     ArrayList<GenreData> genreDataArrayList;
+    OnDataChooseListener<GenreData> onDataChooseListener;
 
     public GenreDataListRecyclerViewAdapter(ArrayList<GenreData> genreDataArrayList)
     {
@@ -27,7 +30,7 @@ public class GenreDataListRecyclerViewAdapter extends RecyclerView.Adapter<Genre
     public GenreDataListRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.genre_item_list, parent, false);
-        return new GenreDataListRecyclerViewHolder(view);
+        return new GenreDataListRecyclerViewHolder(view, onDataChooseListener);
     }
 
     @Override
