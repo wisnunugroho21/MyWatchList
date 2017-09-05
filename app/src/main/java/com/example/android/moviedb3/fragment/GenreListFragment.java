@@ -1,5 +1,6 @@
 package com.example.android.moviedb3.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,11 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.moviedb3.R;
+import com.example.android.moviedb3.activity.GenreMovieListActivity;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.GenreDataListRecyclerViewAdapter;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonParsing.GenreListJSONParser;
 import com.example.android.moviedb3.movieDB.GenreData;
+import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterSyncTask;
@@ -75,7 +78,7 @@ public class GenreListFragment extends Fragment
 
     private void SetGenreRecyclerView(ArrayList<GenreData> genreDataArrayList)
     {
-        genreListRecyclerView.setAdapter(new GenreDataListRecyclerViewAdapter(genreDataArrayList));
+        genreListRecyclerView.setAdapter(new GenreDataListRecyclerViewAdapter(genreDataArrayList, new GenreChoosedListener()));
         genreListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         genreListRecyclerView.setHasFixedSize(true);
     }
@@ -104,9 +107,9 @@ public class GenreListFragment extends Fragment
          @Override
          public void OnDataChoose(GenreData genreData)
          {
-
+             Intent intent = new Intent(getContext(), GenreMovieListActivity.class);
+             intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.GENRE_PERSISTANCE_KEY, genreData);
+             startActivity(intent);
          }
      }
-
-
 }

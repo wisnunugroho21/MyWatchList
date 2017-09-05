@@ -3,28 +3,48 @@ package com.example.android.moviedb3.movieDataManager;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.android.moviedb3.dataManager_desperate.dataGetter.NetworkDataGetter;
-import com.example.android.moviedb3.dataManager_desperate.dataGetter.NetworkDataGetterSyncTask;
-import com.example.android.moviedb3.dataManager_desperate.dataReplace.AllDataListReplace;
 import com.example.android.moviedb3.dataManager_desperate.dataReplace.ReplaceData;
+import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonNetworkConnection.NetworkConnectionChecker;
 import com.example.android.moviedb3.jsonParsing.GenreListJSONParser;
+import com.example.android.moviedb3.localDatabase.CastDataDB;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
+import com.example.android.moviedb3.localDatabase.CrewDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
 import com.example.android.moviedb3.localDatabase.GenreDataDB;
+import com.example.android.moviedb3.localDatabase.GenreMoviePopularDB;
+import com.example.android.moviedb3.localDatabase.GenreMovieTopRateDB;
+import com.example.android.moviedb3.localDatabase.MovieDataDB;
 import com.example.android.moviedb3.localDatabase.NowShowingDataDB;
 import com.example.android.moviedb3.localDatabase.PlanToWatchDataDB;
 import com.example.android.moviedb3.localDatabase.PopularDataDB;
+import com.example.android.moviedb3.localDatabase.ReviewDataDB;
 import com.example.android.moviedb3.localDatabase.TopRateDataDB;
+import com.example.android.moviedb3.localDatabase.VideoDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
+import com.example.android.moviedb3.movieDB.CastData;
+import com.example.android.moviedb3.movieDB.CrewData;
 import com.example.android.moviedb3.movieDB.GenreData;
 import com.example.android.moviedb3.movieDB.GenreMovieData;
+import com.example.android.moviedb3.movieDB.MovieData;
+import com.example.android.moviedb3.movieDB.ReviewData;
+import com.example.android.moviedb3.movieDB.VideoData;
 import com.example.android.moviedb3.supportDataManager.dataComparision.BaseDataCompare;
+import com.example.android.moviedb3.supportDataManager.dataComparision.DepedencyDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataComparision.IDCompare;
+import com.example.android.moviedb3.supportDataManager.dataComparision.IntermedieteDataCompare;
+import com.example.android.moviedb3.supportDataManager.dataDelete.DataDelete;
+import com.example.android.moviedb3.supportDataManager.dataDelete.DataListDelete;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterSyncTask;
+import com.example.android.moviedb3.supportDataManager.dataReplace.AllDataListReplace;
+import com.example.android.moviedb3.supportDataManager.dataReplace.DataReplace;
 import com.example.android.moviedb3.supportDataManager.noDataFinder.DefaultNoDataFinder;
 import com.example.android.moviedb3.supportDataManager.noDataFinder.NoDataFinder;
+import com.example.android.moviedb3.supportDataManager.sameDataFinder.DefaultSameDataFinder;
+import com.example.android.moviedb3.supportDataManager.sameDataFinder.SameDataFinder;
 
 import java.util.ArrayList;
 
@@ -36,7 +56,14 @@ public class GenreDataGetter implements IMovieDBGetter
 {
     Context context;
     String genreURL;
-    OnDataObtainedListener<ArrayList<GenreData>> onDataObtainedListener;
+    OnAsyncTaskCompleteListener onAsyncTaskCompleteListener;
+
+    public GenreDataGetter(Context context, String genreURL, OnAsyncTaskCompleteListener onAsyncTaskCompleteListener)
+    {
+        this.context = context;
+        this.genreURL = genreURL;
+        this.onAsyncTaskCompleteListener = onAsyncTaskCompleteListener;
+    }
 
     @Override
     public void getData()
@@ -57,8 +84,10 @@ public class GenreDataGetter implements IMovieDBGetter
 
             else
             {
-                DatabaseGenreGettereAsyncTask databaseGetter = new DatabaseGenreGettereAsyncTask();
-                databaseGetter.execute();
+                if(onAsyncTaskCompleteListener != null)
+                {
+                    onAsyncTaskCompleteListener.onComplete(true);
+                }
             }
         }
     }
@@ -76,137 +105,84 @@ public class GenreDataGetter implements IMovieDBGetter
         protected Void doInBackground(Void... params)
         {
             DataDB<GenreData> genreDataDataDB = new GenreDataDB(context);
-            ArrayList<String> idNetworkGenreArrayList = new ArrayList<>();
 
+            ArrayList<String> idNetworkGenreArrayList = new ArrayList<>();
             for (GenreData genreData:networkGenreDataArrayList)
             {
                 idNetworkGenreArrayList.add(genreData.getId());
             }
 
-            ArrayList<String> differentGenreIDList = NoDataFinder.FindNotSameID
+            ArrayList<GenreData> deletedGenreList = NoDataFinder.FindNotSameData
                     (new DefaultNoDataFinder<GenreData>(new BaseDataCompare<GenreData>(), genreDataDataDB.getAllData(), idNetworkGenreArrayList));
 
-            ArrayList<GenreMovieData> unexpectedGenreMovieList = new ArrayList<>();
-
-            /*for (String differentGenreID:differentGenreIDList)
+            if(deletedGenreList != null && !deletedGenreList.isEmpty())
             {
-                *//*ArrayList<GenreMovieData> unexpectedGenreMoviePopularList = DataCheck.CheckData(
-                        new IntermedietDataListFinder<GenreMovieData>
-                                (differentGenreID, IntermedietDataListFinder.CHECK_SECOND_ID, new GenreMoviePopularDB(context)));
+                ArrayList<GenreMovieData> deletedGenreMovieDataList = new ArrayList<>();
 
-                ArrayList<GenreMovieData> unexpectedGenreMovieTopRateList = DataCheck.CheckData(
-                        new IntermedietDataListFinder<GenreMovieData>
-                                (differentGenreID, IntermedietDataListFinder.CHECK_SECOND_ID, new GenreMovieTopRateDB(context)));*//*
-
-                *//*if(unexpectedGenreMoviePopularList == null || unexpectedGenreMoviePopularList.isEmpty()
-                        || unexpectedGenreMovieTopRateList == null || unexpectedGenreMovieTopRateList.isEmpty())
+                ArrayList<String> idDeletedGenreList = new ArrayList<>();
+                for (GenreData deletedGenre:deletedGenreList)
                 {
-                    break;
+                    idDeletedGenreList.add(deletedGenre.getId());
                 }
 
-                unexpectedGenreMovieList.addAll(unexpectedGenreMoviePopularList);
-                unexpectedGenreMovieList.addAll(unexpectedGenreMovieTopRateList);*//*
+                DataDB<GenreMovieData> genrePopularMovieDataDB = new GenreMoviePopularDB(context);
+                ArrayList<GenreMovieData> deletedGenrePopularMovieDataList = SameDataFinder.getDataSameList
+                        (new DefaultSameDataFinder<GenreMovieData>(new IntermedieteDataCompare<GenreMovieData>
+                                (IntermedieteDataCompare.CHECK_SECOND_ID), genrePopularMovieDataDB.getAllData(), idDeletedGenreList));
 
-                DeleteMovieInList(unexpectedGenreMovieList);
-                ReplaceALlGenre(networkGenreDataArrayList);
+                DataDB<GenreMovieData> genreTopRateMovieDataDB = new GenreMovieTopRateDB(context);
+                ArrayList<GenreMovieData> deletedGenreTopRateMovieDataList = SameDataFinder.getDataSameList
+                        (new DefaultSameDataFinder<GenreMovieData>(new IntermedieteDataCompare<GenreMovieData>
+                                (IntermedieteDataCompare.CHECK_SECOND_ID), genreTopRateMovieDataDB.getAllData(), idDeletedGenreList));
+
+                deletedGenreMovieDataList.addAll(deletedGenrePopularMovieDataList);
+
+                for(GenreMovieData genreMovieData:deletedGenreMovieDataList)
+                {
+                    for(GenreMovieData toprateGenreMovie:deletedGenreTopRateMovieDataList)
+                    {
+                        if(!genreMovieData.getIdMovie().equals(toprateGenreMovie.getIdMovie()))
+                        {
+                            deletedGenreMovieDataList.add(toprateGenreMovie);
+                        }
+                    }
+                }
+
+                for(GenreMovieData genreMovieData:deletedGenreMovieDataList)
+                {
+                    String idMovie = genreMovieData.getIdMovie();
+
+                    boolean isMovieAvaiable = DatabaseMovieIsAvailable.isAvailableFromGenreList(idMovie, genreMovieData.getIdGenre(), context);
+
+                    if (!isMovieAvaiable)
+                    {
+                        DataDB<MovieData> movieDB = new MovieDataDB(context);
+                        movieDB.removeData(idMovie);
+
+                        DataDelete.Delete(new DataListDelete<ReviewData>
+                                (new DepedencyDataCompare<ReviewData>(), new ReviewDataDB(context), idMovie));
+                        DataDelete.Delete(new DataListDelete<VideoData>
+                                (new DepedencyDataCompare<VideoData>(), new VideoDataDB(context), idMovie));
+                        DataDelete.Delete(new DataListDelete<CastData>
+                                (new DepedencyDataCompare<CastData>(), new CastDataDB(context), idMovie));
+                        DataDelete.Delete(new DataListDelete<CrewData>
+                                (new DepedencyDataCompare<CrewData>(), new CrewDataDB(context), idMovie));
+                    }
+                }
             }
-*/
+
+            DataReplace.ReplaceData(new AllDataListReplace<GenreData>(new GenreDataDB(context), networkGenreDataArrayList));
+
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid)
         {
-            DatabaseGenreGettereAsyncTask databaseGetter = new DatabaseGenreGettereAsyncTask();
-            databaseGetter.execute();
-        }
-
-        private void DeleteMovieInList(ArrayList<GenreMovieData> unexpectedGenreMovieList)
-        {
-            for (GenreMovieData genreMovieData : unexpectedGenreMovieList)
+            if(onAsyncTaskCompleteListener != null)
             {
-               /* String idMovie = genreMovieData.getIdMovie();
-                boolean isMovieAvaiable = false;
-
-                for (DataDB<String> dataDB : getInitialOtherMovieListDataDB())
-                {
-                    if (DataCheck.CheckData(new SameID_IDListCheck(dataDB, idMovie)))
-                    {
-                        isMovieAvaiable = true;
-                        break;
-                    }
-                }
-
-                if (!isMovieAvaiable)
-                {
-                    DataDB<MovieData> movieDB = new MovieDataDB(context);
-                    movieDB.removeData(idMovie);
-
-                    ArrayList<ReviewData> reviewDatas = DataCheck.CheckData(new DependencyDataListFinder<ReviewData>(new ReviewDataDB(context), idMovie));
-                    DataDB<ReviewData> reviewDataDB = new ReviewDataDB(context);
-                    for (ReviewData reviewData : reviewDatas)
-                    {
-                        reviewDataDB.removeData(reviewData.getId());
-                    }
-
-                    ArrayList<VideoData> videoDatas = DataCheck.CheckData(new DependencyDataListFinder<VideoData>(new VideoDataDB(context), idMovie));
-                    DataDB<VideoData> videoDataDB = new VideoDataDB(context);
-                    for (VideoData videoData : videoDatas)
-                    {
-                        videoDataDB.removeData(videoData.getId());
-                    }
-
-                    ArrayList<CastData> castDatas = DataCheck.CheckData(new DependencyDataListFinder<CastData>(new CastDataDB(context), idMovie));
-                    DataDB<CastData> castDataDB = new CastDataDB(context);
-                    for (CastData castData : castDatas)
-                    {
-                        castDataDB.removeData(castData.getId());
-                    }
-
-                    ArrayList<CrewData> crewDatas = DataCheck.CheckData(new DependencyDataListFinder<CrewData>(new CrewDataDB(context), idMovie));
-                    DataDB<CrewData> crewDataDB = new CrewDataDB(context);
-                    for (CrewData crewData : crewDatas)
-                    {
-                        crewDataDB.removeData(crewData.getId());
-                    }
-                }*/
+                onAsyncTaskCompleteListener.onComplete(true);
             }
-        }
-
-        private void ReplaceALlGenre(ArrayList<GenreData> genreDataArrayList)
-        {
-            ReplaceData.Replace(new AllDataListReplace<GenreData>(genreDataArrayList, new GenreDataDB(context)));
-        }
-
-        private ArrayList<DataDB<String>> getInitialOtherMovieListDataDB()
-        {
-            ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
-
-            dataDBArrayList.add(new NowShowingDataDB(context));
-            dataDBArrayList.add(new ComingSoonDataDB(context));
-            dataDBArrayList.add(new PopularDataDB(context));
-            dataDBArrayList.add(new TopRateDataDB(context));
-            dataDBArrayList.add(new FavoriteDataDB(context));
-            dataDBArrayList.add(new WatchlistDataDB(context));
-            dataDBArrayList.add(new PlanToWatchDataDB(context));
-
-            return dataDBArrayList;
-        }
-    }
-
-    public class DatabaseGenreGettereAsyncTask extends AsyncTask<Void, Void, ArrayList<GenreData>>
-    {
-        @Override
-        protected ArrayList<GenreData> doInBackground(Void... params)
-        {
-            DataDB<GenreData> dataDB = new GenreDataDB(context);
-            return dataDB.getAllData();
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<GenreData> genreDataArrayList)
-        {
-            onDataObtainedListener.onDataObtained(genreDataArrayList);
         }
     }
 }

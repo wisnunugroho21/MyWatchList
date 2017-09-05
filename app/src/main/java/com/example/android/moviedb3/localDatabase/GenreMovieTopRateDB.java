@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by nugroho on 03/09/17.
  */
 
-/*
+
 public class GenreMovieTopRateDB extends DataDB<GenreMovieData>
 {
     public GenreMovieTopRateDB(Context context) {
@@ -43,7 +43,7 @@ public class GenreMovieTopRateDB extends DataDB<GenreMovieData>
             String genreID = cursor.getString(cursor.getColumnIndex(MovieDBContract.GenreMovieTopRateEntry.COLUMN_GENRE_ID));
             String movieID = cursor.getString(cursor.getColumnIndex(MovieDBContract.GenreMovieTopRateEntry.COLUMN_MOVIE_ID));
 
-            GenreMovieData genreMovieData = new GenreMovieData(id, genreID, movieID);
+            GenreMovieData genreMovieData = new GenreMovieData(id, movieID, genreID);
             genreMovieDataArrayList.add(genreMovieData);
 
         } while (cursor.moveToNext());
@@ -78,4 +78,4 @@ public class GenreMovieTopRateDB extends DataDB<GenreMovieData>
         context.getContentResolver().delete(uri, null, null);
     }
 }
-*/
+

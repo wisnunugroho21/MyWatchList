@@ -16,13 +16,20 @@ import com.example.android.moviedb3.activity.MovieDetailActivity;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MainMovieListRecyclerViewAdapter;
+import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.localDatabase.DataDB;
+import com.example.android.moviedb3.movieDB.GenreMovieData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieData;
+import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
+import com.example.android.moviedb3.movieDataManager.DatabaseGenreGetter;
+import com.example.android.moviedb3.movieDataManager.DatabaseGenreMovieGetter;
 import com.example.android.moviedb3.movieDataManager.DatabaseMovieGetter;
+import com.example.android.moviedb3.movieDataManager.GenreDataGetter;
+import com.example.android.moviedb3.movieDataManager.GenreMovieGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
 
 import java.util.ArrayList;
@@ -35,6 +42,10 @@ public class MovieListFragment extends Fragment
 {
     private ArrayList<MovieData> movieDataArrayList;
     private DataDB<String> movieListDB;
+
+    String idGenre;
+    String urlGenreMovie;
+    DataDB<GenreMovieData> genreMovieDataDB;
 
     RecyclerView movieListRecyclerView;
     ProgressBar loadingDataProgressBar;
@@ -69,6 +80,13 @@ public class MovieListFragment extends Fragment
         this.movieListDB = movieListDB;
     }
 
+    public void setGenre(String idGenre, DataDB<GenreMovieData> genreMovieDataDB, String urlGenreMovie)
+    {
+        this.idGenre = idGenre;
+        this.genreMovieDataDB = genreMovieDataDB;
+        this.urlGenreMovie = urlGenreMovie;
+    }
+
     private void GetMovieList(Bundle savedInstanceState)
     {
         if(savedInstanceState != null)
@@ -82,7 +100,15 @@ public class MovieListFragment extends Fragment
 
         else
         {
-            GetMovieListFromDatabase();
+            if(movieListDB != null)
+            {
+                GetMovieListFromDatabase();
+            }
+
+            if(idGenre != null && genreMovieDataDB != null)
+            {
+                GetMovieListFromGenreMovie();
+            }
         }
     }
 
@@ -90,6 +116,12 @@ public class MovieListFragment extends Fragment
     {
         ShowLoadingData();
         DBGetter.GetData(new DatabaseMovieGetter(movieListDB, getContext(), new MainMovieListObtainedListener()));
+    }
+
+    public void GetMovieListFromGenreMovie()
+    {
+        ShowLoadingData();
+        DBGetter.GetData(new GenreMovieGetter(idGenre, getContext(), new AllGenreMovieObtainedListener(), genreMovieDataDB, urlGenreMovie));
     }
 
     private void ShowNoDataLayout()
@@ -166,6 +198,15 @@ public class MovieListFragment extends Fragment
                     ShowRecycleView();
                 }
             }
+        }
+    }
+
+    private class AllGenreMovieObtainedListener implements OnAsyncTaskCompleteListener
+    {
+        @Override
+        public void onComplete(boolean isSuccess)
+        {
+            DBGetter.GetData(new DatabaseGenreMovieGetter(getContext(), new MainMovieListObtainedListener(), genreMovieDataDB, idGenre));
         }
     }
 

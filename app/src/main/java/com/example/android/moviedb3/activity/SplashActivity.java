@@ -22,6 +22,7 @@ import com.example.android.moviedb3.localDatabase.TopRateDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
+import com.example.android.moviedb3.movieDataManager.GenreDataGetter;
 import com.example.android.moviedb3.movieDataManager.MovieDataGetter;
 
 import java.util.ArrayList;
@@ -67,12 +68,6 @@ public class SplashActivity extends AppCompatActivity {
         amountDataObtained = 0;
 
         GetNowShowingMovieList();
-        /*GetComingSoonMovieList();
-        GetPopularMovieList();
-        GetTopRateMovieList();*/
-
-        /*Handler handler = new Handler();
-        handler.postDelayed(visibleLoadingTextRunnable, 5000);*/
     }
 
     private void GetNowShowingMovieList()
@@ -101,6 +96,11 @@ public class SplashActivity extends AppCompatActivity {
         DBGetter.GetData(new MovieDataGetter(this,
                 new MainMovieListObtainedListener(), new TopRateDataDB(this),
                 getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL()));
+    }
+
+    private void GetGenreList()
+    {
+        DBGetter.GetData(new GenreDataGetter(this, MovieDataURL.GetGenreListURL(), new MainMovieListObtainedListener()));
     }
 
     private ArrayList<DataDB<String>> getInitialOtherNowShowingMovieListDataDB()
@@ -164,7 +164,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         public void onComplete(boolean isSuccess)
         {
-            if(amountDataObtained >= 3)
+            if(amountDataObtained >= 4)
             {
                 ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, SplashActivity.this));
             }
@@ -178,6 +178,7 @@ public class SplashActivity extends AppCompatActivity {
                     case 1 : GetComingSoonMovieList(); break;
                     case 2 : GetPopularMovieList(); break;
                     case 3 : GetTopRateMovieList(); break;
+                    case 4 : GetGenreList(); break;
                     default: break;
                 }
             }

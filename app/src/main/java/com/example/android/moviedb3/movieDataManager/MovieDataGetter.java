@@ -147,17 +147,7 @@ public class MovieDataGetter implements IMovieDBGetter {
 
             for (String idMovie : willDeletedIdMovieList)
             {
-                boolean isMovieAvaiable = false;
-
-                for (DataDB<String> dataDB : otherMovieListDataDB)
-                {
-                    if(DataAvailableCheck.isDataAvailable(
-                            new DefaultDataAvailableCheck<String>(new IDCompare(), dataDB.getAllData(), idMovie)))
-                    {
-                        isMovieAvaiable = true;
-                        break;
-                    }
-                }
+                boolean isMovieAvaiable = DatabaseMovieIsAvailable.isAvailableFromIDList(idMovie, otherMovieListDataDB, context);
 
                 if (!isMovieAvaiable)
                 {
@@ -276,7 +266,7 @@ public class MovieDataGetter implements IMovieDBGetter {
         protected ArrayList<MovieData> doInBackground(Void... params) {
 
             ArrayList<MovieData> movieDatas = movieDB.getAllData();
-            ArrayList<String> idMovies = currentMovieListDataDB.getAllData();
+            ArrayList<String> idMovies = genreMovieDataDB.getAllData();
 
             ArrayList<MovieData> expectedMovieDatas = new ArrayList<>();
 
@@ -309,9 +299,9 @@ public class MovieDataGetter implements IMovieDBGetter {
     }*/
 
             /*ArrayList<String> deletedIdMovieList = DataCheck.CheckData
-                    (new NoIDListFinder(idMovieList, currentMovieListDataDB));*/
+                    (new NoIDListFinder(idMovieList, genreMovieDataDB));*/
 
-    /*ArrayList<String> willDeletedIdMovieList = DifferentDataFInder.FindData(new IDListDifferentDataFinder(idMovieList, new SameID_IDListCheck(currentMovieListDataDB.getAllData())));
+    /*ArrayList<String> willDeletedIdMovieList = DifferentDataFInder.FindData(new IDListDifferentDataFinder(idMovieList, new SameID_IDListCheck(genreMovieDataDB.getAllData())));
 
             for (String idMovie : willDeletedIdMovieList)
                     {
@@ -383,7 +373,7 @@ public class MovieDataGetter implements IMovieDBGetter {
         }
 
         DataReplace.ReplaceData(new SameDataReplace<MovieData>(movieDB, movieDatas, new SameID_DataListCheck<>(movieDB.getAllData())));
-        DataReplace.ReplaceData(new SameIDDataReplace(currentMovieListDataDB, idMovieList, new SameID_IDListCheck(currentMovieListDataDB.getAllData())));
+        DataReplace.ReplaceData(new SameIDDataReplace(genreMovieDataDB, idMovieList, new SameID_IDListCheck(genreMovieDataDB.getAllData())));
 
             *//*for (MovieData movieData:movieDatas)
             {
@@ -395,11 +385,11 @@ public class MovieDataGetter implements IMovieDBGetter {
                 movieDB.addData(movieData);
             }
 
-            currentMovieListDataDB.removeAllData();
+            genreMovieDataDB.removeAllData();
 
             for (String idMovie : idMovieList)
             {
-                currentMovieListDataDB.addData(idMovie);
+                genreMovieDataDB.addData(idMovie);
             }*//*
 
         return null;*/

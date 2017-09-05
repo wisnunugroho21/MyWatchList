@@ -14,6 +14,7 @@ public class MovieDBKeyEntry
     {
         public static final String MOVIE_DATA_PERSISTANCE_KEY = "MovieData";
         public static final String MOVIE_DATA_LIST_PERSISTANCE_KEY = "MovieDataList";
+        public static final String GENRE_PERSISTANCE_KEY = "GenreData";
 
         public static final String MOVIE_REVIEW_LIST_PERSISTANCE_KEY = "MovieReviewList";
         public static final String MOVIE_CAST_LIST_PERSISTANCE_KEY = "MovieCastList";

@@ -21,9 +21,9 @@ public class GenreDataListRecyclerViewAdapter extends RecyclerView.Adapter<Genre
     ArrayList<GenreData> genreDataArrayList;
     OnDataChooseListener<GenreData> onDataChooseListener;
 
-    public GenreDataListRecyclerViewAdapter(ArrayList<GenreData> genreDataArrayList)
-    {
+    public GenreDataListRecyclerViewAdapter(ArrayList<GenreData> genreDataArrayList, OnDataChooseListener<GenreData> onDataChooseListener) {
         this.genreDataArrayList = genreDataArrayList;
+        this.onDataChooseListener = onDataChooseListener;
     }
 
     @Override

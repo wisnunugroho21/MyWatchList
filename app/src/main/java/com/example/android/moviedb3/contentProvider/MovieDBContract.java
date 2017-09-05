@@ -27,8 +27,8 @@ public class MovieDBContract
     public static final String CREW_DATA_PATH = "crewData";
     public static final String VIDEO_DATA_PATH = "videoData";
     public static final String GENRE_DATA_PATH = "genreData";
-    /*public static final String GENRE_MOVIE_POPULAR_DATA_PATH = "genreMoviePopularData";
-    public static final String GENRE_MOVIE_TOP_RATE_DATA_PATH = "genreMovieTopRateData";*/
+    public static final String GENRE_MOVIE_POPULAR_DATA_PATH = "genreMoviePopularData";
+    public static final String GENRE_MOVIE_TOP_RATE_DATA_PATH = "genreMovieTopRateData";
 
     public static final class MovieDataEntry implements BaseColumns
     {
@@ -137,7 +137,7 @@ public class MovieDBContract
         public static final String COLUMN_GENRE_NAME = "GenreName";
     }
 
-    /*public static class GenreMoviePopularEntry implements BaseColumns
+    public static class GenreMoviePopularEntry implements BaseColumns
     {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(GENRE_MOVIE_POPULAR_DATA_PATH).build();
         public static final String TABLE_GENRE_MOVIE_POPULAR_DATA = "GenreMoviePopularData";
@@ -148,9 +148,9 @@ public class MovieDBContract
     public static class GenreMovieTopRateEntry implements BaseColumns
     {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(GENRE_MOVIE_TOP_RATE_DATA_PATH).build();
-        public static final String TABLE_GENRE_MOVIE_TOP_RATE_DATA = "GenreMoviePopularData";
+        public static final String TABLE_GENRE_MOVIE_TOP_RATE_DATA = "GenreMovieTopRateData";
         public static final String COLUMN_MOVIE_ID = "MovieId";
         public static final String COLUMN_GENRE_ID = "GenreID";
-    }*/
+    }
 
 }

@@ -60,6 +60,16 @@ public class MovieDataURL {
         return "https://api.themoviedb.org/3/genre/movie/list?api_key=" + API_KEY;
     }
 
+    public static String GetGenreTopRateMovieListURL(String idGenre)
+    {
+        return "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&sort_by=vote_average.desc&with_genres=" + idGenre;
+    }
+
+    public static String GetGenrePopularMovieListURL(String idGenre)
+    {
+        return "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&sort_by=popularity.desc&with_genres=" + idGenre;
+    }
+
 
 
 }

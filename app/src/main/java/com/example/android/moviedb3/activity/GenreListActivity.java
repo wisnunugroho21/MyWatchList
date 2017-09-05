@@ -12,7 +12,6 @@ import com.example.android.moviedb3.fragmentShifter.FragmentShifter;
 
 public class GenreListActivity extends AppCompatActivity
 {
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
