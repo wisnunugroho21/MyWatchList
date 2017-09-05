@@ -12,13 +12,13 @@ import android.widget.TextView;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.GenreDataListRecyclerViewAdapter;
-import com.example.android.moviedb3.dataManager.dataGetter.NetworkDataGetter;
-import com.example.android.moviedb3.dataManager.dataGetter.NetworkDataGetterSyncTask;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonParsing.GenreListJSONParser;
 import com.example.android.moviedb3.movieDB.GenreData;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterSyncTask;
 
 import java.util.ArrayList;
 

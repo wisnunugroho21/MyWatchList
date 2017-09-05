@@ -24,8 +24,11 @@
 
     <string name="no_review_label">No Review</string>
     <string name="more_review_label">More Review</string>
+    <string name="no_cast_label">No Cast</string>
     <string name="more_cast_label">More Cast</string>
+    <string name="no_crew_label">No Crew</string>
     <string name="more_crew_label">More Crew</string>
+    <string name="no_video_label">No Video</string>
 
     <string name="favorite_label">Favorite</string>
     <string name="un_favorite_label">UnFavorite</string>

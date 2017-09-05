@@ -1,5 +1,6 @@
 package com.example.android.moviedb3.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,10 +21,12 @@ import android.widget.Toast;
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoDataListRecyclerViewAdapter;
-import com.example.android.moviedb3.dataManager.dataGetter.BundleDataGetter;
-import com.example.android.moviedb3.dataManager.movieDBGetter.DBGetter;
-import com.example.android.moviedb3.dataManager.dataFinderChecker.DataInIDListCheckerAsyncTask;
-import com.example.android.moviedb3.dataManager.movieDBGetter.MovieInfoDataGetter;
+import com.example.android.moviedb3.movieDataManager.DBGetter;
+import com.example.android.moviedb3.movieDataManager.MovieInfoDataGetter;
+import com.example.android.moviedb3.supportDataManager.dataAvailable.DataAvailableCheck;
+import com.example.android.moviedb3.supportDataManager.dataAvailable.DefaultDataAvailableCheck;
+import com.example.android.moviedb3.supportDataManager.dataComparision.IDCompare;
+import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonParsing.CastListJSONParser;
 import com.example.android.moviedb3.jsonParsing.CrewListJSONParser;
@@ -45,6 +48,8 @@ import com.example.android.moviedb3.movieDB.VideoData;
 import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringSetter;
 import com.example.android.moviedb3.movieDB.dateToString.DateToStringSetter;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -74,9 +79,12 @@ public class MovieDetailFragment extends Fragment {
     TextView noReviewTextView;
     RecyclerView castListRecyclerView;
     Button moreCastButton;
+    TextView noCastTextView;
     RecyclerView crewListRecyclerView;
+    TextView noCrewTextView;
     Button moreCrewButton;
     RecyclerView videoListRecyclerView;
+    TextView noVideoTextView;
 
     ProgressBar loadingDataProgressBar;
     TextView noDataTextView;
@@ -120,10 +128,13 @@ public class MovieDetailFragment extends Fragment {
         moreReviewButton = (Button) view.findViewById(R.id.btn_more_review);
         noReviewTextView = (TextView) view.findViewById(R.id.txt_no_review);
         castListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_cast_list);
+        noCastTextView = (TextView) view.findViewById(R.id.txt_no_cast);
         moreCastButton = (Button) view.findViewById(R.id.btn_more_cast);
         crewListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_crew_list);
+        noCrewTextView = (TextView) view.findViewById(R.id.txt_no_crew);
         moreCrewButton = (Button) view.findViewById(R.id.btn_more_crew);
         videoListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_video_list);
+        noVideoTextView = (TextView) view.findViewById(R.id.txt_no_video);
 
         loadingDataProgressBar = (ProgressBar) view.findViewById(R.id.pb_loading_data);
         noDataTextView = (TextView) view.findViewById(R.id.txt_no_data);
@@ -211,6 +222,26 @@ public class MovieDetailFragment extends Fragment {
         moreReviewButton.setVisibility(View.GONE);
     }
 
+    public void ShowNoVideos()
+    {
+        videoListRecyclerView.setVisibility(View.GONE);
+        noVideoTextView.setVisibility(View.VISIBLE);
+    }
+
+    public void ShowNoCasts()
+    {
+        castListRecyclerView.setVisibility(View.GONE);
+        noCastTextView.setVisibility(View.VISIBLE);
+        moreCastButton.setVisibility(View.GONE);
+    }
+
+    public void ShowNoCrews()
+    {
+        crewListRecyclerView.setVisibility(View.GONE);
+        noCrewTextView.setVisibility(View.VISIBLE);
+        moreCrewButton.setVisibility(View.GONE);
+    }
+
     private void SetAdditionalMovieDetailRecyclerView(RecyclerView.Adapter adapter, RecyclerView.LayoutManager layoutManager, RecyclerView recyclerView) {
         recyclerView.clearFocus();
 
@@ -255,9 +286,9 @@ public class MovieDetailFragment extends Fragment {
             favoriteState = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.FAVORITE_STATE_PERSISTANCE_KEY);
 
             SetMovieDetail(movieData);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(reviewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(castDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(crewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
             SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(videoDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
 
             ShowMovieDetail();
@@ -281,8 +312,8 @@ public class MovieDetailFragment extends Fragment {
 
     private void SetInitialFavoriteState()
     {
-        DataInIDListCheckerAsyncTask dataInIDListCheckerAsyncTask = new DataInIDListCheckerAsyncTask(new InitialFavoriteObtainedListener(), new FavoriteDataDB(getContext()), movieData.getId());
-        dataInIDListCheckerAsyncTask.Execute();
+        CheckFavoriteMovieList checkFavoriteMovieList = new CheckFavoriteMovieList(new InitialFavoriteObtainedListener());
+        checkFavoriteMovieList.execute();
     }
 
     private boolean FavoriteMovieStateChanged(Boolean favoriteState)
@@ -367,7 +398,8 @@ public class MovieDetailFragment extends Fragment {
                 }
             }
 
-            ShowNoData();
+            ShowNoCasts();
+            CheckAndShowMovieDetail();
         }
     }
 
@@ -382,14 +414,15 @@ public class MovieDetailFragment extends Fragment {
                 {
                     crewDataArrayList = crewDatas;
 
-                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(crewDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
                     CheckAndShowMovieDetail();
 
                     return;
                 }
             }
 
-            ShowNoData();
+            ShowNoCrews();
+            CheckAndShowMovieDetail();
         }
     }
 
@@ -411,7 +444,8 @@ public class MovieDetailFragment extends Fragment {
                 }
             }
 
-            ShowNoData();
+            ShowNoVideos();
+            CheckAndShowMovieDetail();
         }
     }
 
@@ -453,6 +487,30 @@ public class MovieDetailFragment extends Fragment {
         public void onDataObtained(Integer integer)
         {
             MovieDetailFragment.this.getActivity().setResult(integer);
+        }
+    }
+
+    private class CheckFavoriteMovieList extends AsyncTask<Void, Void, Boolean>
+    {
+        OnDataObtainedListener<Boolean> onDataObtainedListener;
+
+        public CheckFavoriteMovieList(OnDataObtainedListener<Boolean> onDataObtainedListener) {
+            this.onDataObtainedListener = onDataObtainedListener;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params)
+        {
+            DataDB<String> dataDB = new FavoriteDataDB(getContext());
+
+            ArrayList<String> idMovieList = dataDB.getAllData();
+            return DataAvailableCheck.isDataAvailable(new DefaultDataAvailableCheck<String>(new IDCompare(), idMovieList, movieData.getId()));
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean)
+        {
+            onDataObtainedListener.onDataObtained(aBoolean);
         }
     }
 }

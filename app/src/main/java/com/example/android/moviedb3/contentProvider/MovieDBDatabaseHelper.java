@@ -132,6 +132,22 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 ");";
 
         db.execSQL(SQLITE_CREATE_GENRE_TABLE);
+
+        /*final String SQLITE_CREATE_GENRE_MOVIE_POPULAR_TABLE = "CREATE TABLE " + MovieDBContract.GenreMoviePopularEntry.TABLE_GENRE_MOVIE_POPULAR_DATA + " (" +
+                MovieDBContract.GenreMoviePopularEntry._ID + " TEXT, " +
+                MovieDBContract.GenreMoviePopularEntry.COLUMN_MOVIE_ID + " TEXT, " +
+                MovieDBContract.GenreMoviePopularEntry.COLUMN_GENRE_ID + " TEXT" +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_GENRE_MOVIE_POPULAR_TABLE);
+
+        final String SQLITE_CREATE_GENRE_MOVIE_TOP_RATE_TABLE = "CREATE TABLE " + MovieDBContract.GenreMovieTopRateEntry.TABLE_GENRE_MOVIE_TOP_RATE_DATA + " (" +
+                MovieDBContract.GenreMovieTopRateEntry._ID + " TEXT, " +
+                MovieDBContract.GenreMovieTopRateEntry.COLUMN_MOVIE_ID + " TEXT, " +
+                MovieDBContract.GenreMovieTopRateEntry.COLUMN_GENRE_ID + " TEXT" +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_GENRE_MOVIE_TOP_RATE_TABLE);*/
     }
 
     @Override
@@ -147,6 +163,9 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.CastDataEntry.TABLE_CAST_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.ReviewDataEntry.TABLE_REVIEW_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.VideoDataEntry.TABLE_VIDEO_DATA);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.GenreDataEntry.TABLE_GENRE_DATA);
+        /*db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.GenreMoviePopularEntry.TABLE_GENRE_MOVIE_POPULAR_DATA);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.GenreMovieTopRateEntry.TABLE_GENRE_MOVIE_TOP_RATE_DATA);*/
 
         onCreate(db);
     }

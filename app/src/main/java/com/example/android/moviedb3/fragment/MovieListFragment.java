@@ -1,7 +1,5 @@
 package com.example.android.moviedb3.fragment;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,21 +16,14 @@ import com.example.android.moviedb3.activity.MovieDetailActivity;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MainMovieListRecyclerViewAdapter;
-import com.example.android.moviedb3.dataManager.LoadingDataAsyncTask;
-import com.example.android.moviedb3.dataManager.dataGetter.BundleDataGetter;
-import com.example.android.moviedb3.dataManager.movieDBGetter.DBGetter;
-import com.example.android.moviedb3.dataManager.movieDBGetter.DatabaseMovieDBGetter;
-import com.example.android.moviedb3.dataManager.movieDBGetter.MovieDataGetter;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.localDatabase.DataDB;
-import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
-import com.example.android.moviedb3.localDatabase.PopularDataDB;
-import com.example.android.moviedb3.localDatabase.TopRateDataDB;
-import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieData;
-import com.example.android.moviedb3.movieDB.MovieDataURL;
+import com.example.android.moviedb3.movieDataManager.DBGetter;
+import com.example.android.moviedb3.movieDataManager.DatabaseMovieGetter;
+import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
 
 import java.util.ArrayList;
 
@@ -98,8 +89,7 @@ public class MovieListFragment extends Fragment
     public void GetMovieListFromDatabase()
     {
         ShowLoadingData();
-
-        DBGetter.GetData(new DatabaseMovieDBGetter(movieListDB, getContext(), new MainMovieListObtainedListener()));
+        DBGetter.GetData(new DatabaseMovieGetter(movieListDB, getContext(), new MainMovieListObtainedListener()));
     }
 
     private void ShowNoDataLayout()
@@ -263,7 +253,7 @@ public class MovieListFragment extends Fragment
 
             for (String idMovie:strings)
             {
-                DataFindCheck.CheckData(new SameID_IDListFindCheck(dataIDMovieListDB, idMovie, new OnDataObtainedListener<Boolean>() {
+                DataCheck.CheckData(new SameID_IDListCheck(dataIDMovieListDB, idMovie, new OnDataObtainedListener<Boolean>() {
                     @Override
                     public void onDataObtained(Boolean aBoolean) {
 

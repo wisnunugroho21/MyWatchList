@@ -7,8 +7,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.example.android.moviedb3.R;
-import com.example.android.moviedb3.dataManager.dataFinderChecker.DataFindCheck;
-import com.example.android.moviedb3.dataManager.dataFinderChecker.SameID_IDListFindCheck;
+import com.example.android.moviedb3.dataManager_desperate.dataCheck.DataCheck;
+import com.example.android.moviedb3.dataManager_desperate.dataCheck.SameID_IDListCheck;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.PlanToWatchDataDB;
@@ -71,7 +71,7 @@ public class WatchListDialogFragment extends DialogFragment
 
                 for (DataDB<String> dataDB : otherMovieListDataDB)
                 {
-                    if(DataFindCheck.CheckData(new SameID_IDListFindCheck(dataDB, movieID)))
+                    if(DataCheck.CheckData(new SameID_IDListCheck(dataDB, movieID)))
                     {
                         dataDB.removeData(movieID);
                     }
@@ -130,8 +130,8 @@ public class WatchListDialogFragment extends DialogFragment
 
     public int getInitialIndexForDialog()
     {
-        boolean watchedListState = DataFindCheck.CheckData(new SameID_IDListFindCheck(new WatchlistDataDB(getActivity()), movieID));
-        boolean planToWatchListState = DataFindCheck.CheckData(new SameID_IDListFindCheck(new PlanToWatchDataDB(getActivity()), movieID));
+        boolean watchedListState = DataCheck.CheckData(new SameID_IDListCheck(new WatchlistDataDB(getActivity()), movieID));
+        boolean planToWatchListState = DataCheck.CheckData(new SameID_IDListCheck(new PlanToWatchDataDB(getActivity()), movieID));
 
         if(watchedListState && !planToWatchListState)
         {

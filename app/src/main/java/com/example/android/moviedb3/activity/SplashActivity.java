@@ -11,10 +11,7 @@ import android.widget.TextView;
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
-import com.example.android.moviedb3.dataManager.movieDBGetter.DBGetter;
-import com.example.android.moviedb3.dataManager.movieDBGetter.MovieDataGetter;
 import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
-import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
@@ -23,11 +20,11 @@ import com.example.android.moviedb3.localDatabase.PlanToWatchDataDB;
 import com.example.android.moviedb3.localDatabase.PopularDataDB;
 import com.example.android.moviedb3.localDatabase.TopRateDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
-import com.example.android.moviedb3.movieDB.MovieData;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
+import com.example.android.moviedb3.movieDataManager.DBGetter;
+import com.example.android.moviedb3.movieDataManager.MovieDataGetter;
 
 import java.util.ArrayList;
-import java.util.logging.LogRecord;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -65,17 +62,17 @@ public class SplashActivity extends AppCompatActivity {
         splashActivityLayout = (ConstraintLayout) findViewById(R.id.splash_activity_layout);
 
         TransitionManager.beginDelayedTransition(splashActivityLayout);
-        stillLoadingTextView.setVisibility(View.GONE);
+        stillLoadingTextView.setVisibility(View.VISIBLE);
 
         amountDataObtained = 0;
 
         GetNowShowingMovieList();
-        GetComingSoonMovieList();
+        /*GetComingSoonMovieList();
         GetPopularMovieList();
-        GetTopRateMovieList();
+        GetTopRateMovieList();*/
 
-        Handler handler = new Handler();
-        handler.postDelayed(visibleLoadingTextRunnable, 5000);
+        /*Handler handler = new Handler();
+        handler.postDelayed(visibleLoadingTextRunnable, 5000);*/
     }
 
     private void GetNowShowingMovieList()
@@ -167,7 +164,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         public void onComplete(boolean isSuccess)
         {
-            if(amountDataObtained >= 4)
+            if(amountDataObtained >= 3)
             {
                 ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, SplashActivity.this));
             }
@@ -175,6 +172,14 @@ public class SplashActivity extends AppCompatActivity {
             else
             {
                 amountDataObtained++;
+
+                switch (amountDataObtained)
+                {
+                    case 1 : GetComingSoonMovieList(); break;
+                    case 2 : GetPopularMovieList(); break;
+                    case 3 : GetTopRateMovieList(); break;
+                    default: break;
+                }
             }
         }
     }
