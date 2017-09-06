@@ -4,11 +4,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -156,6 +158,16 @@ public class MovieDetailFragment extends Fragment {
         outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CAST_LIST_PERSISTANCE_KEY, castDataArrayList);
         outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CREW_LIST_PERSISTANCE_KEY, crewDataArrayList);
         outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_VIDEO_LIST_PERSISTANCE_KEY, videoDataArrayList);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId())
+        {
+            case android.R.id.home : getActivity().finish(); return true;
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 
     private void SetActionBar()

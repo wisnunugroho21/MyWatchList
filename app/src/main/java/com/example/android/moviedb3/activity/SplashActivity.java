@@ -167,6 +167,7 @@ public class SplashActivity extends AppCompatActivity {
             if(amountDataObtained >= 4)
             {
                 ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, SplashActivity.this));
+                finish();
             }
 
             else

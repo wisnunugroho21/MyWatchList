@@ -14,11 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MovieDetailActivity"
-            android:parentActivityName=".activity.MovieListActivity"
             android:theme="@style/AppTheme.TransparentActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MovieListActivity" />
         </activity>
         <activity
             android:name=".activity.MovieListActivity"
@@ -35,6 +31,7 @@
         </activity>
         <activity
             android:name=".activity.GenreListActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".activity.MovieListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

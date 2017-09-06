@@ -122,45 +122,63 @@ public class GenreMovieGetter implements IMovieDBGetter {
         {
             ArrayList<GenreMovieData> deletedGenreMovieDataList = new ArrayList<>();
 
-            ArrayList<GenreMovieData> genreMovieDataArrayList = genreMovieDataDB.getAllData();
+            ArrayList<GenreMovieData> databaseGenreMovieDataArrayList = genreMovieDataDB.getAllData();
 
-            if(genreMovieDataArrayList != null)
+            if(databaseGenreMovieDataArrayList != null)
             {
-                for(GenreMovieData databaseGenreMovieData:genreMovieDataDB.getAllData())
+                for(GenreMovieData databaseGenreMovieData:databaseGenreMovieDataArrayList)
                 {
+                    boolean isSame = false;
+
                     for (GenreMovieData genreMovieData:genreMovieDatas)
                     {
-                        if(databaseGenreMovieData.getIdGenre().equals(genreMovieData.getIdGenre()) && !databaseGenreMovieData.getIdMovie().equals(genreMovieData.getIdMovie()))
+                        if(databaseGenreMovieData.getIdGenre().equals(genreMovieData.getIdGenre()) && databaseGenreMovieData.getIdMovie().equals(genreMovieData.getIdMovie()))
                         {
-                            deletedGenreMovieDataList.add(databaseGenreMovieData);
+                            isSame = true;
+                            break;
                         }
+                    }
 
+                    if(!isSame)
+                    {
+                        String idMovie = databaseGenreMovieData.getIdMovie();
+                        boolean isMovieAvaiable = DatabaseMovieIsAvailable.isAvailableFromGenreList(idMovie, genreID, context);
+
+                        if (!isMovieAvaiable)
+                        {
+                            movieDB.removeData(idMovie);
+
+                            DataDelete.Delete(new DataListDelete<ReviewData>
+                                    (new DepedencyDataCompare<ReviewData>(), new ReviewDataDB(context), idMovie));
+                            DataDelete.Delete(new DataListDelete<VideoData>
+                                    (new DepedencyDataCompare<VideoData>(), new VideoDataDB(context), idMovie));
+                            DataDelete.Delete(new DataListDelete<CastData>
+                                    (new DepedencyDataCompare<CastData>(), new CastDataDB(context), idMovie));
+                            DataDelete.Delete(new DataListDelete<CrewData>
+                                    (new DepedencyDataCompare<CrewData>(), new CrewDataDB(context), idMovie));
+                        }
                     }
                 }
 
-                for (GenreMovieData genreMovie:deletedGenreMovieDataList)
+                for(GenreMovieData genreMovieData:genreMovieDatas)
                 {
-                    String idMovie = genreMovie.getIdMovie();
-                    boolean isMovieAvaiable = DatabaseMovieIsAvailable.isAvailableFromGenreList(idMovie, genreID, context);
-
-                    if (!isMovieAvaiable)
+                    for(GenreMovieData databaseGenreMovie:databaseGenreMovieDataArrayList)
                     {
-                        movieDB.removeData(idMovie);
-
-                        DataDelete.Delete(new DataListDelete<ReviewData>
-                                (new DepedencyDataCompare<ReviewData>(), new ReviewDataDB(context), idMovie));
-                        DataDelete.Delete(new DataListDelete<VideoData>
-                                (new DepedencyDataCompare<VideoData>(), new VideoDataDB(context), idMovie));
-                        DataDelete.Delete(new DataListDelete<CastData>
-                                (new DepedencyDataCompare<CastData>(), new CastDataDB(context), idMovie));
-                        DataDelete.Delete(new DataListDelete<CrewData>
-                                (new DepedencyDataCompare<CrewData>(), new CrewDataDB(context), idMovie));
+                        if(databaseGenreMovie.getIdGenre().equals(genreMovieData.getIdGenre()))
+                        {
+                            genreMovieDataDB.removeData(databaseGenreMovie.getId());
+                        }
                     }
                 }
             }
 
             DataReplace.ReplaceData(new SameDataListReplace<MovieData>(movieDatas, movieDB, new BaseDataCompare<MovieData>()));
-            DataReplace.ReplaceData(new SameDataListReplace<GenreMovieData>(genreMovieDatas, genreMovieDataDB, new IntermedieteDataCompare<GenreMovieData>(IntermedieteDataCompare.CHECK_SECOND_ID)));
+//            DataReplace.ReplaceData(new SameDataListReplace<GenreMovieData>(genreMovieDatas, genreMovieDataDB, new IntermedieteDataCompare<GenreMovieData>(IntermedieteDataCompare.CHECK_SECOND_ID)));
+
+            for(GenreMovieData genreMovieData:genreMovieDatas)
+            {
+                genreMovieDataDB.addData(genreMovieData);
+            }
 
             return null;
         }

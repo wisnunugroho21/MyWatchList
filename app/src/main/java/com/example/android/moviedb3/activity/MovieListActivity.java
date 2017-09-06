@@ -3,6 +3,7 @@ package com.example.android.moviedb3.activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,6 +23,7 @@ import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
 import com.example.android.moviedb3.adapter.FragmentAdapter.HomeFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.TopListFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.YoursFragmentAdapter;
+import com.example.android.moviedb3.behaviour.BottomNavigationViewBehaviour;
 import com.example.android.moviedb3.fragmentShifter.DefaultFragmentShifter;
 import com.example.android.moviedb3.fragmentShifter.FragmentShifter;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
@@ -50,6 +52,9 @@ public class MovieListActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar_movie_list);
         viewPager = (ViewPager) findViewById(R.id.vp_movie_list);
         tabLayout = (TabLayout) findViewById(R.id.tabs_movie_list);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) movieListBottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehaviour());
 
         setSupportActionBar(toolbar);
 
