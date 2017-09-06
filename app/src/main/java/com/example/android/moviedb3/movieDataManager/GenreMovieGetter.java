@@ -120,8 +120,6 @@ public class GenreMovieGetter implements IMovieDBGetter {
         @Override
         protected Void doInBackground(Void... params)
         {
-            ArrayList<GenreMovieData> deletedGenreMovieDataList = new ArrayList<>();
-
             ArrayList<GenreMovieData> databaseGenreMovieDataArrayList = genreMovieDataDB.getAllData();
 
             if(databaseGenreMovieDataArrayList != null)
