@@ -15,7 +15,20 @@
         android:layout_marginTop="8dp"
         android:text="Action"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_color_circle_genre"
+        app:layout_constraintLeft_toRightOf="@+id/iv_color_circle_genre"
+        app:layout_constraintTop_toTopOf="@+id/iv_color_circle_genre" />
+
+    <ImageView
+        android:id="@+id/iv_color_circle_genre"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:tint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/circle_shape" />
 </android.support.constraint.ConstraintLayout>

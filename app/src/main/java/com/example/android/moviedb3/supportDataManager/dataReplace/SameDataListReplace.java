@@ -37,7 +37,10 @@ public class SameDataListReplace<Data extends BaseData> implements IDataReplace
                         dataDB.removeData(databaseData.getId());
                     }
                 }
+            }
 
+            for (Data data:dataArrayList)
+            {
                 dataDB.addData(data);
             }
         }

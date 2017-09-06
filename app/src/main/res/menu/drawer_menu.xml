@@ -10,10 +10,6 @@
                         android:icon="@drawable/ic_movie_filter_black_24px"
                         android:title="@string/genre_label"/>
                     <item
-                        android:id="@+id/companies_drawer_item_menu"
-                        android:icon="@drawable/ic_business_black_24px"
-                        android:title="@string/companies_label"/>
-                    <item
                         android:id="@+id/people_drawer_item_menu"
                         android:icon="@drawable/ic_people_black_24px"
                         android:title="@string/people_label"/>

@@ -81,7 +81,24 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
         @Override
         protected Void doInBackground(Void... params)
         {
-            DataReplace.ReplaceData(new SameDataListReplace<Data>(datas, dataDB, new DepedencyDataCompare<Data>()));
+            ArrayList<Data> databaseDataArrayList = dataDB.getAllData();
+
+            for (Data data:datas)
+            {
+                for (Data databaseData:databaseDataArrayList)
+                {
+                    if(data.getIDDependent().equals(databaseData.getIDDependent()))
+                    {
+                        dataDB.removeData(databaseData.getId());
+                    }
+                }
+            }
+
+            for (Data data:datas)
+            {
+                dataDB.addData(data);
+            }
+
             return null;
         }
 
