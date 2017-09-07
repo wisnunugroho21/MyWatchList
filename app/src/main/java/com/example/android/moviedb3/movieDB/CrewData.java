@@ -12,12 +12,14 @@ public class CrewData extends DependencyData implements Parcelable, MovieInfoDat
     String crewName;
     String crewPosition;
     String movieID;
+    String peopleID;
 
-    public CrewData(String id, String crewName, String crewPosition, String movieID) {
+    public CrewData(String id, String crewName, String crewPosition, String movieID, String peopleID) {
         super(id);
         this.crewName = crewName;
         this.crewPosition = crewPosition;
         this.movieID = movieID;
+        this.peopleID = peopleID;
     }
 
     public CrewData(Parcel in)
@@ -26,6 +28,7 @@ public class CrewData extends DependencyData implements Parcelable, MovieInfoDat
         this.crewName =  in.readString();
         this.crewPosition = in.readString();
         this.movieID = in.readString();
+        this.peopleID = in.readString();
     }
 
     public String getCrewName() {
@@ -38,6 +41,10 @@ public class CrewData extends DependencyData implements Parcelable, MovieInfoDat
 
     public String getMovieID() {
         return movieID;
+    }
+
+    public String getPeopleID() {
+        return peopleID;
     }
 
     @Override
@@ -66,6 +73,7 @@ public class CrewData extends DependencyData implements Parcelable, MovieInfoDat
         dest.writeString(this.crewName);
         dest.writeString(this.crewPosition);
         dest.writeString(this.movieID);
+        dest.writeString(this.peopleID);
     }
 
     public static final Creator CREATOR = new Creator()

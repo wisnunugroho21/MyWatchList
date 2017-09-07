@@ -47,8 +47,9 @@ public class CrewDataDB extends DataDB<CrewData>
             String crewName = cursor.getString(cursor.getColumnIndex(MovieDBContract.CrewDataEntry.COLUMN_CREW_NAME));
             String crewPosition = cursor.getString(cursor.getColumnIndex(MovieDBContract.CrewDataEntry.COLUMN_CREW_POSITION));
             String movieID = cursor.getString(cursor.getColumnIndex(MovieDBContract.CrewDataEntry.COLUMN_MOVIE_ID));
+            String peopleID = cursor.getString(cursor.getColumnIndex(MovieDBContract.CrewDataEntry.COLUMN_PEOPLE_ID));
 
-            CrewData crewData = new CrewData(id, crewName, crewPosition, movieID);
+            CrewData crewData = new CrewData(id, crewName, crewPosition, movieID, peopleID);
             crewDataArrayList.add(crewData);
 
         } while (cursor.moveToNext());
@@ -66,6 +67,7 @@ public class CrewDataDB extends DataDB<CrewData>
         contentValues.put(MovieDBContract.CrewDataEntry.COLUMN_CREW_NAME, crewData.getCrewName());
         contentValues.put(MovieDBContract.CrewDataEntry.COLUMN_CREW_POSITION, crewData.getCrewPosition());
         contentValues.put(MovieDBContract.CrewDataEntry.COLUMN_MOVIE_ID, crewData.getMovieID());
+        contentValues.put(MovieDBContract.CrewDataEntry.COLUMN_PEOPLE_ID, crewData.getPeopleID());
 
         context.getContentResolver().insert(MovieDBContract.CrewDataEntry.CONTENT_URI, contentValues);
     }

@@ -247,32 +247,32 @@ public class MovieDataGetter implements IMovieDBGetter {
         this.urlList = urlList;
     }*/
 
-    /*public void GetData()
+    /*public void GetDataAsyncTask()
     {
         NetworkDataGetter<ArrayList<Data>> networkDataGetter = new NetworkDataGetter<>();
 
         if(dataJSONParser == null)
         {
-            networkDataGetter.GetData(new NetworkDataGetterSyncTask<ArrayList<Data>>(dataListjsonParser, new OnDataListObtained()), url);
+            networkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<Data>>(dataListjsonParser, new OnDataListObtained()), url);
         }
 
         else
         {
-            networkDataGetter.GetData(new NetworkDataListGetterSyncTask<Data>(dataJSONParser, new OnDataListObtained()), urlList);
+            networkDataGetter.GetDataAsyncTask(new NetworkDataListGetterAsyncTask<Data>(dataJSONParser, new OnDataListObtained()), urlList);
         }
     }*/
 
 
 
 
-    /*public <Data> void GetData(@NonNull DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener, @NonNull JSONParser<Data> dataJSONParser, @NonNull String... urlList)
+    /*public <Data> void GetDataAsyncTask(@NonNull DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener, @NonNull JSONParser<Data> dataJSONParser, @NonNull String... urlList)
     {
-        NetworkDataGetter.GetData(new NetworkDataListGetterSyncTask<Data>(dataJSONParser, new AllDataListReplace.OnDataListObtained(database, onDataObtainedListener)), urlList);
+        NetworkDataGetter.GetDataAsyncTask(new NetworkDataListGetterAsyncTask<Data>(dataJSONParser, new AllDataListReplace.OnDataListObtained(database, onDataObtainedListener)), urlList);
     }
 
-    public <Data> void GetData(@NonNull DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener, @NonNull JSONParser<ArrayList<Data>> dataListjsonParser, @NonNull String url)
+    public <Data> void GetDataAsyncTask(@NonNull DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener, @NonNull JSONParser<ArrayList<Data>> dataListjsonParser, @NonNull String url)
     {
-        NetworkDataGetter.GetData(new NetworkDataGetterSyncTask<ArrayList<Data>>(dataListjsonParser, new AllDataListReplace.OnDataListObtained(database, onDataObtainedListener)), url);
+        NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<Data>>(dataListjsonParser, new AllDataListReplace.OnDataListObtained(database, onDataObtainedListener)), url);
     }
 
     private class OnDataListObtained<Data> implements OnDataObtainedListener<ArrayList<Data>>
@@ -293,21 +293,21 @@ public class MovieDataGetter implements IMovieDBGetter {
         }
     }*/
 
-            /*private class MovieDatabaseGetter extends AsyncTask<Void, Void, ArrayList<MovieData>>
+            /*private class MovieDatabaseGetter extends AsyncTask<Void, Void, ArrayList<PeopleData>>
     {
         @Override
-        protected ArrayList<MovieData> doInBackground(Void... params) {
+        protected ArrayList<PeopleData> doInBackground(Void... params) {
 
-            ArrayList<MovieData> movieDatas = movieDB.getAllData();
+            ArrayList<PeopleData> movieDatas = movieDB.getAllData();
             ArrayList<String> idMovies = currentMovieListDataDB.getAllData();
 
-            ArrayList<MovieData> expectedMovieDatas = new ArrayList<>();
+            ArrayList<PeopleData> expectedMovieDatas = new ArrayList<>();
 
             if(movieDatas != null)
             {
                 for (String idMovie:idMovies)
                 {
-                    for (MovieData movieData:movieDatas)
+                    for (PeopleData movieData:movieDatas)
                     {
                         if(idMovie.equals(movieData.getId()))
                         {
@@ -322,7 +322,7 @@ public class MovieDataGetter implements IMovieDBGetter {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<MovieData> movieDatas)
+        protected void onPostExecute(ArrayList<PeopleData> movieDatas)
         {
             if(onDataObtainedListener != null)
             {

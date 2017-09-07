@@ -1,39 +1,36 @@
-package com.example.android.moviedb3.supportDataManager.dataDelete;
+package com.example.android.moviedb3.supportDataManager.sameDataFinder;
 
-import com.example.android.moviedb3.localDatabase.DataDB;
-import com.example.android.moviedb3.movieDB.BaseData;
 import com.example.android.moviedb3.supportDataManager.dataComparision.IDataComparision;
 
 import java.util.ArrayList;
 
 /**
- * Created by nugroho on 05/09/17.
+ * Created by nugroho on 04/09/17.
  */
 
-public class DataListDelete<Data extends BaseData> implements IDataDelete
+public class SameIDDataFinder<Data> implements ISameDataFinder<Data>
 {
     IDataComparision<Data> dataComparision;
-    DataDB<Data> dataDB;
+    ArrayList<Data> dataArrayList;
     ArrayList<String> idList;
 
     String idData;
 
-    public DataListDelete(IDataComparision<Data> dataComparision, DataDB<Data> dataDB, ArrayList<String> idList) {
+    public SameIDDataFinder(IDataComparision<Data> dataComparision, ArrayList<Data> dataArrayList, ArrayList<String> idList) {
         this.dataComparision = dataComparision;
-        this.dataDB = dataDB;
+        this.dataArrayList = dataArrayList;
         this.idList = idList;
     }
 
-    public DataListDelete(IDataComparision<Data> dataComparision, DataDB<Data> dataDB, String idData) {
+    public SameIDDataFinder(IDataComparision<Data> dataComparision, ArrayList<Data> dataArrayList, String idData) {
         this.dataComparision = dataComparision;
-        this.dataDB = dataDB;
+        this.dataArrayList = dataArrayList;
         this.idData = idData;
     }
 
-    @Override
-    public void Delete()
+    public ArrayList<Data> getDataSameList()
     {
-        ArrayList<Data> dataArrayList = dataDB.getAllData();
+        ArrayList<Data> sameDataList = new ArrayList<>();
 
         if(idList != null)
         {
@@ -45,7 +42,7 @@ public class DataListDelete<Data extends BaseData> implements IDataDelete
                     {
                         if(dataComparision.isSame(id, data))
                         {
-                            dataDB.removeData(data.getId());
+                            sameDataList.add(data);
                         }
                     }
                 }
@@ -54,18 +51,18 @@ public class DataListDelete<Data extends BaseData> implements IDataDelete
 
         else
         {
-            if(idData != null && dataArrayList != null)
+            if(dataArrayList != null && idData != null)
             {
                 for (Data data:dataArrayList)
                 {
                     if(dataComparision.isSame(idData, data))
                     {
-                        dataDB.removeData(data.getId());
+                        sameDataList.add(data);
                     }
                 }
             }
         }
 
-
+        return sameDataList;
     }
 }

@@ -21,7 +21,7 @@ import com.example.android.moviedb3.movieDB.GenreData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
-import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterSyncTask;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
 
 import java.util.ArrayList;
 
@@ -34,16 +34,19 @@ public class GenreListFragment extends Fragment
     RecyclerView genreListRecyclerView;
     ProgressBar loadingDataProgressBar;
     TextView noDataTextView;
+    TextView allGenreLabelTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.movie_genre_list, container, false);
+        View view = inflater.inflate(R.layout.movie_collection_list, container, false);
 
-        genreListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_genre_list);
+        genreListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_collection_list);
         loadingDataProgressBar = (ProgressBar) view.findViewById(R.id.pb_loading_data);
         noDataTextView = (TextView) view.findViewById(R.id.txt_no_data);
+        allGenreLabelTextView = (TextView) view.findViewById(R.id.txt_all_collection_label);
 
+        allGenreLabelTextView.setText(getString(R.string.all_genre_label));
         GetGenreList();
 
         return view;
@@ -73,7 +76,7 @@ public class GenreListFragment extends Fragment
     private void GetGenreList()
     {
         ShowLoadingData();
-        NetworkDataGetter.GetData(new NetworkDataGetterSyncTask<ArrayList<GenreData>>(new GenreListJSONParser(), new GenreListObtained()), MovieDataURL.GetGenreListURL());
+        NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<GenreData>>(new GenreListJSONParser(), new GenreListObtained()), MovieDataURL.GetGenreListURL());
     }
 
     private void SetGenreRecyclerView(ArrayList<GenreData> genreDataArrayList)

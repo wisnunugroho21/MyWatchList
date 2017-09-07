@@ -13,11 +13,11 @@ import java.io.IOException;
  * Created by nugroho on 23/08/17.
  */
 
-public class NetworkImageGetterSync extends INetworkDataGetter<Bitmap>
+public class NetworkImageGetterAsyncTaskSync extends INetworkDataGetterAsyncTask<Bitmap>
 {
     Context context;
 
-    public NetworkImageGetterSync(OnDataObtainedListener<Bitmap> onDataObtainedListener, Context context) {
+    public NetworkImageGetterAsyncTaskSync(OnDataObtainedListener<Bitmap> onDataObtainedListener, Context context) {
 
         super(onDataObtainedListener);
         this.context = context;

@@ -13,12 +13,12 @@ import org.json.JSONObject;
  * Created by nugroho on 29/07/17.
  */
 
-public class NetworkDataGetterSyncTask<Data> extends INetworkDataGetter<Data>
+public class NetworkDataGetterAsyncTask<Data> extends INetworkDataGetterAsyncTask<Data>
 {
     private JSONReceiver jsonReceiver;
     private JSONParser<Data> jsonParser;
 
-    public NetworkDataGetterSyncTask(@NonNull JSONParser<Data> jsonParser, @NonNull OnDataObtainedListener<Data> onDataObtainedListener) {
+    public NetworkDataGetterAsyncTask(@NonNull JSONParser<Data> jsonParser, @NonNull OnDataObtainedListener<Data> onDataObtainedListener) {
 
         super(onDataObtainedListener);
 

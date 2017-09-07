@@ -12,14 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activity.MovieDetailActivity"
             android:theme="@style/AppTheme.TransparentActionBar">
         </activity>
+
         <activity
             android:name=".activity.MovieListActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.TransparentActionBar" />
+
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/AppTheme.TransparentActionBar">
@@ -29,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.GenreListActivity"
             android:launchMode="singleTop"
@@ -38,17 +42,22 @@
                 android:value=".activity.MovieListActivity" />
         </activity>
 
+        <activity android:name=".activity.GenreMovieListActivity"
+        android:parentActivityName=".activity.GenreListActivity"
+        android:theme="@style/AppTheme.TransparentActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activity.GenreListActivity" /></activity>
+
         <provider
             android:name=".contentProvider.MovieDBContentProvider"
             android:authorities="com.example.android.moviedb3"
             android:exported="false" />
 
-        <activity android:name=".activity.GenreMovieListActivity"
-            android:parentActivityName=".activity.GenreListActivity"
-            android:theme="@style/AppTheme.TransparentActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.GenreListActivity" /></activity>
+        <service android:name=".services.GetInitialDataIntentService"
+            android:exported="false"/>
+
+
     </application>
 
 </manifest>

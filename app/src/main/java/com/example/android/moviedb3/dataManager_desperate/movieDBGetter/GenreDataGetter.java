@@ -142,7 +142,7 @@ public class GenreDataGetter
 
                 if (!isMovieAvaiable)
                 {
-                    DataDB<MovieData> movieDB = new MovieDataDB(context);
+                    DataDB<PeopleData> movieDB = new MovieDataDB(context);
                     movieDB.removeData(idMovie);
 
                     ArrayList<ReviewData> reviewDatas = DataCheck.CheckData(new DependencyDataListFinder<ReviewData>(new ReviewDataDB(context), idMovie));

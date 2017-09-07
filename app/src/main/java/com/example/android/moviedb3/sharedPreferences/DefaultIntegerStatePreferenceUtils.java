@@ -20,8 +20,8 @@ public class DefaultIntegerStatePreferenceUtils implements IPreferencesUtils<Int
     }
 
     @Override
-    public void SetData(Integer dataIn, String key) {
-
+    public void SetData(Integer dataIn, String key)
+    {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();

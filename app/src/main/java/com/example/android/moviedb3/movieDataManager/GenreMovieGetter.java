@@ -8,7 +8,6 @@ import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonNetworkConnection.NetworkConnectionChecker;
 import com.example.android.moviedb3.jsonParsing.GenreMovieListJSONParser;
 import com.example.android.moviedb3.jsonParsing.MovieDetailJSONParser;
-import com.example.android.moviedb3.jsonParsing.MovieIDListJSONParser;
 import com.example.android.moviedb3.localDatabase.CastDataDB;
 import com.example.android.moviedb3.localDatabase.CrewDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
@@ -24,18 +23,13 @@ import com.example.android.moviedb3.movieDB.ReviewData;
 import com.example.android.moviedb3.movieDB.VideoData;
 import com.example.android.moviedb3.supportDataManager.dataComparision.BaseDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataComparision.DepedencyDataCompare;
-import com.example.android.moviedb3.supportDataManager.dataComparision.IDCompare;
-import com.example.android.moviedb3.supportDataManager.dataComparision.IntermedieteDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataDelete.DataDelete;
-import com.example.android.moviedb3.supportDataManager.dataDelete.DataListDelete;
+import com.example.android.moviedb3.supportDataManager.dataDelete.BaseDataListDelete;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
-import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterSyncTask;
-import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataListGetterSyncTask;
-import com.example.android.moviedb3.supportDataManager.dataReplace.AllDataListReplace;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataListGetterAsyncTask;
 import com.example.android.moviedb3.supportDataManager.dataReplace.DataReplace;
-import com.example.android.moviedb3.supportDataManager.dataReplace.SameDataListReplace;
-import com.example.android.moviedb3.supportDataManager.noDataFinder.DefaultNoDataFinder;
-import com.example.android.moviedb3.supportDataManager.noDataFinder.NoDataFinder;
+import com.example.android.moviedb3.supportDataManager.dataReplace.BaseDataListReplace;
 
 import java.util.ArrayList;
 
@@ -66,7 +60,7 @@ public class GenreMovieGetter implements IMovieDBGetter {
 
     @Override
     public void getData() {
-        NetworkDataGetter.GetData(new NetworkDataGetterSyncTask<ArrayList<GenreMovieData>>(new GenreMovieListJSONParser(genreID), new OnMovieIDListObtainedListener()), genreURL);
+        NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<GenreMovieData>>(new GenreMovieListJSONParser(genreID), new OnMovieIDListObtainedListener()), genreURL);
     }
 
     private class OnMovieIDListObtainedListener implements OnDataObtainedListener<ArrayList<GenreMovieData>> {
@@ -83,7 +77,7 @@ public class GenreMovieGetter implements IMovieDBGetter {
                     movieURLList[a] = MovieDataURL.GetMovieURL(genreMovieDatas.get(a).getIdMovie());
                 }
 
-                NetworkDataGetter.GetData(new NetworkDataListGetterSyncTask<MovieData>(new MovieDetailJSONParser(), new AllMovieDataObtainedListener(genreMovieDatas)), movieURLList);
+                NetworkDataGetter.GetDataAsyncTask(new NetworkDataListGetterAsyncTask<MovieData>(new MovieDetailJSONParser(), new AllMovieDataObtainedListener(genreMovieDatas)), movieURLList);
             }
         }
     }
@@ -146,13 +140,13 @@ public class GenreMovieGetter implements IMovieDBGetter {
                         {
                             movieDB.removeData(idMovie);
 
-                            DataDelete.Delete(new DataListDelete<ReviewData>
+                            DataDelete.Delete(new BaseDataListDelete<ReviewData>
                                     (new DepedencyDataCompare<ReviewData>(), new ReviewDataDB(context), idMovie));
-                            DataDelete.Delete(new DataListDelete<VideoData>
+                            DataDelete.Delete(new BaseDataListDelete<VideoData>
                                     (new DepedencyDataCompare<VideoData>(), new VideoDataDB(context), idMovie));
-                            DataDelete.Delete(new DataListDelete<CastData>
+                            DataDelete.Delete(new BaseDataListDelete<CastData>
                                     (new DepedencyDataCompare<CastData>(), new CastDataDB(context), idMovie));
-                            DataDelete.Delete(new DataListDelete<CrewData>
+                            DataDelete.Delete(new BaseDataListDelete<CrewData>
                                     (new DepedencyDataCompare<CrewData>(), new CrewDataDB(context), idMovie));
                         }
                     }
@@ -170,8 +164,8 @@ public class GenreMovieGetter implements IMovieDBGetter {
                 }
             }
 
-            DataReplace.ReplaceData(new SameDataListReplace<MovieData>(movieDatas, movieDB, new BaseDataCompare<MovieData>()));
-//            DataReplace.ReplaceData(new SameDataListReplace<GenreMovieData>(genreMovieDatas, genreMovieDataDB, new IntermedieteDataCompare<GenreMovieData>(IntermedieteDataCompare.CHECK_SECOND_ID)));
+            DataReplace.ReplaceData(new BaseDataListReplace<MovieData>(movieDatas, movieDB, new BaseDataCompare<MovieData>()));
+//            DataReplace.ReplaceData(new BaseDataListReplace<GenreMovieData>(genreMovieDatas, genreMovieDataDB, new IntermedieteDataCompare<GenreMovieData>(IntermedieteDataCompare.CHECK_SECOND_ID)));
 
             for(GenreMovieData genreMovieData:genreMovieDatas)
             {

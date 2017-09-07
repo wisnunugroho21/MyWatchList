@@ -8,13 +8,13 @@ import java.util.ArrayList;
  * Created by nugroho on 04/09/17.
  */
 
-public class DefaultNoDataFinder<Data> implements INoDataFinder<Data>
+public class NoIDDataFinder<Data> implements INoDataFinder<Data>
 {
     IDataComparision<Data> dataComparision;
     ArrayList<Data> dataArrayList;
     ArrayList<String> idList;
 
-    public DefaultNoDataFinder(IDataComparision<Data> dataComparision, ArrayList<Data> dataArrayList, ArrayList<String> idList) {
+    public NoIDDataFinder(IDataComparision<Data> dataComparision, ArrayList<Data> dataArrayList, ArrayList<String> idList) {
         this.dataComparision = dataComparision;
         this.dataArrayList = dataArrayList;
         this.idList = idList;

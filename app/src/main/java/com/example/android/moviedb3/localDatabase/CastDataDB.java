@@ -43,8 +43,9 @@ public class CastDataDB extends DataDB<CastData>
             String castName = cursor.getString(cursor.getColumnIndex(MovieDBContract.CastDataEntry.COLUMN_CAST_NAME));
             String characterName = cursor.getString(cursor.getColumnIndex(MovieDBContract.CastDataEntry.COLUMN_CHARACTER_NAME));
             String movieID = cursor.getString(cursor.getColumnIndex(MovieDBContract.CastDataEntry.COLUMN_MOVIE_ID));
+            String peopleID = cursor.getString(cursor.getColumnIndex(MovieDBContract.CastDataEntry.COLUMN_PEOPLE_ID));
 
-            CastData castData = new CastData(id, castName, characterName, movieID);
+            CastData castData = new CastData(id, castName, characterName, movieID, peopleID);
             castDataArrayList.add(castData);
 
         } while (cursor.moveToNext());
@@ -62,6 +63,7 @@ public class CastDataDB extends DataDB<CastData>
         contentValues.put(MovieDBContract.CastDataEntry.COLUMN_CAST_NAME, castData.getCastName());
         contentValues.put(MovieDBContract.CastDataEntry.COLUMN_CHARACTER_NAME, castData.getCharacterName());
         contentValues.put(MovieDBContract.CastDataEntry.COLUMN_MOVIE_ID, castData.getMovieID());
+        contentValues.put(MovieDBContract.CastDataEntry.COLUMN_PEOPLE_ID, castData.getPeopleID());
 
         context.getContentResolver().insert(MovieDBContract.CastDataEntry.CONTENT_URI, contentValues);
     }

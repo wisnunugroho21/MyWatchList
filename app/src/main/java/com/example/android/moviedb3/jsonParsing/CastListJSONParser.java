@@ -34,6 +34,7 @@ public class CastListJSONParser implements JSONParser<ArrayList<CastData>>
 
                 String id = String.valueOf((int )(Math.random() * Integer.MAX_VALUE + 1000000));
 
+                String peopleID = cast.getString("id");
                 String castName = cast.getString("name");
                 if(castName == null || castName.equals("null") || castName.isEmpty())
                 {
@@ -46,7 +47,7 @@ public class CastListJSONParser implements JSONParser<ArrayList<CastData>>
                     castCharacter = "";
                 }
 
-                CastData castData = new CastData(id, castName, castCharacter, movieID);
+                CastData castData = new CastData(id, castName, castCharacter, movieID, peopleID);
                 castDataArrayList.add(castData);
             }
 

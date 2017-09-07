@@ -1,5 +1,9 @@
 package com.example.android.moviedb3.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.transition.TransitionManager;
@@ -22,8 +26,9 @@ import com.example.android.moviedb3.localDatabase.TopRateDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
-import com.example.android.moviedb3.movieDataManager.GenreDataGetter;
-import com.example.android.moviedb3.movieDataManager.MovieDataGetter;
+import com.example.android.moviedb3.movieDataManager.GenreDataGetterAsyncTask;
+import com.example.android.moviedb3.movieDataManager.MovieDataGetterAsyncTask;
+import com.example.android.moviedb3.services.GetInitialDataIntentService;
 
 import java.util.ArrayList;
 
@@ -31,7 +36,54 @@ public class SplashActivity extends AppCompatActivity {
 
     TextView stillLoadingTextView;
     ConstraintLayout splashActivityLayout;
-    int amountDataObtained;
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, SplashActivity.this));
+            finish();
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
+
+        stillLoadingTextView = (TextView) findViewById(R.id.txt_app_title_splash_activity);
+        splashActivityLayout = (ConstraintLayout) findViewById(R.id.splash_activity_layout);
+
+        TransitionManager.beginDelayedTransition(splashActivityLayout);
+        stillLoadingTextView.setVisibility(View.VISIBLE);
+
+        UseIntentServiceToGetData();
+
+        /*amountDataObtained = 0;
+
+        GetNowShowingMovieList();*/
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        unregisterReceiver(myReceiver);
+    }
+
+    private void UseIntentServiceToGetData()
+    {
+        registerReceiver(myReceiver, new IntentFilter(GetInitialDataIntentService.GetInitialDataServiceCompleted));
+
+        Intent intent = new Intent(this, GetInitialDataIntentService.class);
+        startService(intent);
+    }
+}
+
+/*int amountDataObtained;
 
     private Runnable visibleLoadingTextRunnable = new Runnable() {
         @Override
@@ -52,55 +104,39 @@ public class SplashActivity extends AppCompatActivity {
             MainMovieListObtainedListener mainMovieListObtainedListener = new MainMovieListObtainedListener();
             mainMovieListObtainedListener.onComplete(true);
         }
-    };
+    };*/
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-
-        stillLoadingTextView = (TextView) findViewById(R.id.txt_app_title_splash_activity);
-        splashActivityLayout = (ConstraintLayout) findViewById(R.id.splash_activity_layout);
-
-        TransitionManager.beginDelayedTransition(splashActivityLayout);
-        stillLoadingTextView.setVisibility(View.VISIBLE);
-
-        amountDataObtained = 0;
-
-        GetNowShowingMovieList();
-    }
-
-    private void GetNowShowingMovieList()
+/*private void GetNowShowingMovieList()
     {
-        DBGetter.GetData(new MovieDataGetter(this,
+        DBGetter.GetData(new MovieDataGetterAsyncTask(this,
                 new MainMovieListObtainedListener(), new NowShowingDataDB(this),
                 getInitialOtherNowShowingMovieListDataDB(), MovieDataURL.GetNowShowingURL()));
     }
 
     private void GetComingSoonMovieList()
     {
-        DBGetter.GetData(new MovieDataGetter(this,
+        DBGetter.GetData(new MovieDataGetterAsyncTask(this,
                 new MainMovieListObtainedListener(), new ComingSoonDataDB(this),
                 getInitialOtherComingSoonMovieListDataDB(), MovieDataURL.GetComingSoonURL()));
     }
 
     private void GetPopularMovieList()
     {
-        DBGetter.GetData(new MovieDataGetter(this,
+        DBGetter.GetData(new MovieDataGetterAsyncTask(this,
                 new MainMovieListObtainedListener(), new PopularDataDB(this),
                 getInitialOtherPopularMovieListDataDB(), MovieDataURL.GetPopularURL()));
     }
 
     private void GetTopRateMovieList()
     {
-        DBGetter.GetData(new MovieDataGetter(this,
+        DBGetter.GetData(new MovieDataGetterAsyncTask(this,
                 new MainMovieListObtainedListener(), new TopRateDataDB(this),
                 getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL()));
     }
 
     private void GetGenreList()
     {
-        DBGetter.GetData(new GenreDataGetter(this, MovieDataURL.GetGenreListURL(), new MainMovieListObtainedListener()));
+        DBGetter.GetData(new GenreDataGetterAsyncTask(this, MovieDataURL.GetGenreListURL(), new MainMovieListObtainedListener()));
     }
 
     private ArrayList<DataDB<String>> getInitialOtherNowShowingMovieListDataDB()
@@ -185,8 +221,4 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
-
-}
+*/

@@ -9,8 +9,7 @@ import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.MovieDataDB;
 import com.example.android.moviedb3.movieDB.MovieData;
 import com.example.android.moviedb3.supportDataManager.dataComparision.BaseDataCompare;
-import com.example.android.moviedb3.supportDataManager.dataComparision.DepedencyDataCompare;
-import com.example.android.moviedb3.supportDataManager.sameDataFinder.DefaultSameDataFinder;
+import com.example.android.moviedb3.supportDataManager.sameDataFinder.SameIDDataFinder;
 import com.example.android.moviedb3.supportDataManager.sameDataFinder.SameDataFinder;
 
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class DatabaseMovieGetter implements IMovieDBGetter
             ArrayList<MovieData> movieDatas = movieDB.getAllData();
             ArrayList<String> idMovies = movieListDB.getAllData();
 
-            return SameDataFinder.getDataSameList(new DefaultSameDataFinder<MovieData>
+            return SameDataFinder.getDataSameList(new SameIDDataFinder<MovieData>
                     (new BaseDataCompare<MovieData>(), movieDatas, idMovies));
         }
 

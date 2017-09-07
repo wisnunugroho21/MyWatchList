@@ -70,6 +70,13 @@ public class MovieDataURL {
         return "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&sort_by=popularity.desc&with_genres=" + idGenre;
     }
 
+    public static String GetPeopleDetailURL(String idPeople)
+    {
+        return "https://api.themoviedb.org/3/person/" + idPeople +" ?api_key=" + API_KEY;
+    }
 
-
+    public static String GetPopularPeopleListURL()
+    {
+        return "https://api.themoviedb.org/3/person/popular?api_key=" + API_KEY;
+    }
 }

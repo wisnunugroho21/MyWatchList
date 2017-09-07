@@ -29,6 +29,7 @@ public class MovieDBContract
     public static final String GENRE_DATA_PATH = "genreData";
     public static final String GENRE_MOVIE_POPULAR_DATA_PATH = "genreMoviePopularData";
     public static final String GENRE_MOVIE_TOP_RATE_DATA_PATH = "genreMovieTopRateData";
+    public static final String PEOPLE_DATA_PATH = "peopleData";
 
     public static final class MovieDataEntry implements BaseColumns
     {
@@ -101,6 +102,7 @@ public class MovieDBContract
         public static final String COLUMN_CREW_NAME = "CrewName";
         public static final String COLUMN_CREW_POSITION = "CrewPosition";
         public static final String COLUMN_MOVIE_ID = "MovieId";
+        public static final String COLUMN_PEOPLE_ID = "PeopleID";
     }
 
     public static class CastDataEntry implements BaseColumns
@@ -110,6 +112,7 @@ public class MovieDBContract
         public static final String COLUMN_CAST_NAME = "CastName";
         public static final String COLUMN_CHARACTER_NAME = "CharacterName";
         public static final String COLUMN_MOVIE_ID = "MovieId";
+        public static final String COLUMN_PEOPLE_ID = "PeopleID";
     }
 
     public static class ReviewDataEntry implements BaseColumns
@@ -151,6 +154,19 @@ public class MovieDBContract
         public static final String TABLE_GENRE_MOVIE_TOP_RATE_DATA = "GenreMovieTopRateData";
         public static final String COLUMN_MOVIE_ID = "MovieId";
         public static final String COLUMN_GENRE_ID = "GenreID";
+    }
+
+    public static class PeopleDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PEOPLE_DATA_PATH).build();
+        public static final String TABLE_PEOPLE_DATA = "PeopleData";
+        public static final String COLUMN_PEOPLE_NAME = "PeopleName";
+        public static final String COLUMN_PLACE_OF_BIRTH = "PlaceOfBirth";
+        public static final String COLUMN_BIRTHDAY = "Birthday";
+        public static final String COLUMN_BIOGRAPHY = "Biography";
+        public static final String COLUMN_PROFILE_IMAGE = "ProfileImage";
+        public static final String COLUMN_OTHER_NAME = "OtherName";
+        public static final String COLUMN_KNOWN_ROLES = "KnownRoles";
     }
 
 }

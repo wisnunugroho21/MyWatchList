@@ -1,11 +1,8 @@
 package com.example.android.moviedb3.movieDataManager;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 
-import com.example.android.moviedb3.localDatabase.CastDataDB;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
-import com.example.android.moviedb3.localDatabase.CrewDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
 import com.example.android.moviedb3.localDatabase.GenreMoviePopularDB;
@@ -13,23 +10,13 @@ import com.example.android.moviedb3.localDatabase.GenreMovieTopRateDB;
 import com.example.android.moviedb3.localDatabase.NowShowingDataDB;
 import com.example.android.moviedb3.localDatabase.PlanToWatchDataDB;
 import com.example.android.moviedb3.localDatabase.PopularDataDB;
-import com.example.android.moviedb3.localDatabase.ReviewDataDB;
 import com.example.android.moviedb3.localDatabase.TopRateDataDB;
-import com.example.android.moviedb3.localDatabase.VideoDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
-import com.example.android.moviedb3.movieDB.CastData;
-import com.example.android.moviedb3.movieDB.CrewData;
 import com.example.android.moviedb3.movieDB.GenreMovieData;
-import com.example.android.moviedb3.movieDB.IntermedieteData;
-import com.example.android.moviedb3.movieDB.ReviewData;
-import com.example.android.moviedb3.movieDB.VideoData;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DataAvailableCheck;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DefaultDataAvailableCheck;
-import com.example.android.moviedb3.supportDataManager.dataComparision.DepedencyDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataComparision.IDCompare;
 import com.example.android.moviedb3.supportDataManager.dataComparision.IntermedieteDataCompare;
-import com.example.android.moviedb3.supportDataManager.dataDelete.DataDelete;
-import com.example.android.moviedb3.supportDataManager.dataDelete.DataListDelete;
 
 import java.util.ArrayList;
 

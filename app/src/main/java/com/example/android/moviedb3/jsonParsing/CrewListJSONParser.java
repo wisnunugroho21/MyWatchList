@@ -33,6 +33,7 @@ public class CrewListJSONParser implements JSONParser<ArrayList<CrewData>>
 
                 String id = String.valueOf((int )(Math.random() * Integer.MAX_VALUE + 1000000));
 
+                String peopleID = cast.getString("id");
                 String crewName = cast.getString("name");
                 if(crewName == null || crewName.equals("null") || crewName.isEmpty())
                 {
@@ -45,7 +46,7 @@ public class CrewListJSONParser implements JSONParser<ArrayList<CrewData>>
                     crewPosition = "";
                 }
 
-                CrewData crewData = new CrewData(id, crewName, crewPosition, movieID);
+                CrewData crewData = new CrewData(id, crewName, crewPosition, movieID, peopleID);
                 crewDataArrayList.add(crewData);
             }
 

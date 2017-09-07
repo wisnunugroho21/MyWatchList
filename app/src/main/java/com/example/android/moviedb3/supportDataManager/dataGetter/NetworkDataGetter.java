@@ -8,11 +8,24 @@ import android.support.annotation.NonNull;
 
 public class NetworkDataGetter
 {
-    public static  <Data> void GetData(INetworkDataGetter<Data> networkDataGetter, @NonNull String... url)
+    public static  <Data> void GetDataAsyncTask(INetworkDataGetterAsyncTask<Data> networkDataGetter, @NonNull String... url)
     {
         if(url.length >= 1)
         {
             networkDataGetter.execute(url);
+        }
+    }
+
+    public static <Data> Data GetDataDefaultThread(INetworkDataGetterDefaultThread<Data> networkDataGetterDefaultThread, @NonNull String... url)
+    {
+        if(url.length >= 1)
+        {
+            return networkDataGetterDefaultThread.getData(url);
+        }
+
+        else
+        {
+            return null;
         }
     }
 }

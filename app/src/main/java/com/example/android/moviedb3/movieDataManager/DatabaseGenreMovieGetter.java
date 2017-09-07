@@ -1,18 +1,15 @@
 package com.example.android.moviedb3.movieDataManager;
 
 import android.content.Context;
-import android.graphics.Movie;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.MovieDataDB;
 import com.example.android.moviedb3.movieDB.GenreMovieData;
 import com.example.android.moviedb3.movieDB.MovieData;
-import com.example.android.moviedb3.supportDataManager.dataComparision.BaseDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataComparision.IntermedieteDataCompare;
-import com.example.android.moviedb3.supportDataManager.sameDataFinder.DefaultSameDataFinder;
+import com.example.android.moviedb3.supportDataManager.sameDataFinder.SameIDDataFinder;
 import com.example.android.moviedb3.supportDataManager.sameDataFinder.SameDataFinder;
 
 import java.util.ArrayList;
@@ -49,7 +46,7 @@ public class DatabaseGenreMovieGetter implements IMovieDBGetter
         {
             ArrayList<GenreMovieData> genreMovieDatas = genreMovieDataDB.getAllData();
             ArrayList<GenreMovieData> expectedGenreMovieDatas = SameDataFinder.getDataSameList
-                    (new DefaultSameDataFinder<GenreMovieData>
+                    (new SameIDDataFinder<GenreMovieData>
                             (new IntermedieteDataCompare<GenreMovieData>(IntermedieteDataCompare.CHECK_SECOND_ID), genreMovieDatas, idGenre));
 
             DataDB<MovieData> movieDB = new MovieDataDB(context);

@@ -12,7 +12,7 @@ public class MovieDBKeyEntry
 
     public class MovieDataPersistance
     {
-        public static final String MOVIE_DATA_PERSISTANCE_KEY = "MovieData";
+        public static final String MOVIE_DATA_PERSISTANCE_KEY = "PeopleData";
         public static final String MOVIE_DATA_LIST_PERSISTANCE_KEY = "MovieDataList";
         public static final String GENRE_PERSISTANCE_KEY = "GenreData";
 
@@ -50,7 +50,6 @@ public class MovieDBKeyEntry
     {
         public static final int HOME_PAGE_ADAPTER_INDEX = 0;
         public static final int TOP_LIST_PAGE_ADAPTER_INDEX = 1;
-        public static final int LIBRARY_PAGE_ADAPTER_INDEX = 2;
         public static final int YOURS_PAGE_ADAPTER_INDEX = 3;
     }
 

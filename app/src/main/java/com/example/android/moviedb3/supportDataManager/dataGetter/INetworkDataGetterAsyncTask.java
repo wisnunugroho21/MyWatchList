@@ -8,11 +8,11 @@ import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
  * Created by nugroho on 23/08/17.
  */
 
-public abstract class INetworkDataGetter<Data> extends AsyncTask<String, Void, Data>
+public abstract class INetworkDataGetterAsyncTask<Data> extends AsyncTask<String, Void, Data>
 {
     OnDataObtainedListener<Data> onDataObtainedListener;
 
-    public INetworkDataGetter(OnDataObtainedListener<Data> onDataObtainedListener) {
+    public INetworkDataGetterAsyncTask(OnDataObtainedListener<Data> onDataObtainedListener) {
         this.onDataObtainedListener = onDataObtainedListener;
     }
 

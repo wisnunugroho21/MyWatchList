@@ -94,7 +94,8 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 MovieDBContract.CrewDataEntry._ID + " TEXT, " +
                 MovieDBContract.CrewDataEntry.COLUMN_CREW_NAME + " TEXT, " +
                 MovieDBContract.CrewDataEntry.COLUMN_CREW_POSITION + " TEXT, " +
-                MovieDBContract.CrewDataEntry.COLUMN_MOVIE_ID + " TEXT " +
+                MovieDBContract.CrewDataEntry.COLUMN_MOVIE_ID + " TEXT, " +
+                MovieDBContract.CrewDataEntry.COLUMN_PEOPLE_ID + " TEXT " +
                 ");";
 
         db.execSQL(SQLITE_CREATE_CREW_TABLE);
@@ -103,7 +104,8 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 MovieDBContract.CastDataEntry._ID + " TEXT, " +
                 MovieDBContract.CastDataEntry.COLUMN_CAST_NAME + " TEXT, " +
                 MovieDBContract.CastDataEntry.COLUMN_CHARACTER_NAME + " TEXT, " +
-                MovieDBContract.CastDataEntry.COLUMN_MOVIE_ID + " TEXT " +
+                MovieDBContract.CastDataEntry.COLUMN_MOVIE_ID + " TEXT, " +
+                MovieDBContract.CastDataEntry.COLUMN_PEOPLE_ID + " TEXT " +
                 ");";
 
         db.execSQL(SQLITE_CREATE_CAST_TABLE);
@@ -148,6 +150,19 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 ");";
 
         db.execSQL(SQLITE_CREATE_GENRE_MOVIE_TOP_RATE_TABLE);
+
+        final String SQLITE_CREATE_PEOPLE_TABLE = "CREATE TABLE " + MovieDBContract.PeopleDataEntry.TABLE_PEOPLE_DATA + " (" +
+                MovieDBContract.PeopleDataEntry._ID + " TEXT, " +
+                MovieDBContract.PeopleDataEntry.COLUMN_PEOPLE_NAME + " TEXT, " +
+                MovieDBContract.PeopleDataEntry.COLUMN_PLACE_OF_BIRTH + " TEXT, " +
+                MovieDBContract.PeopleDataEntry.COLUMN_BIRTHDAY + " TEXT, " +
+                MovieDBContract.PeopleDataEntry.COLUMN_BIOGRAPHY + " TEXT, " +
+                MovieDBContract.PeopleDataEntry.COLUMN_PROFILE_IMAGE + " TEXT, " +
+                MovieDBContract.PeopleDataEntry.COLUMN_OTHER_NAME + " TEXT, " +
+                MovieDBContract.PeopleDataEntry.COLUMN_KNOWN_ROLES + " TEXT " +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_PEOPLE_TABLE);
     }
 
     @Override

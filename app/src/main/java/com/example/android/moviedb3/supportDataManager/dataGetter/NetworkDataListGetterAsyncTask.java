@@ -15,12 +15,12 @@ import java.util.ArrayList;
  * Created by nugroho on 23/08/17.
  */
 
-public class NetworkDataListGetterSyncTask<Data> extends INetworkDataGetter<ArrayList<Data>>
+public class NetworkDataListGetterAsyncTask<Data> extends INetworkDataGetterAsyncTask<ArrayList<Data>>
 {
     private JSONReceiver jsonReceiver;
     private JSONParser<Data> jsonParser;
 
-    public NetworkDataListGetterSyncTask(@NonNull JSONParser<Data> jsonParser, @NonNull OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener) {
+    public NetworkDataListGetterAsyncTask(@NonNull JSONParser<Data> jsonParser, @NonNull OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener) {
 
         super(onDataObtainedListener);
         this.jsonReceiver = new JSONHTTPReceiver();

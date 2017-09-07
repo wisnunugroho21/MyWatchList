@@ -23,12 +23,9 @@ import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.movieDB.GenreMovieData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieData;
-import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
-import com.example.android.moviedb3.movieDataManager.DatabaseGenreGetter;
 import com.example.android.moviedb3.movieDataManager.DatabaseGenreMovieGetter;
 import com.example.android.moviedb3.movieDataManager.DatabaseMovieGetter;
-import com.example.android.moviedb3.movieDataManager.GenreDataGetter;
 import com.example.android.moviedb3.movieDataManager.GenreMovieGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
 
@@ -248,17 +245,17 @@ public class MovieListFragment extends Fragment
     {
         ShowLoadingData();
 
-        MovieDataGetter movieDataGetter = new MovieDataGetter(getContext(),
+        MovieDataGetterAsyncTask movieDataGetter = new MovieDataGetterAsyncTask(getContext(),
                 new MainMovieListObtainedListener(), currentMovieIdDB, othersMovieIdDB, movieIDURL);
         movieDataGetter.getData();
     }*/
 
 
 
-/*    private class MainMovieListObtainedListener implements OnDataObtainedListener<ArrayList<MovieData>>
+/*    private class MainMovieListObtainedListener implements OnDataObtainedListener<ArrayList<PeopleData>>
     {
         @Override
-        public void onDataObtained(ArrayList<MovieData> movieDatas) {
+        public void onDataObtained(ArrayList<PeopleData> movieDatas) {
 
             movieDataArrayList = movieDatas;
 
@@ -269,11 +266,11 @@ public class MovieListFragment extends Fragment
     }
 }
 
-    private void AddMovieDataToDatabase(ArrayList<MovieData> movieDatas)
+    private void AddMovieDataToDatabase(ArrayList<PeopleData> movieDatas)
     {
-        DataDB<MovieData> movieDataDB = new MovieDataDB(getContext());
+        DataDB<PeopleData> movieDataDB = new MovieDataDB(getContext());
 
-        for (MovieData moviedata:movieDatas)
+        for (PeopleData moviedata:movieDatas)
         {
             movieDataDB.addData(moviedata);
         }

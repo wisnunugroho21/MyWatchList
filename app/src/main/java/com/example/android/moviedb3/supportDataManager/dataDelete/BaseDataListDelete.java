@@ -1,36 +1,39 @@
-package com.example.android.moviedb3.supportDataManager.sameDataFinder;
+package com.example.android.moviedb3.supportDataManager.dataDelete;
 
+import com.example.android.moviedb3.localDatabase.DataDB;
+import com.example.android.moviedb3.movieDB.BaseData;
 import com.example.android.moviedb3.supportDataManager.dataComparision.IDataComparision;
 
 import java.util.ArrayList;
 
 /**
- * Created by nugroho on 04/09/17.
+ * Created by nugroho on 05/09/17.
  */
 
-public class DefaultSameDataFinder<Data> implements ISameDataFinder<Data>
+public class BaseDataListDelete<Data extends BaseData> implements IDataDelete
 {
     IDataComparision<Data> dataComparision;
-    ArrayList<Data> dataArrayList;
+    DataDB<Data> dataDB;
     ArrayList<String> idList;
 
     String idData;
 
-    public DefaultSameDataFinder(IDataComparision<Data> dataComparision, ArrayList<Data> dataArrayList, ArrayList<String> idList) {
+    public BaseDataListDelete(IDataComparision<Data> dataComparision, DataDB<Data> dataDB, ArrayList<String> idList) {
         this.dataComparision = dataComparision;
-        this.dataArrayList = dataArrayList;
+        this.dataDB = dataDB;
         this.idList = idList;
     }
 
-    public DefaultSameDataFinder(IDataComparision<Data> dataComparision, ArrayList<Data> dataArrayList, String idData) {
+    public BaseDataListDelete(IDataComparision<Data> dataComparision, DataDB<Data> dataDB, String idData) {
         this.dataComparision = dataComparision;
-        this.dataArrayList = dataArrayList;
+        this.dataDB = dataDB;
         this.idData = idData;
     }
 
-    public ArrayList<Data> getDataSameList()
+    @Override
+    public void Delete()
     {
-        ArrayList<Data> sameDataList = new ArrayList<>();
+        ArrayList<Data> dataArrayList = dataDB.getAllData();
 
         if(idList != null)
         {
@@ -42,7 +45,7 @@ public class DefaultSameDataFinder<Data> implements ISameDataFinder<Data>
                     {
                         if(dataComparision.isSame(id, data))
                         {
-                            sameDataList.add(data);
+                            dataDB.removeData(data.getId());
                         }
                     }
                 }
@@ -51,18 +54,18 @@ public class DefaultSameDataFinder<Data> implements ISameDataFinder<Data>
 
         else
         {
-            if(dataArrayList != null && idData != null)
+            if(idData != null && dataArrayList != null)
             {
                 for (Data data:dataArrayList)
                 {
                     if(dataComparision.isSame(idData, data))
                     {
-                        sameDataList.add(data);
+                        dataDB.removeData(data.getId());
                     }
                 }
             }
         }
 
-        return sameDataList;
+
     }
 }

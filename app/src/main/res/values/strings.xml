@@ -53,6 +53,21 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="birthplace_label">Place of Birth</string>
+    <string name="birthday_label">Birthday</string>
+    <string name="casts_label">Roles</string>
+    <string name="crews_label">Filmography</string>
+
+    <string name="movie_cast_label">Movie Casts</string>
+    <string name="more_movie_cast_label">More Movie Casts</string>
+    <string name="no_movie_cast_label">No Movie Cast</string>
+    <string name="tv_show_casts_label">TV Show Casts</string>
+    <string name="more_tv_show_casts_label">More TV Show Casts</string>
+    <string name="no_tv_show_casts_label">No TV Show Cast</string>
+    <string name="filmography_label">Filmography</string>
+    <string name="more_filmography_label">More Filmography</string>
+    <string name="no_filmography_label">No Filmography</string>
+    <string name="image_label">Image</string>
+    <string name="no_image_label">No Image</string>
 
 </resources>
