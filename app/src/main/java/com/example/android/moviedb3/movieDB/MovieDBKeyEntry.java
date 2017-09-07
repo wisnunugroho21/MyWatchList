@@ -9,6 +9,7 @@ import com.example.android.moviedb3.BuildConfig;
 public class MovieDBKeyEntry
 {
     public static final String GET_MOVIE_LIST_MESSENGER = "GetMovieListMessenger";
+    public static final int NEW_NOW_SHOWING_MOVIE_NOTIFICATION = 1980;
 
     public class MovieDataPersistance
     {

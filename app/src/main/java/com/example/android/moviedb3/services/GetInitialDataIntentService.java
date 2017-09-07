@@ -4,7 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import com.example.android.moviedb3.activity.SplashActivity;
+import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
@@ -16,9 +16,7 @@ import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
 import com.example.android.moviedb3.movieDataManager.GenreDataGetter;
-import com.example.android.moviedb3.movieDataManager.GenreDataGetterAsyncTask;
 import com.example.android.moviedb3.movieDataManager.MovieDataGetter;
-import com.example.android.moviedb3.movieDataManager.MovieDataGetterAsyncTask;
 
 import java.util.ArrayList;
 
@@ -35,7 +33,7 @@ public class GetInitialDataIntentService extends IntentService
 
     public static final String GetInitialDataServiceCompleted = "Get Initial Data Service has been completed";
 
-    private int NewNowShowingMovie;
+    private int numberNewNowShowingMovie;
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent)
@@ -46,6 +44,13 @@ public class GetInitialDataIntentService extends IntentService
         GetTopRateMovieList();
         GetGenreList();
 
+        /*if(numberNewNowShowingMovie <= 0)
+        {
+            NewNowShowingNotificationUtils.showNotification(this, numberNewNowShowingMovie);
+        }*/
+
+        NewNowShowingNotificationUtils.showNotification(this, numberNewNowShowingMovie);
+
         Intent broadcastIntent = new Intent(GetInitialDataServiceCompleted);
         sendBroadcast(broadcastIntent);
     }
@@ -53,7 +58,7 @@ public class GetInitialDataIntentService extends IntentService
     private void GetNowShowingMovieList()
     {
         DBGetter.GetData(new MovieDataGetter(this, new NowShowingDataDB(this),
-                getInitialOtherNowShowingMovieListDataDB(), MovieDataURL.GetNowShowingURL()));
+                getInitialOtherNowShowingMovieListDataDB(), MovieDataURL.GetNowShowingURL(), new newNowShowingMovieObtained()));
     }
 
     private void GetComingSoonMovieList()
@@ -133,5 +138,14 @@ public class GetInitialDataIntentService extends IntentService
         dataDBArrayList.add(new PlanToWatchDataDB(this));
 
         return dataDBArrayList;
+    }
+
+    private class newNowShowingMovieObtained implements OnDataObtainedListener<Integer>
+    {
+        @Override
+        public void onDataObtained(Integer integer)
+        {
+            numberNewNowShowingMovie = integer;
+        }
     }
 }

@@ -123,5 +123,10 @@ public class MovieDataGetter implements IMovieDBGetter
 
         DataReplace.ReplaceData(new BaseDataListReplace<MovieData>(movieDatas, movieDB, new BaseDataCompare<MovieData>()));
         DataReplace.ReplaceData(new AllDataListReplace<String>(currentMovieListDataDB, idMovieList));
+
+        if(movieDifferentObtainedListener != null)
+        {
+            movieDifferentObtainedListener.onDataObtained(willDeletedIdMovieList.size());
+        }
     }
 }

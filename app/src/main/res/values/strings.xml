@@ -70,4 +70,8 @@
     <string name="image_label">Image</string>
     <string name="no_image_label">No Image</string>
 
+    <string name="new_now_showing_notification_check_movies_action">Check them out!</string>
+    <string name="new_now_showing_notification_content_title">New NowShowing Movies</string>
+    <string name="new_now_showing_notification_start_content_text">Hey! There are </string>
+    <string name="new_now_showing_notification_final_content_text"> new movies that showing in the theaters. Don\'t forget to watch them</string>
 </resources>
