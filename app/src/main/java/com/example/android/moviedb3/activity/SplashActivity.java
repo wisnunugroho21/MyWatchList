@@ -1,51 +1,37 @@
 package com.example.android.moviedb3.activity;
 
-import android.content.BroadcastReceiver;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.constraint.ConstraintLayout;
-import android.support.transition.TransitionManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
-import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
-import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
-import com.example.android.moviedb3.localDatabase.DataDB;
-import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
-import com.example.android.moviedb3.localDatabase.NowShowingDataDB;
-import com.example.android.moviedb3.localDatabase.PlanToWatchDataDB;
-import com.example.android.moviedb3.localDatabase.PopularDataDB;
-import com.example.android.moviedb3.localDatabase.TopRateDataDB;
-import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
-import com.example.android.moviedb3.movieDB.MovieDataURL;
-import com.example.android.moviedb3.movieDataManager.DBGetter;
-import com.example.android.moviedb3.movieDataManager.GenreDataGetterAsyncTask;
-import com.example.android.moviedb3.movieDataManager.MovieDataGetterAsyncTask;
-import com.example.android.moviedb3.services.GetInitialDataIntentService;
-
-import java.util.ArrayList;
+import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
+import com.example.android.moviedb3.services.GetMovieListIntentService;
+import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePreference;
+import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
+import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 
 public class SplashActivity extends AppCompatActivity {
 
-    TextView stillLoadingTextView;
     ConstraintLayout splashActivityLayout;
 
-    private BroadcastReceiver myReceiver = new BroadcastReceiver()
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, SplashActivity.this));
-            finish();
-        }
-    };
+    ImageView splashAppLogoImage;
+    TextView appTitleSplashTextView;
+    TextView downloadDataTextView;
+    ProgressBar downloadDataProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,35 +39,233 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        stillLoadingTextView = (TextView) findViewById(R.id.txt_app_title_splash_activity);
         splashActivityLayout = (ConstraintLayout) findViewById(R.id.splash_activity_layout);
+        appTitleSplashTextView = (TextView) findViewById(R.id.txt_app_title_splash_activity);
+        splashAppLogoImage = (ImageView) findViewById(R.id.iv_splash_image);
+        downloadDataTextView = (TextView) findViewById(R.id.txt_downloading_data_first_time);
+        downloadDataProgressBar = (ProgressBar) findViewById(R.id.pb_downloading_data);
 
-        TransitionManager.beginDelayedTransition(splashActivityLayout);
-        stillLoadingTextView.setVisibility(View.VISIBLE);
+        appTitleSplashTextView.setVisibility(View.VISIBLE);
+        splashAppLogoImage.setVisibility(View.VISIBLE);
+        downloadDataTextView.setVisibility(View.GONE);
+        downloadDataProgressBar.setVisibility(View.GONE);
 
-        UseIntentServiceToGetData();
+        if(PreferencesUtils.GetData(new DefaultBooleanStatePreference(this), MovieDBKeyEntry.SharedPreferencesKey.CHECK_FIRST_TIME, true))
+        {
+            startGetDataService();
 
-        /*amountDataObtained = 0;
+            DoSomethingIfThisIsFirstTime doSomethingIfThisIsFirstTime = new DoSomethingIfThisIsFirstTime();
+            doSomethingIfThisIsFirstTime.execute();
+        }
 
-        GetNowShowingMovieList();*/
+        else
+        {
+            DoSomethingIfThisIsNotFirstTime doSomethingIfThisIsNotFirstTime = new DoSomethingIfThisIsNotFirstTime();
+            doSomethingIfThisIsNotFirstTime.execute();
+        }
     }
 
-    @Override
-    protected void onDestroy()
+    private void LaunchToNextActivity()
     {
-        super.onDestroy();
-
-        unregisterReceiver(myReceiver);
+        PreferencesUtils.SetData(new DefaultBooleanStatePreference(this), false, MovieDBKeyEntry.SharedPreferencesKey.CHECK_FIRST_TIME);
+        ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, this));
+        finish();
     }
 
-    private void UseIntentServiceToGetData()
+    private void startGetDataService()
     {
-        registerReceiver(myReceiver, new IntentFilter(GetInitialDataIntentService.GetInitialDataServiceCompleted));
-
-        Intent intent = new Intent(this, GetInitialDataIntentService.class);
+        Intent intent = new Intent(this, GetMovieListIntentService.class);
+        intent.putExtra(MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_RESULT_RECEIVER,
+                new GetInitialDataResultReceiver(new Handler(), this));
         startService(intent);
     }
+
+    private void AnimateFadeLoadingData()
+    {
+        appTitleSplashTextView.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation)
+                    {
+                        appTitleSplashTextView.setVisibility(View.GONE);
+                    }
+                });
+
+        splashAppLogoImage.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation)
+                    {
+                        splashAppLogoImage.setVisibility(View.GONE);
+                    }
+                });
+
+        downloadDataTextView.setVisibility(View.VISIBLE);
+        downloadDataTextView.setAlpha(0f);
+        downloadDataTextView.animate()
+                .alpha(1f)
+                .setDuration(200)
+                .setListener(null);
+
+        downloadDataProgressBar.setVisibility(View.VISIBLE);
+        downloadDataProgressBar.setAlpha(0f);
+        downloadDataProgressBar.animate()
+                .alpha(1f)
+                .setDuration(200)
+                .setListener(null);
+        downloadDataProgressBar.setIndeterminate(true);
+    }
+
+    public void AnimateFadeFinishLoadingData()
+    {
+        downloadDataTextView.animate()
+                .alpha(0f)
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation)
+                    {
+                        downloadDataTextView.setVisibility(View.GONE);
+                    }
+                });
+
+        downloadDataProgressBar.animate()
+                .alpha(0f)
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation)
+                    {
+                        downloadDataProgressBar.setVisibility(View.GONE);
+                    }
+                });
+    }
+
+    private void SetInitialSharedPreference()
+    {
+        PreferencesUtils.SetData(new DefaultStringStatePreference(this), getString(R.string.region_key), getString(R.string.region_usa_value));
+        PreferencesUtils.SetData(new DefaultStringStatePreference(this), getString(R.string.content_language_key), getString(R.string.content_language_english_value));
+    }
+
+    private class DoSomethingIfThisIsNotFirstTime extends AsyncTask<Void, Void , Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            LaunchToNextActivity();
+        }
+    }
+
+    private class DoSomethingIfThisIsFirstTime extends AsyncTask<Void, Void , Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            SetInitialSharedPreference();
+
+            try
+            {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            AnimateFadeLoadingData();
+        }
+    }
+
+    private class GetInitialDataResultReceiver extends ResultReceiver
+    {
+        Context context;
+
+        public GetInitialDataResultReceiver(Handler handler, Context context)
+        {
+            super(handler);
+            this.context = context;
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData)
+        {
+            if(resultCode == MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_RESULT_SUCCESS)
+            {
+                AnimateFadeFinishLoadingData();
+                LaunchToNextActivity();
+            }
+        }
+    }
 }
+
+    /*private BroadcastReceiver setBroadCastReceiver()
+    {
+        return new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                LaunchToNextActivity();
+            }
+        };
+    }*/
+
+    /*private void SetJobSchedulerToGetData()
+    {
+        broadcastReceiver = setBroadCastReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MovieDBKeyEntry.GET_MOVIE_LIST_MESSENGER));
+
+        JobInfo initialJobInfo = new JobInfo.Builder(MovieDBKeyEntry.JobSchedulerID.FIRST_GET_DATA, new ComponentName(getPackageName(), GetInitialDataService.class.getName()))
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .build();
+        jobScheduler.schedule(initialJobInfo);
+    }*/
+
+/*private class GetInitialDataResultReceiver extends ResultReceiver
+    {
+        Context context;
+
+        public GetInitialDataResultReceiver(Handler handler, Context context)
+        {
+            super(handler);
+            this.context = context;
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData)
+        {
+            if(resultCode == MovieDBKeyEntry.GET_MOVIE_LIST_RESULT_SUCCESS)
+            {
+                ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, context));
+                SplashActivity.this.finish();
+            }
+        }
+    }*/
 
 /*int amountDataObtained;
 

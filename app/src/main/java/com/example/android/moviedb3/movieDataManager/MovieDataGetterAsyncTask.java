@@ -87,7 +87,7 @@ public class MovieDataGetterAsyncTask implements IMovieDBGetter {
 
                 for(int a = 0; a < strings.size(); a++)
                 {
-                    movieURLList[a] = MovieDataURL.GetMovieURL(strings.get(a));
+                    movieURLList[a] = MovieDataURL.GetMovieURL(strings.get(a), context);
                 }
 
                 NetworkDataGetter.GetDataAsyncTask(new NetworkDataListGetterAsyncTask<MovieData>(new MovieDetailJSONParser(), new AllMovieDataObtainedListener(strings)), movieURLList);

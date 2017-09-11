@@ -21,6 +21,7 @@ public class GenreListActivity extends AppCompatActivity
         setGenreListFragment();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.genre_label);
     }
 
     private void setGenreListFragment()

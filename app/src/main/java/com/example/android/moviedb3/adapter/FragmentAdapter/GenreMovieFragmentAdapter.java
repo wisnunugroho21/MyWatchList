@@ -38,10 +38,10 @@ public class GenreMovieFragmentAdapter  extends FragmentStatePagerAdapter
         pageTitle = new ArrayList<>();
 
         MovieListFragment popularMovieListFragment = new MovieListFragment();
-        popularMovieListFragment.setGenre(idGenre, new GenreMoviePopularDB(context), MovieDataURL.GetGenrePopularMovieListURL(idGenre));
+        popularMovieListFragment.setGenre(idGenre, new GenreMoviePopularDB(context), MovieDataURL.GetGenrePopularMovieListURL(idGenre, context));
 
         MovieListFragment topRateMovieListFragment = new MovieListFragment();
-        topRateMovieListFragment.setGenre(idGenre, new GenreMovieTopRateDB(context), MovieDataURL.GetGenreTopRateMovieListURL(idGenre));
+        topRateMovieListFragment.setGenre(idGenre, new GenreMovieTopRateDB(context), MovieDataURL.GetGenreTopRateMovieListURL(idGenre, context));
 
         movieListFragments.add(popularMovieListFragment);
         movieListFragments.add(topRateMovieListFragment);

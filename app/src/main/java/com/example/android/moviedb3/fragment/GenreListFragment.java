@@ -17,9 +17,12 @@ import com.example.android.moviedb3.adapter.RecyclerViewAdapter.GenreDataListRec
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonParsing.GenreListJSONParser;
+import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.movieDB.GenreData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
+import com.example.android.moviedb3.movieDataManager.DBGetter;
+import com.example.android.moviedb3.movieDataManager.DatabaseGenreGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
 
@@ -76,7 +79,7 @@ public class GenreListFragment extends Fragment
     private void GetGenreList()
     {
         ShowLoadingData();
-        NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<GenreData>>(new GenreListJSONParser(), new GenreListObtained()), MovieDataURL.GetGenreListURL());
+        DBGetter.GetData(new DatabaseGenreGetter(getContext(), new GenreListObtained()));
     }
 
     private void SetGenreRecyclerView(ArrayList<GenreData> genreDataArrayList)

@@ -28,6 +28,11 @@ public class PeopleDetailJSONParser implements JSONParser<PeopleData>
     @Override
     public PeopleData Parse(JSONObject jsonObject) {
 
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         if(peopleData != null)
         {
             try

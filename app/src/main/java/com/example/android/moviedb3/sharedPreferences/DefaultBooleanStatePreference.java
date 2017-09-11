@@ -3,36 +3,34 @@ package com.example.android.moviedb3.sharedPreferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-
-import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 
 /**
- * Created by nugroho on 30/07/17.
+ * Created by nugroho on 10/09/17.
  */
 
-public class DefaultIntegerStatePreferenceUtils implements IPreferencesUtils<Integer>
+public class DefaultBooleanStatePreference implements IPreferencesUtils<Boolean>
 {
     Context context;
 
-    public DefaultIntegerStatePreferenceUtils(Context context) {
+    public DefaultBooleanStatePreference(Context context) {
         this.context = context;
     }
 
     @Override
-    public void SetData(Integer dataIn, String key)
+    public void SetData(Boolean dataIn, String Key)
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(key, dataIn);
+        editor.putBoolean(Key, dataIn);
         editor.apply();
     }
 
     @Override
-    public Integer GetData(String key, Integer defaultDataOut) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getInt(key, defaultDataOut);
-    }
+    public Boolean GetData(String key, Boolean defaultDataOut)
+    {
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(key, defaultDataOut);
+    }
 }

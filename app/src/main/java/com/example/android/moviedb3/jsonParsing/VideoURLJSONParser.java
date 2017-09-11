@@ -13,6 +13,11 @@ public class VideoURLJSONParser implements JSONParser<String>
     @Override
     public String Parse(JSONObject jsonObject) {
 
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         try
         {
             JSONArray results = jsonObject.getJSONArray("results");

@@ -16,6 +16,12 @@ public class VideoListJSONParser implements JSONParser<ArrayList<VideoData>>
 {
     @Override
     public ArrayList<VideoData> Parse(JSONObject jsonObject) {
+
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         ArrayList<VideoData> videoDataArrayList = new ArrayList<>();
         String movieID;
 

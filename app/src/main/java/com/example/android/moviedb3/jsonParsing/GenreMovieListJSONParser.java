@@ -23,6 +23,11 @@ public class GenreMovieListJSONParser implements JSONParser<ArrayList<GenreMovie
     @Override
     public ArrayList<GenreMovieData> Parse(JSONObject jsonObject) {
 
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         ArrayList<GenreMovieData> genreMovieDataArrayList = new ArrayList<>();
 
         try

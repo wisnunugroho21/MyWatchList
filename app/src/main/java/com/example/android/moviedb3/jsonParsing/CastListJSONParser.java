@@ -17,6 +17,11 @@ public class CastListJSONParser implements JSONParser<ArrayList<CastData>>
     @Override
     public ArrayList<CastData> Parse(JSONObject jsonObject) {
 
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         ArrayList<CastData> castDataArrayList = new ArrayList<>();
         String movieID;
 

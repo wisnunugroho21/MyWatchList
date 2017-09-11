@@ -85,7 +85,7 @@ public class MovieDataGetter implements IMovieDBGetter
 
         for(int a = 0; a < movieIDList.size(); a++)
         {
-            movieURLList[a] = MovieDataURL.GetMovieURL(movieIDList.get(a));
+            movieURLList[a] = MovieDataURL.GetMovieURL(movieIDList.get(a), context);
         }
 
         ArrayList<MovieData> movieDatas = NetworkDataGetter.GetDataDefaultThread(new NetworkDataListGetterDefaultThread<MovieData>(new MovieDetailJSONParser()), movieURLList);

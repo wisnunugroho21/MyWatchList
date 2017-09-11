@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">My WatchList</string>
-    <string name="app_motto">Discover best movie that suited for you</string>
+    <string name="app_motto">All Movie for You!</string>
 
     <string name="top_rate_label">Top Rate</string>
     <string name="popular_label">Popular</string>
@@ -10,7 +10,7 @@
     <string name="no_conncection">No Internet Connection</string>
     <string name="tryAgain">Try Again</string>
     <string name="noData">No Data</string>
-    <string name="stillLoadingLabel">Still Loading...</string>
+    <string name="stillLoadingLabel">Still Loading&#8230;</string>
 
     <string name="genre_label">Genre</string>
     <string name="duration_label">Duration</string>
@@ -42,6 +42,8 @@
 
     <string name="all_genre_label">All Genres</string>
 
+    <string name="movie_label">Movies</string>
+    <string name="tv_label">TV Shows</string>
     <string name="people_label">People</string>
     <string name="settings_label">Setting</string>
     <string name="feedback_label">Send Feedback</string>
@@ -70,8 +72,98 @@
     <string name="image_label">Image</string>
     <string name="no_image_label">No Image</string>
 
+    <string name="getting_Data_notification_content_title">Getting All Data</string>
+    <string name="getting_data_notification_completed">All Data has been Obtained.</string>
+    <string name="getting_data_notification_still_progress">Downloading Data..</string>
     <string name="new_now_showing_notification_check_movies_action">Check them out!</string>
     <string name="new_now_showing_notification_content_title">New NowShowing Movies</string>
     <string name="new_now_showing_notification_start_content_text">Hey! There are </string>
     <string name="new_now_showing_notification_final_content_text"> new movies that showing in the theaters. Don\'t forget to watch them</string>
+    <string name="new_now_showing_notification_period_update">Period Update</string>
+    <string name="new_now_showing_notification_updating_movie_list">Updating movie list..</string>
+
+    <string name="download_first_time">Downloading data</string>
+
+    <string name="updates_policy_label">Updates Policy</string>
+    <string name="periodic_updates_label">Periodic Updates</string>
+    <string name="periodic_updates_explanation">Periodic Update will automatically update the movie list for each time, according to your settings. Make sure this app goes into exception list in all of your Battery Saver\'s apps</string>
+    <string name="periodic_updates_settings_label">Periodic Updates Setting</string>
+    <string name="updates_periodic_label">Updates Period</string>
+    <string name="only_on_wifi">Only On Wifi</string>
+    <string name="only_on_wifi_explanation">Set Period Updates to occurs only when connected to Wifi</string>
+    <string name="updates_notification_label">Updates Notification</string>
+    <string name="updates_notification_explanation">Give Notification for each update occurs</string>
+    <string name="updates_when_open_apps_label">Updates when Open Apps</string>
+    <string name="updates_when_open_apps_explanation">Always do updates for each time you open this app</string>
+    <string name="region_and_language_label">Region and Language</string>
+    <string name="region_label">Region</string>
+    <string name="content_language_label">Content Language</string>
+    
+    <string name="period_update_screen_key" translatable="false">period_update_screen_key</string>
+    <string name="period_update_key" translatable="false">period_update_key</string>
+    <string name="update_period_key" translatable="false">update_period_key</string>
+    <string name="only_on_wifi_key" translatable="false">only_on_wifi_key</string>
+    <string name="update_notification_key" translatable="false">update_notification_key</string>
+    <string name="udpate_when_open_apps_key" translatable="false">update_when_open_apps_key</string>
+    <string name="region_key" translatable="false">region_key</string>
+    <string name="content_language_key" translatable="false">content_language_key</string>
+
+    <string name="update_period_values_4_hours">four_hours</string>
+    <string name="update_period_values_6_hours">six_hours</string>
+    <string name="update_period_values_8_hours">eight_hours</string>
+    <string name="update_period_values_12_hours">twelve_hours</string>
+    <string name="update_period_values_24_hours">twenthy_four_hours</string>
+
+    <string name="update_period_label_4_hours">4 Hours/Day</string>
+    <string name="update_period_label_6_hours">6 Hours/Day</string>
+    <string name="update_period_label_8_hours">8 Hours/Day</string>
+    <string name="update_period_label_12_hours">12 Hours/Day</string>
+    <string name="update_period_label_24_hours">24 Hours/Day</string>
+
+    <string name="region_canada_label">Canada</string>
+    <string name="region_china_label">China</string>
+    <string name="region_england_label">England</string>
+    <string name="region_france_label">France</string>
+    <string name="region_germany_label">Germany</string>
+    <string name="region_italy_label">Italy</string>
+    <string name="region_indonesia_label">Indonesia</string>
+    <string name="region_india_label">India</string>
+    <string name="region_japan_label">Japan</string>
+    <string name="region_netherlands_label">Netherlands</string>
+    <string name="region_russia_label">Russia</string>
+    <string name="region_spain_label">Spain</string>
+    <string name="region_south_korea_label">South Korea</string>
+    <string name="region_usa_label">United State of America</string>
+
+    <string name="region_canada_value">CA</string>
+    <string name="region_china_value">CN</string>
+    <string name="region_england_value">GB</string>
+    <string name="region_france_value">FR</string>
+    <string name="region_germany_value">DE</string>
+    <string name="region_italy_value">IT</string>
+    <string name="region_indonesia_value">ID</string>
+    <string name="region_india_value">IN</string>
+    <string name="region_japan_value">JP</string>
+    <string name="region_netherlands_value">NL</string>
+    <string name="region_russia_value">RU</string>
+    <string name="region_spain_value">ES</string>
+    <string name="region_south_korea_value">KR</string>
+    <string name="region_usa_value">US</string>
+
+    <string name="content_language_chinese_label">Chinese</string>
+    <string name="content_language_english_label">English</string>
+    <string name="content_language_hindi_label">Hindi</string>
+    <string name="content_language_japanase_label">Japanase</string>
+    <string name="content_language_spanish_label">Spanish</string>
+
+    <string name="content_language_chinese_value">zh</string>
+    <string name="content_language_english_value">en</string>
+    <string name="content_language_hindi_value">hi</string>
+    <string name="content_language_japanase_value">ja</string>
+    <string name="content_language_spanish_value">es</string>
+
+
+
+
+
 </resources>

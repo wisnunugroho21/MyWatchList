@@ -24,11 +24,16 @@ public class MovieDetailJSONParser implements JSONParser<MovieData>
     @Override
     public MovieData Parse(JSONObject jsonObject) {
 
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         try
         {
             String movieID = jsonObject.getString("id");
 
-            String originalTitle = jsonObject.getString("original_title");
+            String originalTitle = jsonObject.getString("title");
             if(originalTitle == null || originalTitle.equals("null") || originalTitle.isEmpty())
             {
                 originalTitle = "";

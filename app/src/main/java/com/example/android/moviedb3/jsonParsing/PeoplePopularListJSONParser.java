@@ -16,6 +16,12 @@ public class PeoplePopularListJSONParser implements JSONParser<ArrayList<PeopleD
 {
     @Override
     public ArrayList<PeopleData> Parse(JSONObject jsonObject) {
+
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         ArrayList<PeopleData> peopleDataArrayList = new ArrayList<>();
 
         try

@@ -10,6 +10,7 @@
         <item name="popupMenuStyle">@style/AppTheme.Popupmenu</item>
         <item name="android:popupMenuStyle">@style/AppTheme.Popupmenu</item>
         <item name="android:itemTextAppearance">@style/AppTheme.ItemTextStyle</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="AppTheme.TransparentActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -36,7 +37,6 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

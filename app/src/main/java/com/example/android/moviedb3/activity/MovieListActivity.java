@@ -1,13 +1,21 @@
 package com.example.android.moviedb3.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.graphics.Movie;
+import android.os.Handler;
+import android.os.ResultReceiver;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -24,9 +32,11 @@ import com.example.android.moviedb3.adapter.FragmentAdapter.HomeFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.TopListFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.YoursFragmentAdapter;
 import com.example.android.moviedb3.behaviour.BottomNavigationViewBehaviour;
-import com.example.android.moviedb3.fragmentShifter.DefaultFragmentShifter;
-import com.example.android.moviedb3.fragmentShifter.FragmentShifter;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
+import com.example.android.moviedb3.services.GetMovieListIntentService;
+import com.example.android.moviedb3.services.GetMovieListProgressService;
+import com.example.android.moviedb3.services.JobSchedulerUtils;
+import com.example.android.moviedb3.services.NowNetworkJobScheduler;
 
 public class MovieListActivity extends AppCompatActivity
 {
@@ -34,9 +44,11 @@ public class MovieListActivity extends AppCompatActivity
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar;
-
     ViewPager viewPager;
     TabLayout tabLayout;
+
+    RegionAndLanguageSettingChangedListener regionAndLanguageSettingChangedListener;
+    GetMovieListBroadcastReceiver getMovieListBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,6 +72,8 @@ public class MovieListActivity extends AppCompatActivity
 
         SetIntialMovieListFragment();
         SetNavigationDrawer();
+        registerRegionAndLanguageSettingChangedListener();
+        registerMovieListBroadcastReceiver();
     }
 
     @Override
@@ -98,6 +112,45 @@ public class MovieListActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterRegionAndLanguageSettingChangedListener();
+        unregisterMovieListBroadcastReceiver();
+    }
+
+    private void registerRegionAndLanguageSettingChangedListener()
+    {
+        regionAndLanguageSettingChangedListener = new RegionAndLanguageSettingChangedListener();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(regionAndLanguageSettingChangedListener);
+    }
+
+    private void unregisterRegionAndLanguageSettingChangedListener()
+    {
+        if(regionAndLanguageSettingChangedListener != null)
+        {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            sharedPreferences.unregisterOnSharedPreferenceChangeListener(regionAndLanguageSettingChangedListener);
+        }
+    }
+
+    private void registerMovieListBroadcastReceiver()
+    {
+        getMovieListBroadcastReceiver = new GetMovieListBroadcastReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(getMovieListBroadcastReceiver, new IntentFilter(MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_MESSENGER));
+    }
+
+    private void unregisterMovieListBroadcastReceiver()
+    {
+        if(getMovieListBroadcastReceiver != null)
+        {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(getMovieListBroadcastReceiver);
         }
     }
 
@@ -142,6 +195,12 @@ public class MovieListActivity extends AppCompatActivity
         viewPager.setCurrentItem(selectedPageIndex);
     }
 
+    private void startGetDataService()
+    {
+        Intent intent = new Intent(this, GetMovieListProgressService.class);
+        startService(intent);
+    }
+
     private class MainMovieListBottomNavigationView implements BottomNavigationView.OnNavigationItemSelectedListener
     {
         @Override
@@ -173,7 +232,6 @@ public class MovieListActivity extends AppCompatActivity
         }
     }
 
-
     private class TabsMovieActionBarDrawer implements NavigationView.OnNavigationItemSelectedListener
     {
         @Override
@@ -184,10 +242,34 @@ public class MovieListActivity extends AppCompatActivity
                 case R.id.genre_drawer_item_menu :
                     ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, MovieListActivity.this));
                     break;
+                case R.id.setting_drawer_item_menu :
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SettingActivity.class, MovieListActivity.this));
+                    break;
             }
 
             drawer.closeDrawer(GravityCompat.START);
             return true;
+        }
+    }
+
+    private class RegionAndLanguageSettingChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener
+    {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+        {
+            if(key.equals(getString(R.string.content_language_key)) || key.equals(getString(R.string.region_key)))
+            {
+                startGetDataService();
+            }
+        }
+    }
+
+    private class GetMovieListBroadcastReceiver extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            SetIntialMovieListFragment();
         }
     }
 }

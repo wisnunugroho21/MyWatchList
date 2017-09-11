@@ -16,6 +16,12 @@ public class CrewListJSONParser implements JSONParser<ArrayList<CrewData>>
 {
     @Override
     public ArrayList<CrewData> Parse(JSONObject jsonObject) {
+
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         ArrayList<CrewData> crewDataArrayList = new ArrayList<>();
         String movieID;
 

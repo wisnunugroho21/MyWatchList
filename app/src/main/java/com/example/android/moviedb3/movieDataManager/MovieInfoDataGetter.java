@@ -10,6 +10,7 @@ import com.example.android.moviedb3.jsonParsing.JSONParser;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.movieDB.DependencyData;
 import com.example.android.moviedb3.supportDataManager.dataComparision.BaseDataCompare;
+import com.example.android.moviedb3.supportDataManager.dataComparision.DepedencyDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
 import com.example.android.moviedb3.supportDataManager.sameDataFinder.SameIDDataFinder;
@@ -27,16 +28,16 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
     DataDB<Data> dataDB;
     JSONParser<ArrayList<Data>> jsonParser;
     String URL;
-    String peopleID;
+    String movieID;
     Context context;
 
     public MovieInfoDataGetter(OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener, DataDB<Data> dataDB, JSONParser<ArrayList<Data>> jsonParser,
-                               String URL, String peopleID, Context context) {
+                               String URL, String movieID, Context context) {
         this.onDataObtainedListener = onDataObtainedListener;
         this.dataDB = dataDB;
         this.jsonParser = jsonParser;
         this.URL = URL;
-        this.peopleID = peopleID;
+        this.movieID = movieID;
         this.context = context;
     }
 
@@ -79,11 +80,11 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
         {
             ArrayList<Data> databaseDataArrayList = dataDB.getAllData();
 
-            for (Data data:datas)
+            if(databaseDataArrayList != null)
             {
                 for (Data databaseData:databaseDataArrayList)
                 {
-                    if(data.getIDDependent().equals(databaseData.getIDDependent()))
+                    if(movieID.equals(databaseData.getIDDependent()))
                     {
                         dataDB.removeData(databaseData.getId());
                     }
@@ -111,8 +112,9 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
         @Override
         protected ArrayList<Data> doInBackground(Void... params)
         {
+            ArrayList<Data> dataArrayList = dataDB.getAllData();
             return SameDataFinder.getDataSameList
-                    (new SameIDDataFinder<Data>(new BaseDataCompare<Data>(), dataDB.getAllData(), peopleID));
+                    (new SameIDDataFinder<Data>(new DepedencyDataCompare<Data>(), dataArrayList, movieID));
         }
 
         @Override

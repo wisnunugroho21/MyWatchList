@@ -10,5 +10,6 @@
         <item name="popupMenuStyle">@style/AppTheme.Popupmenu</item>
         <item name="android:popupMenuStyle">@style/AppTheme.Popupmenu</item>
         <item name="android:itemTextAppearance">@style/AppTheme.ItemTextStyle</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 </resources>

@@ -8,8 +8,18 @@ import com.example.android.moviedb3.BuildConfig;
 
 public class MovieDBKeyEntry
 {
-    public static final String GET_MOVIE_LIST_MESSENGER = "GetMovieListMessenger";
-    public static final int NEW_NOW_SHOWING_MOVIE_NOTIFICATION = 1980;
+    public class GetDataIntentServiceKey
+    {
+        public static final String GET_MOVIE_LIST_RESULT_RECEIVER = "GetMovieListResultReceiver";
+        public static final int GET_MOVIE_LIST_RESULT_SUCCESS = 1978;
+        public static final String GET_MOVIE_LIST_MESSENGER = "GetMovieListMessenger";
+    }
+
+    public class JobSchedulerID
+    {
+        public static final String PERIODIC_NETWORK_JOB_KEY = "periodicNetworkJob";
+        public static final int NOW_NETWORK_JOB_KEY = 156;
+    }
 
     public class MovieDataPersistance
     {
@@ -26,6 +36,12 @@ public class MovieDBKeyEntry
 
         public static final String INTERNET_NETWORK_STATE_PERSISTANCE_KEY = "InternetNetworkState";
         public static final String ADDITIONAL_MOVIE_DETAIL_STATE_PERSISTANCE_KEY = "AdditionalMovieDetailState";
+    }
+
+    public class NotificationKey
+    {
+        public static final int NEW_NOW_SHOWING_MOVIE_NOTIFICATION = 1980;
+        public static final int GETTING_DATA_NOTIFICATION = 2901;
     }
 
     public class DatabaseHasChanged
@@ -71,6 +87,8 @@ public class MovieDBKeyEntry
     public class SharedPreferencesKey
     {
         public static final String MOVIE_LIST_STATE = "MovieListState";
+        public static final String CHECK_FIRST_TIME = "checkFirstTime";
+        public static final String SAVED_NUMBER = "savedNumber";
     }
 
 }

@@ -10,4 +10,63 @@
         <item>Not Interested</item>
         <item>Plan to watch</item>
     </string-array>
+
+    <array name="updates_period_values">
+        <item>@string/update_period_values_4_hours</item>
+        <item>@string/update_period_values_6_hours</item>
+        <item>@string/update_period_values_8_hours</item>
+        <item>@string/update_period_values_12_hours</item>
+        <item>@string/update_period_values_24_hours</item>
+    </array>
+
+    <array name="updates_period_label">
+        <item>@string/update_period_label_4_hours</item>
+        <item>@string/update_period_label_6_hours</item>
+        <item>@string/update_period_label_8_hours</item>
+        <item>@string/update_period_label_12_hours</item>
+        <item>@string/update_period_label_24_hours</item>
+    </array>
+
+    <array name="region_label">
+        <item>@string/region_canada_label</item>
+        <item>@string/region_china_label</item>
+        <item>@string/region_england_label</item>
+        <item>@string/region_france_label</item>
+        <item>@string/region_germany_label</item>
+        <item>@string/region_italy_label</item>
+        <item>@string/region_japan_label</item>
+        <item>@string/region_russia_label</item>
+        <item>@string/region_south_korea_label</item>
+        <item>@string/region_usa_label</item>
+    </array>
+
+    <array name="region_values">
+        <item>@string/region_canada_value</item>
+        <item>@string/region_china_value</item>
+        <item>@string/region_england_value</item>
+        <item>@string/region_france_value</item>
+        <item>@string/region_germany_value</item>
+        <item>@string/region_italy_value</item>
+        <item>@string/region_japan_value</item>
+        <item>@string/region_russia_value</item>
+        <item>@string/region_south_korea_value</item>
+        <item>@string/region_usa_value</item>
+    </array>
+
+    <array name="content_language_label">
+        <item>@string/content_language_chinese_label</item>
+        <item>@string/content_language_english_label</item>
+        <item>@string/content_language_hindi_label</item>
+        <item>@string/content_language_japanase_label</item>
+        <item>@string/content_language_spanish_label</item>
+    </array>
+
+    <array name="content_language_value">
+        <item>@string/content_language_chinese_value</item>
+        <item>@string/content_language_english_value</item>
+        <item>@string/content_language_hindi_value</item>
+        <item>@string/content_language_japanase_value</item>
+        <item>@string/content_language_spanish_value</item>
+    </array>
+
 </resources>

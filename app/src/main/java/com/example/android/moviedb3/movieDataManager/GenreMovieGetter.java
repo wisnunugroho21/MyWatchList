@@ -74,7 +74,7 @@ public class GenreMovieGetter implements IMovieDBGetter {
                 String[] movieURLList = new String[genreMovieDatas.size()];
 
                 for (int a = 0; a < genreMovieDatas.size(); a++) {
-                    movieURLList[a] = MovieDataURL.GetMovieURL(genreMovieDatas.get(a).getIdMovie());
+                    movieURLList[a] = MovieDataURL.GetMovieURL(genreMovieDatas.get(a).getIdMovie(), context);
                 }
 
                 NetworkDataGetter.GetDataAsyncTask(new NetworkDataListGetterAsyncTask<MovieData>(new MovieDetailJSONParser(), new AllMovieDataObtainedListener(genreMovieDatas)), movieURLList);

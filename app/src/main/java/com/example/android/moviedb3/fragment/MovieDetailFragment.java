@@ -260,7 +260,7 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void SetAllRecyclerView(MovieData movieData) {
-        String reviewURL = MovieDataURL.GetReviewURL(String.valueOf(movieData.getId()));
+        String reviewURL = MovieDataURL.GetReviewURL(String.valueOf(movieData.getId()), getContext());
         DBGetter.GetData(new MovieInfoDataGetter<ReviewData>(new ReviewDataListObtainedListener(), new ReviewDataDB(getContext()), new ReviewListJSONParser(), reviewURL, movieData.getId(), getContext()));
 
         String castURLurl = MovieDataURL.GetCastURL(String.valueOf(movieData.getId()));
@@ -269,7 +269,7 @@ public class MovieDetailFragment extends Fragment {
         String crewURL = MovieDataURL.GetCrewURL(String.valueOf(movieData.getId()));
         DBGetter.GetData(new MovieInfoDataGetter<CrewData>(new CrewDataListObtainedListener(), new CrewDataDB(getContext()), new CrewListJSONParser(), crewURL, movieData.getId(), getContext()));
 
-        String videoURL = MovieDataURL.GetVideoURL(String.valueOf(movieData.getId()));
+        String videoURL = MovieDataURL.GetVideoURL(String.valueOf(movieData.getId()), getContext());
         DBGetter.GetData(new MovieInfoDataGetter<VideoData>(new VideoDataListObtainedListener(), new VideoDataDB(getContext()), new VideoListJSONParser(), videoURL, movieData.getId(), getContext()));
     }
 

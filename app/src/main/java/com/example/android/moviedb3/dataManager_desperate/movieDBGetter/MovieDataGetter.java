@@ -83,7 +83,7 @@ public class MovieDataGetter implements IMovieDBGetter {
 
                 for(int a = 0; a < strings.size(); a++)
                 {
-                    movieURLList[a] = MovieDataURL.GetMovieURL(strings.get(a));
+                    movieURLList[a] = MovieDataURL.GetMovieURL(strings.get(a), context);
                 }
 
                 NetworkDataGetter.GetData(new NetworkDataListGetterSyncTask<MovieData>(new MovieDetailJSONParser(), new AllMovieDataObtainedListener(strings)), movieURLList);

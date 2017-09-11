@@ -17,6 +17,11 @@ public class ReviewListJSONParser implements JSONParser<ArrayList<ReviewData>>
     @Override
     public ArrayList<ReviewData> Parse(JSONObject jsonObject) {
 
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         ArrayList<ReviewData> reviewDataArrayList = new ArrayList<>();
 
         try

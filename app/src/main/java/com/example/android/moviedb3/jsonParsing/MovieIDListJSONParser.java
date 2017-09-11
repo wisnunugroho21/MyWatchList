@@ -14,6 +14,12 @@ public class MovieIDListJSONParser implements JSONParser<ArrayList<String>>
 {
     @Override
     public ArrayList<String> Parse(JSONObject jsonObject) {
+
+        if(jsonObject == null)
+        {
+            return null;
+        }
+
         ArrayList<String> movieIDArrayList = new ArrayList<>();
 
         try

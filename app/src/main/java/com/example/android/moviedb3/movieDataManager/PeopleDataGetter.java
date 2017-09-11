@@ -89,7 +89,7 @@ public class PeopleDataGetter implements IMovieDBGetter {
             {
                 JSONParser<PeopleData> peopleDataJSONParser = new PeopleDetailJSONParser(people);
 
-                JSONObject jsonObject = jsonReceiver.ReceiveData(MovieDataURL.GetPeopleDetailURL(people.getId()));
+                JSONObject jsonObject = jsonReceiver.ReceiveData(MovieDataURL.GetPeopleDetailURL(people.getId(), context));
                 dataList.add(peopleDataJSONParser.Parse(jsonObject));
             }
 
