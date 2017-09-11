@@ -69,4 +69,18 @@
         <item>@string/content_language_spanish_value</item>
     </array>
 
+    <array name="notification_type_label">
+        <item>@string/normal_led_notification_label</item>
+        <item>@string/vibrate_notification_label</item>
+        <item>@string/sound_notification_label</item>
+        <item>@string/all_set_notification_label</item>
+    </array>
+
+    <array name="notification_type_value">
+        <item>@string/normal_led_notification_value</item>
+        <item>@string/vibrate_notification_value</item>
+        <item>@string/sound_notification_value</item>
+        <item>@string/all_set_notification_value</item>
+    </array>
+
 </resources>

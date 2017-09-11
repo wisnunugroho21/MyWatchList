@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
+import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
@@ -18,6 +19,8 @@ import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
 import com.example.android.moviedb3.movieDataManager.GenreDataGetter;
 import com.example.android.moviedb3.movieDataManager.MovieDataGetter;
+import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
+import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
@@ -76,7 +79,30 @@ public class GetMovieListRepeatingService extends JobService
             GetTopRateMovieList();
             GetGenreList();
 
-            PeriodUpdateNotificationUtils.createFinishPeriodUpdateNotification(context, numberNewNowShowingMovie);
+            String typeNotificationString = PreferencesUtils.GetData(new DefaultStringStatePreference(getApplicationContext()), getString(R.string.type_notification_key), getString(R.string.normal_led_notification_value));
+            int typeNotification = 0;
+
+            if(typeNotificationString.equals(getString(R.string.normal_led_notification_value)))
+            {
+                typeNotification = PeriodUpdateNotificationUtils.LIGHT_NOTIFICATION;
+            }
+
+            if(typeNotificationString.equals(getString(R.string.vibrate_notification_value)))
+            {
+                typeNotification = PeriodUpdateNotificationUtils.VIBRATE_NOTIFICATION;
+            }
+
+            if(typeNotificationString.equals(getString(R.string.sound_notification_value)))
+            {
+                typeNotification = PeriodUpdateNotificationUtils.SOUND_NOTIFICATION;
+            }
+
+            if(typeNotificationString.equals(getString(R.string.all_set_notification_value)))
+            {
+                typeNotification = PeriodUpdateNotificationUtils.ALL_SET_NOTIFICATION;
+            }
+
+            PeriodUpdateNotificationUtils.createFinishPeriodUpdateNotification(context, numberNewNowShowingMovie, typeNotification);
             stopForeground(true);
 
             return null;

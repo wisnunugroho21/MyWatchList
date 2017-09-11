@@ -32,17 +32,20 @@
                     android:summary="@string/only_on_wifi_explanation"
                     />
 
-                <SwitchPreference
-                    android:title="@string/updates_notification_label"
-                    android:key="@string/update_notification_key"
-                    android:summary="@string/updates_notification_explanation"/>
+                <ListPreference
+                    android:title="@string/type_notification_label"
+                    android:key="@string/type_notification_key"
+                    android:summary="@string/normal_led_notification_value"
+                    android:entries="@array/notification_type_label"
+                    android:entryValues="@array/notification_type_value"
+                    android:defaultValue="@string/normal_led_notification_value"/>
 
             </PreferenceCategory>
         </PreferenceScreen>
 
         <SwitchPreference
             android:title="@string/updates_when_open_apps_label"
-            android:key="@string/udpate_when_open_apps_key"
+            android:key="@string/update_when_open_apps_key"
             android:summary="@string/updates_when_open_apps_explanation"/>
 
     </PreferenceCategory>
@@ -52,6 +55,7 @@
         <ListPreference
             android:title="@string/region_label"
             android:key="@string/region_key"
+            android:defaultValue="@string/region_usa_value"
             android:summary="USA"
             android:entries="@array/region_label"
             android:entryValues="@array/region_values"/>
@@ -59,6 +63,7 @@
         <ListPreference
             android:title="@string/content_language_label"
             android:key="@string/content_language_key"
+            android:defaultValue="@string/content_language_english_value"
             android:summary="English"
             android:entries="@array/content_language_label"
             android:entryValues="@array/content_language_value"/>

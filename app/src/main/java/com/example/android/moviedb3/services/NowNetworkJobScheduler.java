@@ -1,3 +1,4 @@
+/*
 package com.example.android.moviedb3.services;
 
 import android.app.job.JobInfo;
@@ -14,9 +15,11 @@ import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 
+*/
 /**
  * Created by nugroho on 10/09/17.
- */
+ *//*
+
 
 public class NowNetworkJobScheduler<Data extends JobService> implements IJobSchedulerUtils<Data>
 {
@@ -42,3 +45,4 @@ public class NowNetworkJobScheduler<Data extends JobService> implements IJobSche
         jobScheduler.schedule(jobInfo);
     }
 }
+*/

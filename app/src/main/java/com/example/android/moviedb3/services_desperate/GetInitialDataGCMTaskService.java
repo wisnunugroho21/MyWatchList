@@ -45,7 +45,7 @@ public class GetInitialDataGCMTaskService extends GcmTaskService
         GetTopRateMovieList();
         GetGenreList();
 
-        PeriodUpdateNotificationUtils.showNotification(context, numberNewNowShowingMovie);
+//        PeriodUpdateNotificationUtils.showNotification(context, numberNewNowShowingMovie);
 
         return GcmNetworkManager.RESULT_SUCCESS;
     }

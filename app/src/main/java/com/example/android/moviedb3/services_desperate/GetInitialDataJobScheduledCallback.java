@@ -55,7 +55,7 @@ public class GetInitialDataJobScheduledCallback implements SmartScheduler.JobSch
             GetTopRateMovieList();
             GetGenreList();
 
-            PeriodUpdateNotificationUtils.showNotification(context, numberNewNowShowingMovie);
+//            PeriodUpdateNotificationUtils.showNotification(context, numberNewNowShowingMovie);
 
             return null;
         }

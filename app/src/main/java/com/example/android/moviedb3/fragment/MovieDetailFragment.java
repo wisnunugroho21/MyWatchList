@@ -3,7 +3,9 @@ package com.example.android.moviedb3.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +50,7 @@ import com.example.android.moviedb3.movieDB.ReviewData;
 import com.example.android.moviedb3.movieDB.VideoData;
 import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringSetter;
 import com.example.android.moviedb3.movieDB.dateToString.DateToStringSetter;
+import com.firebase.jobdispatcher.Constraint;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

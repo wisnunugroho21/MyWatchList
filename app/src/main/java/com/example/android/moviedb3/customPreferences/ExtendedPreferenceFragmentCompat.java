@@ -28,9 +28,13 @@ public abstract class ExtendedPreferenceFragmentCompat extends PreferenceFragmen
     public ExtendedPreferenceFragmentCompat newInstance() {
         try {
             return this.getClass().newInstance();
-        } catch (java.lang.InstantiationException | IllegalAccessException ie) {
+        } catch (java.lang.InstantiationException ie) {
+            throw new RuntimeException(ie);
+        } catch (IllegalAccessException ie)
+        {
             throw new RuntimeException(ie);
         }
+
     }
 
     @Override

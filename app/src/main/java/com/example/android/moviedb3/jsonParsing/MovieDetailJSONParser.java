@@ -36,7 +36,7 @@ public class MovieDetailJSONParser implements JSONParser<MovieData>
             String originalTitle = jsonObject.getString("title");
             if(originalTitle == null || originalTitle.equals("null") || originalTitle.isEmpty())
             {
-                originalTitle = "";
+                originalTitle = jsonObject.getString("original_title");
             }
 
             String moviePosterURL = jsonObject.getString("poster_path");

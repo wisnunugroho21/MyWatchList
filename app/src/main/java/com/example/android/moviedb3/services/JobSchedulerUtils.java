@@ -8,8 +8,8 @@ import com.firebase.jobdispatcher.JobService;
 
 public class JobSchedulerUtils
 {
-    public static <Data>void doJobScheduling(IJobSchedulerUtils<Data> jobSchedulerUtils)
+    public static <Data>int doJobScheduling(IJobSchedulerUtils<Data> jobSchedulerUtils)
     {
-        jobSchedulerUtils.doJobScheduling();
+        return jobSchedulerUtils.doJobScheduling();
     }
 }

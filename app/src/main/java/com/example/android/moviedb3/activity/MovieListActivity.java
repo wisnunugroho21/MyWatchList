@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Movie;
-import android.os.Handler;
-import android.os.ResultReceiver;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -24,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
@@ -33,10 +32,14 @@ import com.example.android.moviedb3.adapter.FragmentAdapter.TopListFragmentAdapt
 import com.example.android.moviedb3.adapter.FragmentAdapter.YoursFragmentAdapter;
 import com.example.android.moviedb3.behaviour.BottomNavigationViewBehaviour;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
-import com.example.android.moviedb3.services.GetMovieListIntentService;
 import com.example.android.moviedb3.services.GetMovieListProgressService;
+import com.example.android.moviedb3.services.GetMovieListRepeatingService;
 import com.example.android.moviedb3.services.JobSchedulerUtils;
-import com.example.android.moviedb3.services.NowNetworkJobScheduler;
+import com.example.android.moviedb3.services.PeriodicNetworkJobScheduler;
+import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePreference;
+import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
+import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 
 public class MovieListActivity extends AppCompatActivity
 {
@@ -47,7 +50,7 @@ public class MovieListActivity extends AppCompatActivity
     ViewPager viewPager;
     TabLayout tabLayout;
 
-    RegionAndLanguageSettingChangedListener regionAndLanguageSettingChangedListener;
+    SettingChangedListener settingChangedListener;
     GetMovieListBroadcastReceiver getMovieListBroadcastReceiver;
 
     @Override
@@ -72,7 +75,7 @@ public class MovieListActivity extends AppCompatActivity
 
         SetIntialMovieListFragment();
         SetNavigationDrawer();
-        registerRegionAndLanguageSettingChangedListener();
+        registerSettingChangedListener();
         registerMovieListBroadcastReceiver();
     }
 
@@ -119,24 +122,24 @@ public class MovieListActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
 
-        unregisterRegionAndLanguageSettingChangedListener();
+        unregisterSettingChangedListener();
         unregisterMovieListBroadcastReceiver();
     }
 
-    private void registerRegionAndLanguageSettingChangedListener()
+    private void registerSettingChangedListener()
     {
-        regionAndLanguageSettingChangedListener = new RegionAndLanguageSettingChangedListener();
+        settingChangedListener = new SettingChangedListener();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(regionAndLanguageSettingChangedListener);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(settingChangedListener);
     }
 
-    private void unregisterRegionAndLanguageSettingChangedListener()
+    private void unregisterSettingChangedListener()
     {
-        if(regionAndLanguageSettingChangedListener != null)
+        if(settingChangedListener != null)
         {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            sharedPreferences.unregisterOnSharedPreferenceChangeListener(regionAndLanguageSettingChangedListener);
+            sharedPreferences.unregisterOnSharedPreferenceChangeListener(settingChangedListener);
         }
     }
 
@@ -252,7 +255,7 @@ public class MovieListActivity extends AppCompatActivity
         }
     }
 
-    private class RegionAndLanguageSettingChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener
+    private class SettingChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener
     {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
@@ -261,6 +264,12 @@ public class MovieListActivity extends AppCompatActivity
             {
                 startGetDataService();
             }
+
+            /*else if(key.equals(getString(R.string.period_update_key)) || key.equals(getString(R.string.update_period_key)) || key.equals(getString(R.string.only_on_wifi_key)))
+            {
+                SetPeriodUpdateAsyncTask setPeriodUpdateAsyncTask = new SetPeriodUpdateAsyncTask();
+                setPeriodUpdateAsyncTask.execute();
+            }*/
         }
     }
 
@@ -272,4 +281,56 @@ public class MovieListActivity extends AppCompatActivity
             SetIntialMovieListFragment();
         }
     }
+
+    private class SetPeriodUpdateAsyncTask extends AsyncTask<Void, Void, Boolean>
+    {
+        Context context;
+
+        @Override
+        protected Boolean doInBackground(Void... params)
+        {
+            context = MovieListActivity.this;
+
+            String updatePeriodString = PreferencesUtils.GetData(new DefaultStringStatePreference(context), getString(R.string.update_period_key), getString(R.string.update_period_values_12_hours));
+            boolean isWifiOnly = PreferencesUtils.GetData(new DefaultBooleanStatePreference(context), getString(R.string.only_on_wifi_key), false);
+
+            int updatePeriodSecond = 0;
+            if(updatePeriodString.equals(getString(R.string.update_period_label_4_hours)))
+            {
+                updatePeriodSecond = 14400;
+            }
+
+            else if(updatePeriodString.equals(getString(R.string.update_period_label_6_hours)))
+            {
+                updatePeriodSecond = 21600;
+            }
+
+            else if(updatePeriodString.equals(getString(R.string.update_period_label_8_hours)))
+            {
+                updatePeriodSecond = 28800;
+            }
+
+            else if(updatePeriodString.equals(getString(R.string.update_period_values_12_hours)))
+            {
+                updatePeriodSecond = 43200;
+            }
+
+            return JobSchedulerUtils.doJobScheduling(new PeriodicNetworkJobScheduler<>(context, updatePeriodSecond, isWifiOnly, MovieDBKeyEntry.JobSchedulerID.PERIODIC_NETWORK_JOB_KEY, GetMovieListRepeatingService.class))
+                    == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean bool)
+        {
+            if(bool)
+            {
+                Toast.makeText(context, R.string.success_update_period_toas_message, Toast.LENGTH_SHORT).show();
+            }
+
+            else
+            {
+                Toast.makeText(context, R.string.fail_update_period_toas_message, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 }

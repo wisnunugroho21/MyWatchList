@@ -7,5 +7,5 @@ package com.example.android.moviedb3.services;
 
 public interface IJobSchedulerUtils<Data>
 {
-    void doJobScheduling();
+    int doJobScheduling();
 }

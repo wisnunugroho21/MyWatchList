@@ -33,7 +33,7 @@ public class PeriodicNetworkJobScheduler<Data extends JobService> implements IJo
     }
 
     @Override
-    public void doJobScheduling()
+    public int doJobScheduling()
     {
         FirebaseJobDispatcher firebaseJobDispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
 
@@ -56,6 +56,6 @@ public class PeriodicNetworkJobScheduler<Data extends JobService> implements IJo
             builder.setConstraints(Constraint.ON_ANY_NETWORK);
         }
 
-        firebaseJobDispatcher.mustSchedule(builder.build());
+        return firebaseJobDispatcher.schedule(builder.build());
     }
 }

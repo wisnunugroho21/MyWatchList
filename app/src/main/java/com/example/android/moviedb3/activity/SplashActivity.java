@@ -50,7 +50,8 @@ public class SplashActivity extends AppCompatActivity {
         downloadDataTextView.setVisibility(View.GONE);
         downloadDataProgressBar.setVisibility(View.GONE);
 
-        if(PreferencesUtils.GetData(new DefaultBooleanStatePreference(this), MovieDBKeyEntry.SharedPreferencesKey.CHECK_FIRST_TIME, true))
+        if(PreferencesUtils.GetData(new DefaultBooleanStatePreference(this), MovieDBKeyEntry.SharedPreferencesKey.CHECK_FIRST_TIME, true)
+                || PreferencesUtils.GetData(new DefaultBooleanStatePreference(this), getString(R.string.update_when_open_apps_key), false))
         {
             startGetDataService();
 

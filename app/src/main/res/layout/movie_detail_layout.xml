@@ -10,11 +10,11 @@
         android:id="@+id/movie_detail_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
@@ -56,9 +56,9 @@
                         android:id="@+id/gd_top_main_movie_poster"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="@id/iv_cover_poster"/>
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_cover_poster" />
 
                     <ImageView
                         android:id="@+id/iv_main_movie_poster"
@@ -87,6 +87,7 @@
                         android:textColor="@android:color/white"
                         android:textSize="28sp"
                         android:textStyle="bold"
+                        android:visibility="visible"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -97,13 +98,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
+                        android:visibility="visible"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_movie_title">
 
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:background="@color/colorPrimary">
 
                             <TextView
@@ -265,15 +267,37 @@
                         android:layout_marginRight="32dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:text="A live-action adaptation of Disney's version of the classic 'Beauty and the Beast' tale of a cursed prince and a beautiful young woman who helps him break the spell."
+                        android:text="Above we are setting a size of 250x250 to the LinearLayout based on pixels. That won’t be accurate in other high/low density devices, so We need to ensure We are setting a dp value to it. We can get the pixels out of the dp’s integer value with this method"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintHeight_default="wrap"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_tagline" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_tagline"
+                        app:layout_constraintVertical_bias="0.5" />
+
+                    <TextView
+                        android:id="@+id/txt_replacer_txt_sypnosis"
+                        android:layout_width="0dp"
+                        android:layout_height="0px"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text=""
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHeight_default="wrap"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_tagline"
+                        app:layout_constraintVertical_bias="0.5" />
 
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
@@ -482,8 +506,8 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/eight_dp"
                 android:layout_marginEnd="@dimen/eight_dp"
+                android:layout_marginStart="@dimen/eight_dp"
                 android:layout_marginTop="@dimen/eight_dp">
 
                 <android.support.constraint.ConstraintLayout
