@@ -2,14 +2,18 @@ package com.example.android.moviedb3.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.customPreferences.ExtendedPreferenceFragmentCompat;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
+import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePreference;
+import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 
 /**
  * Created by nugroho on 10/09/17.
@@ -79,7 +83,30 @@ public class SettingFragment extends ExtendedPreferenceFragmentCompat
         {
             Preference preference = preferenceScreen.getPreference(a);
 
-            if(preference instanceof ListPreference)
+            if(preference instanceof PreferenceCategory)
+            {
+                PreferenceCategory preferenceCategory = (PreferenceCategory) preference;
+                int preferenceCountCategory = preferenceCategory.getPreferenceCount();
+
+                for(int b = 0; b < preferenceCountCategory; b++)
+                {
+                    Preference preferenceChildCategory = preferenceCategory.getPreference(b);
+
+                    if(preferenceChildCategory instanceof ListPreference)
+                    {
+                        String value = sharedPreferences.getString(preferenceChildCategory.getKey(), "");
+                        ListPreference listPreference = (ListPreference) preferenceChildCategory;
+
+                        int prefIndex = listPreference.findIndexOfValue(value);
+                        if(prefIndex >= 0)
+                        {
+                            listPreference.setSummary(listPreference.getEntries()[prefIndex]);
+                        }
+                    }
+                }
+            }
+
+            else if(preference instanceof ListPreference)
             {
                 String value = sharedPreferences.getString(preference.getKey(), "");
                 ListPreference listPreference = (ListPreference) preference;
@@ -88,6 +115,20 @@ public class SettingFragment extends ExtendedPreferenceFragmentCompat
                 if(prefIndex >= 0)
                 {
                     listPreference.setSummary(listPreference.getEntries()[prefIndex]);
+                }
+            }
+
+            if(preference instanceof SwitchPreference)
+            {
+                if(preference.getKey().equals(getString(R.string.period_update_key)))
+                {
+                    Preference updatePeriodCategoryPreferences = getPreferenceScreen().findPreference(getString(R.string.period_update_category_key));
+
+                    if(updatePeriodCategoryPreferences instanceof PreferenceCategory)
+                    {
+                        boolean isPeriodUpdateTurnOn = PreferencesUtils.GetData(new DefaultBooleanStatePreference(getContext()), preference.getKey(), false);
+                        updatePeriodCategoryPreferences.setEnabled(isPeriodUpdateTurnOn);
+                    }
                 }
             }
         }
@@ -112,6 +153,17 @@ public class SettingFragment extends ExtendedPreferenceFragmentCompat
                     {
                         listPreference.setSummary(listPreference.getEntries()[prefIndex]);
                     }
+                }
+            }
+
+            if(key.equals(getString(R.string.period_update_key)))
+            {
+                Preference updatePeriodCategoryPreferences = getPreferenceScreen().findPreference(getString(R.string.period_update_category_key));
+
+                if(updatePeriodCategoryPreferences instanceof PreferenceCategory)
+                {
+                    boolean isPeriodUpdateTurnOn = PreferencesUtils.GetData(new DefaultBooleanStatePreference(getContext()), key, false);
+                    updatePeriodCategoryPreferences.setEnabled(isPeriodUpdateTurnOn);
                 }
             }
         }

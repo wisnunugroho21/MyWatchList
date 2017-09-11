@@ -85,6 +85,9 @@
     <string name="download_first_time">Downloading data</string>
     <string name="success_update_period_toas_message">Successful to set period update</string>
     <string name="fail_update_period_toas_message">Fail to set period update</string>
+    <string name="success_cancel_update_period_toas_message">Successful to cancel period update</string>
+    <string name="fail_cancel_update_period_toas_message">Fail to cancel period update</string>
+
 
     <string name="updates_policy_label">Updates Policy</string>
     <string name="periodic_updates_label">Periodic Updates</string>
@@ -102,6 +105,7 @@
     
     <string name="period_update_screen_key" translatable="false">period_update_screen_key</string>
     <string name="period_update_key" translatable="false">period_update_key</string>
+    <string name="period_update_category_key" translatable="false">period_update_category_key</string>
     <string name="update_period_key" translatable="false">update_period_key</string>
     <string name="only_on_wifi_key" translatable="false">only_on_wifi_key</string>
     <string name="type_notification_key" translatable="false">type_notification_key</string>

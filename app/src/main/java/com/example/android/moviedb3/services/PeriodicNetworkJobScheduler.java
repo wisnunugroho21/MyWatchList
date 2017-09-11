@@ -32,6 +32,11 @@ public class PeriodicNetworkJobScheduler<Data extends JobService> implements IJo
         this.jobServiceClass = jobServiceClass;
     }
 
+    public PeriodicNetworkJobScheduler(Context context, String tag) {
+        this.tag = tag;
+        this.context = context;
+    }
+
     @Override
     public int doJobScheduling()
     {
@@ -57,5 +62,11 @@ public class PeriodicNetworkJobScheduler<Data extends JobService> implements IJo
         }
 
         return firebaseJobDispatcher.schedule(builder.build());
+    }
+
+    @Override
+    public int cancelJobScheduling() {
+        FirebaseJobDispatcher firebaseJobDispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+        return firebaseJobDispatcher.cancel(MovieDBKeyEntry.JobSchedulerID.PERIODIC_NETWORK_JOB_KEY);
     }
 }

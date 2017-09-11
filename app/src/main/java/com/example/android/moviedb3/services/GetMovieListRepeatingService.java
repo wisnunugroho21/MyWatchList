@@ -102,7 +102,8 @@ public class GetMovieListRepeatingService extends JobService
                 typeNotification = PeriodUpdateNotificationUtils.ALL_SET_NOTIFICATION;
             }
 
-            PeriodUpdateNotificationUtils.createFinishPeriodUpdateNotification(context, numberNewNowShowingMovie, typeNotification);
+            SendMessageToActivity();
+            PeriodUpdateNotificationUtils.createFinishPeriodUpdateNotification(getApplicationContext(), numberNewNowShowingMovie, typeNotification);
             stopForeground(true);
 
             return null;

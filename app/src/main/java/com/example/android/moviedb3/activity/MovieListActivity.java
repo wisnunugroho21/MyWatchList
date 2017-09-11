@@ -40,6 +40,7 @@ import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePrefere
 import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.JobService;
 
 public class MovieListActivity extends AppCompatActivity
 {
@@ -260,16 +261,29 @@ public class MovieListActivity extends AppCompatActivity
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
         {
+            Context context = MovieListActivity.this;
+
             if(key.equals(getString(R.string.content_language_key)) || key.equals(getString(R.string.region_key)))
             {
                 startGetDataService();
             }
 
-            /*else if(key.equals(getString(R.string.period_update_key)) || key.equals(getString(R.string.update_period_key)) || key.equals(getString(R.string.only_on_wifi_key)))
+            else if(key.equals(getString(R.string.period_update_key)) || key.equals(getString(R.string.update_period_key)) || key.equals(getString(R.string.only_on_wifi_key)))
             {
-                SetPeriodUpdateAsyncTask setPeriodUpdateAsyncTask = new SetPeriodUpdateAsyncTask();
-                setPeriodUpdateAsyncTask.execute();
-            }*/
+                boolean isPeriodUpdateTurnOn = PreferencesUtils.GetData(new DefaultBooleanStatePreference(context), getString(R.string.period_update_key), false);
+
+                if(isPeriodUpdateTurnOn)
+                {
+                    SetPeriodUpdateAsyncTask setPeriodUpdateAsyncTask = new SetPeriodUpdateAsyncTask();
+                    setPeriodUpdateAsyncTask.execute();
+                }
+
+                else
+                {
+                    UnSetPeriodUpdateAsyncTask unSetPeriodUpdateAsyncTask = new UnSetPeriodUpdateAsyncTask();
+                    unSetPeriodUpdateAsyncTask.execute();
+                }
+            }
         }
     }
 
@@ -330,7 +344,40 @@ public class MovieListActivity extends AppCompatActivity
             else
             {
                 Toast.makeText(context, R.string.fail_update_period_toas_message, Toast.LENGTH_SHORT).show();
+
+                PreferencesUtils.SetData(new DefaultBooleanStatePreference(context),false, getString(R.string.period_update_key));
+                PreferencesUtils.SetData(new DefaultStringStatePreference(context), getString(R.string.update_period_key), getString(R.string.update_period_values_12_hours));
+                PreferencesUtils.SetData(new DefaultBooleanStatePreference(context), false, getString(R.string.only_on_wifi_key));
+                PreferencesUtils.SetData(new DefaultStringStatePreference(context), getString(R.string.type_notification_key), getString(R.string.normal_led_notification_value));
             }
         }
-    };
+
+    }
+
+    private class UnSetPeriodUpdateAsyncTask extends AsyncTask<Void, Void, Boolean>
+    {
+        Context context;
+
+        @Override
+        protected Boolean doInBackground(Void... params)
+        {
+            context = MovieListActivity.this;
+            return JobSchedulerUtils.cancelJobScheduling(new PeriodicNetworkJobScheduler<>(context, MovieDBKeyEntry.JobSchedulerID.PERIODIC_NETWORK_JOB_KEY)) == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+
+            if(aBoolean)
+            {
+                Toast.makeText(context, R.string.success_cancel_update_period_toas_message, Toast.LENGTH_SHORT).show();
+            }
+
+            else
+            {
+                Toast.makeText(context, R.string.fail_cancel_update_period_toas_message, Toast.LENGTH_SHORT).show();
+                PreferencesUtils.SetData(new DefaultBooleanStatePreference(context),true, getString(R.string.period_update_key));
+            }
+        }
+    }
 }

@@ -150,6 +150,10 @@ public class SplashActivity extends AppCompatActivity {
     {
         PreferencesUtils.SetData(new DefaultStringStatePreference(this), getString(R.string.region_key), getString(R.string.region_usa_value));
         PreferencesUtils.SetData(new DefaultStringStatePreference(this), getString(R.string.content_language_key), getString(R.string.content_language_english_value));
+        PreferencesUtils.SetData(new DefaultBooleanStatePreference(this),false, getString(R.string.period_update_key));
+        PreferencesUtils.SetData(new DefaultStringStatePreference(this), getString(R.string.update_period_key), getString(R.string.update_period_values_12_hours));
+        PreferencesUtils.SetData(new DefaultBooleanStatePreference(this), false, getString(R.string.only_on_wifi_key));
+        PreferencesUtils.SetData(new DefaultStringStatePreference(this), getString(R.string.type_notification_key), getString(R.string.normal_led_notification_value));
     }
 
     private class DoSomethingIfThisIsNotFirstTime extends AsyncTask<Void, Void , Void>

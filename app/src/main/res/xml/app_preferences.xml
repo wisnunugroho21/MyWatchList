@@ -17,7 +17,9 @@
                 android:key="@string/period_update_key"/>
 
             <PreferenceCategory
-                android:title="@string/periodic_updates_settings_label">
+                android:title="@string/periodic_updates_settings_label"
+                android:key="@string/period_update_category_key"
+                android:enabled="false">
 
                 <ListPreference
                     android:title="@string/updates_periodic_label"

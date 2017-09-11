@@ -3,6 +3,7 @@ package com.example.android.moviedb3.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 
 public class GenreListFragment extends Fragment
 {
+    CardView genreListCardView;
     RecyclerView genreListRecyclerView;
     ProgressBar loadingDataProgressBar;
     TextView noDataTextView;
@@ -44,6 +46,7 @@ public class GenreListFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.movie_collection_list, container, false);
 
+        genreListCardView = (CardView) view.findViewById(R.id.cv_all_collection_list);
         genreListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_collection_list);
         loadingDataProgressBar = (ProgressBar) view.findViewById(R.id.pb_loading_data);
         noDataTextView = (TextView) view.findViewById(R.id.txt_no_data);
@@ -57,6 +60,7 @@ public class GenreListFragment extends Fragment
 
     private void ShowNoDataLayout()
     {
+        genreListCardView.setVisibility(View.GONE);
         genreListRecyclerView.setVisibility(View.GONE);
         loadingDataProgressBar.setVisibility(View.GONE);
         noDataTextView.setVisibility(View.VISIBLE);
@@ -64,6 +68,7 @@ public class GenreListFragment extends Fragment
 
     private void ShowRecycleView()
     {
+        genreListCardView.setVisibility(View.VISIBLE);
         genreListRecyclerView.setVisibility(View.VISIBLE);
         loadingDataProgressBar.setVisibility(View.GONE);
         noDataTextView.setVisibility(View.GONE);
@@ -71,6 +76,7 @@ public class GenreListFragment extends Fragment
 
     private void ShowLoadingData()
     {
+        genreListCardView.setVisibility(View.GONE);
         genreListRecyclerView.setVisibility(View.GONE);
         loadingDataProgressBar.setVisibility(View.VISIBLE);
         noDataTextView.setVisibility(View.GONE);

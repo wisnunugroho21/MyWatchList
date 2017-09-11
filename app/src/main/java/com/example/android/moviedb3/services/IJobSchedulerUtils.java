@@ -8,4 +8,5 @@ package com.example.android.moviedb3.services;
 public interface IJobSchedulerUtils<Data>
 {
     int doJobScheduling();
+    int cancelJobScheduling();
 }

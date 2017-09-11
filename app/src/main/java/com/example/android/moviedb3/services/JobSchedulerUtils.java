@@ -12,4 +12,9 @@ public class JobSchedulerUtils
     {
         return jobSchedulerUtils.doJobScheduling();
     }
+
+    public static <Data>int cancelJobScheduling(IJobSchedulerUtils<Data> jobSchedulerUtils)
+    {
+        return jobSchedulerUtils.cancelJobScheduling();
+    }
 }
