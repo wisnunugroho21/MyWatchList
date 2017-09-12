@@ -42,7 +42,7 @@ import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.JobService;
 
-public class MovieListActivity extends AppCompatActivity
+public class TVMovieListActivity extends AppCompatActivity
 {
     BottomNavigationView movieListBottomNavigationView;
     DrawerLayout drawer;
@@ -244,10 +244,10 @@ public class MovieListActivity extends AppCompatActivity
             switch (item.getItemId())
             {
                 case R.id.genre_drawer_item_menu :
-                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, MovieListActivity.this));
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, TVMovieListActivity.this));
                     break;
                 case R.id.setting_drawer_item_menu :
-                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SettingActivity.class, MovieListActivity.this));
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SettingActivity.class, TVMovieListActivity.this));
                     break;
             }
 
@@ -261,7 +261,7 @@ public class MovieListActivity extends AppCompatActivity
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
         {
-            Context context = MovieListActivity.this;
+            Context context = TVMovieListActivity.this;
 
             if(key.equals(getString(R.string.content_language_key)) || key.equals(getString(R.string.region_key)))
             {
@@ -303,7 +303,7 @@ public class MovieListActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params)
         {
-            context = MovieListActivity.this;
+            context = TVMovieListActivity.this;
 
             String updatePeriodString = PreferencesUtils.GetData(new DefaultStringStatePreference(context), getString(R.string.update_period_key), getString(R.string.update_period_values_12_hours));
             boolean isWifiOnly = PreferencesUtils.GetData(new DefaultBooleanStatePreference(context), getString(R.string.only_on_wifi_key), false);
@@ -361,7 +361,7 @@ public class MovieListActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params)
         {
-            context = MovieListActivity.this;
+            context = TVMovieListActivity.this;
             return JobSchedulerUtils.cancelJobScheduling(new PeriodicNetworkJobScheduler<>(context, MovieDBKeyEntry.JobSchedulerID.PERIODIC_NETWORK_JOB_KEY)) == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS;
         }
 
