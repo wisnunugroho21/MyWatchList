@@ -15,7 +15,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,11 +28,8 @@ import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
 import com.example.android.moviedb3.adapter.FragmentAdapter.HomeFragmentAdapter;
-import com.example.android.moviedb3.adapter.FragmentAdapter.HomeTVFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.TopListFragmentAdapter;
-import com.example.android.moviedb3.adapter.FragmentAdapter.TopListTVFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.YoursFragmentAdapter;
-import com.example.android.moviedb3.adapter.FragmentAdapter.YoursTVFragmentAdapter;
 import com.example.android.moviedb3.behaviour.BottomNavigationViewBehaviour;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.services.GetMovieListProgressService;
@@ -44,8 +40,9 @@ import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePrefere
 import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.JobService;
 
-public class TVMovieListActivity extends AppCompatActivity
+public class MovieListActivity extends AppCompatActivity
 {
     BottomNavigationView movieListBottomNavigationView;
     DrawerLayout drawer;
@@ -56,7 +53,6 @@ public class TVMovieListActivity extends AppCompatActivity
 
     SettingChangedListener settingChangedListener;
     GetMovieListBroadcastReceiver getMovieListBroadcastReceiver;
-    boolean isMovieMode = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -179,54 +175,28 @@ public class TVMovieListActivity extends AppCompatActivity
 
     private void SetIntialMovieListFragment()
     {
-        isMovieMode = true;
-
         SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
                 MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
     }
 
-    private void SetIntialTVListFragment()
+    private FragmentStatePagerAdapter setFragmentPagerAdapter(int fragmentAdapterIndex)
     {
-        isMovieMode = false;
-
-        SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
-                MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
-    }
-
-    private PagerAdapter setFragmentPagerAdapter(int fragmentAdapterIndex)
-    {
-        if(isMovieMode)
+        switch (fragmentAdapterIndex)
         {
-            switch (fragmentAdapterIndex)
-            {
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeFragmentAdapter(getSupportFragmentManager(), this);
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListFragmentAdapter(getSupportFragmentManager(), this);
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursFragmentAdapter(getSupportFragmentManager(), this);
+            case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeFragmentAdapter(getSupportFragmentManager(), this);
+            case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListFragmentAdapter(getSupportFragmentManager(), this);
+            case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursFragmentAdapter(getSupportFragmentManager(), this);
 
-                default: return null;
-            }
-        }
-
-        else
-        {
-            switch (fragmentAdapterIndex)
-            {
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeTVFragmentAdapter(getSupportFragmentManager(), this);
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListTVFragmentAdapter(getSupportFragmentManager(), this);
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursTVFragmentAdapter(getSupportFragmentManager(), this);
-
-                default: return null;
-            }
+            default: return null;
         }
     }
 
-    private void SetMovieListFragment(PagerAdapter fragmentPagerAdapter, int selectedPageIndex)
+    private void SetMovieListFragment(FragmentStatePagerAdapter fragmentPagerAdapter, int selectedPageIndex)
     {
-        tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(fragmentPagerAdapter);
-
-        TabLayout.Tab tab = tabLayout.getTabAt(selectedPageIndex);
-        tab.select();
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setScrollPosition(selectedPageIndex, 0f, true);
+        viewPager.setCurrentItem(selectedPageIndex);
     }
 
     private void startGetDataService()
@@ -273,18 +243,11 @@ public class TVMovieListActivity extends AppCompatActivity
         {
             switch (item.getItemId())
             {
-                case R.id.movie_drawer_item_menu :
-                    SetIntialMovieListFragment(); break;
-
-                case R.id.tv_drawer_item_menu :
-                    SetIntialTVListFragment(); break;
-
                 case R.id.genre_drawer_item_menu :
-                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, TVMovieListActivity.this));
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, MovieListActivity.this));
                     break;
-
                 case R.id.setting_drawer_item_menu :
-                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SettingActivity.class, TVMovieListActivity.this));
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SettingActivity.class, MovieListActivity.this));
                     break;
             }
 
@@ -298,7 +261,7 @@ public class TVMovieListActivity extends AppCompatActivity
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
         {
-            Context context = TVMovieListActivity.this;
+            Context context = MovieListActivity.this;
 
             if(key.equals(getString(R.string.content_language_key)) || key.equals(getString(R.string.region_key)))
             {
@@ -340,7 +303,7 @@ public class TVMovieListActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params)
         {
-            context = TVMovieListActivity.this;
+            context = MovieListActivity.this;
 
             String updatePeriodString = PreferencesUtils.GetData(new DefaultStringStatePreference(context), getString(R.string.update_period_key), getString(R.string.update_period_values_12_hours));
             boolean isWifiOnly = PreferencesUtils.GetData(new DefaultBooleanStatePreference(context), getString(R.string.only_on_wifi_key), false);
@@ -398,7 +361,7 @@ public class TVMovieListActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params)
         {
-            context = TVMovieListActivity.this;
+            context = MovieListActivity.this;
             return JobSchedulerUtils.cancelJobScheduling(new PeriodicNetworkJobScheduler<>(context, MovieDBKeyEntry.JobSchedulerID.PERIODIC_NETWORK_JOB_KEY)) == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS;
         }
 
