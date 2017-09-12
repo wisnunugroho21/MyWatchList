@@ -62,8 +62,7 @@ public class MovieListFragment extends Fragment
         loadingDataProgressBar = (ProgressBar) view.findViewById(R.id.pb_loading_data);
         noDataTextView = (TextView) view.findViewById(R.id.txt_no_data);
 
-        GetMovieList(savedInstanceState);
-
+        GetMovieList();
         return view;
     }
 
@@ -78,7 +77,7 @@ public class MovieListFragment extends Fragment
         this.urlGenreMovie = urlGenreMovie;
     }
 
-    private void GetMovieList(Bundle savedInstanceState)
+    private void GetMovieList()
     {
         if(movieListDB != null)
         {
