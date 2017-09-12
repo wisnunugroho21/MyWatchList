@@ -28,8 +28,11 @@ import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
 import com.example.android.moviedb3.adapter.FragmentAdapter.HomeFragmentAdapter;
+import com.example.android.moviedb3.adapter.FragmentAdapter.HomeTVFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.TopListFragmentAdapter;
+import com.example.android.moviedb3.adapter.FragmentAdapter.TopListTVFragmentAdapter;
 import com.example.android.moviedb3.adapter.FragmentAdapter.YoursFragmentAdapter;
+import com.example.android.moviedb3.adapter.FragmentAdapter.YoursTVFragmentAdapter;
 import com.example.android.moviedb3.behaviour.BottomNavigationViewBehaviour;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.services.GetMovieListProgressService;
@@ -40,7 +43,6 @@ import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePrefere
 import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.JobService;
 
 public class TVMovieListActivity extends AppCompatActivity
 {
@@ -53,6 +55,8 @@ public class TVMovieListActivity extends AppCompatActivity
 
     SettingChangedListener settingChangedListener;
     GetMovieListBroadcastReceiver getMovieListBroadcastReceiver;
+
+    boolean isMovieMode = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -88,22 +92,22 @@ public class TVMovieListActivity extends AppCompatActivity
         switch (resultCode)
         {
             case MovieDBKeyEntry.DatabaseHasChanged.FAVORITE_DATA_CHANGED :
-                SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
+                SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
                         MovieDBKeyEntry.MovieListPageIndex.FAVORITE_PAGE_INDEX);
                 break;
 
             case MovieDBKeyEntry.DatabaseHasChanged.INSERT_PLAN_TO_WATCH_LIST:
-                SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
+                SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
                         MovieDBKeyEntry.MovieListPageIndex.PLAN_TO_WATCH_PAGE_INDEX);
                 break;
 
             case MovieDBKeyEntry.DatabaseHasChanged.INSERT_TO_WATCHED_LIST:
-                SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
+                SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
                         MovieDBKeyEntry.MovieListPageIndex.WATCHED_PAGE_INDEX);
                 break;
 
             case MovieDBKeyEntry.DatabaseHasChanged.REMOVE_MY_LIST:
-                SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
+                SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
                         MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
                 break;
         }
@@ -175,26 +179,52 @@ public class TVMovieListActivity extends AppCompatActivity
 
     private void SetIntialMovieListFragment()
     {
-        SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
+        isMovieMode = true;
+
+        SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
+                MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
+    }
+
+    private void SetIntialTVListFragment()
+    {
+        isMovieMode = false;
+
+        SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
                 MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
     }
 
     private FragmentStatePagerAdapter setFragmentPagerAdapter(int fragmentAdapterIndex)
     {
-        switch (fragmentAdapterIndex)
+        if(isMovieMode)
         {
-            case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeFragmentAdapter(getSupportFragmentManager(), this);
-            case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListFragmentAdapter(getSupportFragmentManager(), this);
-            case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursFragmentAdapter(getSupportFragmentManager(), this);
+            switch (fragmentAdapterIndex)
+            {
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeFragmentAdapter(getSupportFragmentManager(), this);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListFragmentAdapter(getSupportFragmentManager(), this);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursFragmentAdapter(getSupportFragmentManager(), this);
 
-            default: return null;
+                default: return null;
+            }
+        }
+
+        else
+        {
+            switch (fragmentAdapterIndex)
+            {
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeTVFragmentAdapter(getSupportFragmentManager(), this);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListTVFragmentAdapter(getSupportFragmentManager(), this);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursTVFragmentAdapter(getSupportFragmentManager(), this);
+
+                default: return null;
+            }
         }
     }
 
-    private void SetMovieListFragment(FragmentStatePagerAdapter fragmentPagerAdapter, int selectedPageIndex)
+    private void SetTVMovieListFragment(FragmentStatePagerAdapter fragmentPagerAdapter, int selectedPageIndex)
     {
         viewPager.setAdapter(fragmentPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+
         tabLayout.setScrollPosition(selectedPageIndex, 0f, true);
         viewPager.setCurrentItem(selectedPageIndex);
     }
@@ -213,19 +243,19 @@ public class TVMovieListActivity extends AppCompatActivity
             switch (item.getItemId())
             {
                 case R.id.home_movie_list_item_menu :
-                    SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
+                    SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
                             MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
                     SetActionBar(getString(R.string.home_label));
                     return true;
 
                 case R.id.top_list_movie_list_item_menu :
-                    SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX),
+                    SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX),
                             MovieDBKeyEntry.MovieListPageIndex.POPULAR_PAGE_INDEX);
                     SetActionBar(getString(R.string.top_list_label));
                     return true;
 
                 case R.id.yours_movie_list_item_menu :
-                    SetMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
+                    SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
                             MovieDBKeyEntry.MovieListPageIndex.FAVORITE_PAGE_INDEX);
                     SetActionBar(getString(R.string.my_list_label));
                     return true;
@@ -243,9 +273,18 @@ public class TVMovieListActivity extends AppCompatActivity
         {
             switch (item.getItemId())
             {
+                case R.id.movie_drawer_item_menu :
+                    SetIntialMovieListFragment();
+                    break;
+
+                case R.id.tv_drawer_item_menu :
+                    SetIntialTVListFragment();
+                    break;
+
                 case R.id.genre_drawer_item_menu :
                     ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, TVMovieListActivity.this));
                     break;
+
                 case R.id.setting_drawer_item_menu :
                     ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SettingActivity.class, TVMovieListActivity.this));
                     break;
