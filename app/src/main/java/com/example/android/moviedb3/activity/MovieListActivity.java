@@ -69,6 +69,8 @@ public class MovieListActivity extends AppCompatActivity
         viewPager = (ViewPager) findViewById(R.id.vp_movie_list);
         tabLayout = (TabLayout) findViewById(R.id.tabs_movie_list);
 
+        tabLayout.setupWithViewPager(viewPager);
+        
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) movieListBottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehaviour());
 
@@ -193,10 +195,15 @@ public class MovieListActivity extends AppCompatActivity
 
     private void SetMovieListFragment(FragmentStatePagerAdapter fragmentPagerAdapter, int selectedPageIndex)
     {
+        if(selectedPageIndex == 2)
+        {
+            viewPager.setAdapter(new HomeFragmentAdapter(getSupportFragmentManager(), this));
+        }
+
         viewPager.setAdapter(fragmentPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setScrollPosition(selectedPageIndex, 0f, true);
-        viewPager.setCurrentItem(selectedPageIndex);
+
+        TabLayout.Tab tab = tabLayout.getTabAt(selectedPageIndex);
+        tab.select();
     }
 
     private void startGetDataService()
