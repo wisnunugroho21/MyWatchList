@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
-import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoDataListRecyclerViewAdapter;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoTVDataListRecyclerViewAdapter;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonParsing.CastTVListJSONParser;
@@ -31,21 +30,17 @@ import com.example.android.moviedb3.localDatabase.CastTVDataDB;
 import com.example.android.moviedb3.localDatabase.CrewTVDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
-import com.example.android.moviedb3.localDatabase.VideoDataDB;
+import com.example.android.moviedb3.localDatabase.FavoriteTVDataDB;
 import com.example.android.moviedb3.localDatabase.VideoTVDataDB;
 import com.example.android.moviedb3.movieDB.CastTVData;
-import com.example.android.moviedb3.movieDB.CrewData;
 import com.example.android.moviedb3.movieDB.CrewTVData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
-import com.example.android.moviedb3.movieDB.ReviewData;
 import com.example.android.moviedb3.movieDB.TVData;
-import com.example.android.moviedb3.movieDB.VideoData;
 import com.example.android.moviedb3.movieDB.VideoTVData;
 import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringSetter;
 import com.example.android.moviedb3.movieDB.dateToString.DateToStringSetter;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
-import com.example.android.moviedb3.movieDataManager.MovieInfoDataGetter;
 import com.example.android.moviedb3.movieDataManager.TVInfoDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DataAvailableCheck;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DefaultDataAvailableCheck;
@@ -315,7 +310,7 @@ public class TVDetailFragment extends Fragment {
 
     private boolean FavoriteMovieStateChanged(Boolean favoriteState)
     {
-        DataDB<String> dataDB = new FavoriteDataDB(this.getContext());
+        DataDB<String> dataDB = new FavoriteTVDataDB(this.getContext());
 
         if(favoriteState)
         {
@@ -447,11 +442,11 @@ public class TVDetailFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            /*WatchListDialogFragment watchListDialogFragment = new WatchListDialogFragment();
-            watchListDialogFragment.setMovieID(tvData.getId());
+            WatchTVListDialogFragment watchListDialogFragment = new WatchTVListDialogFragment();
+            watchListDialogFragment.setTvID(tvData.getId());
             watchListDialogFragment.setOnDataObtainedListener(new WatchListHasSelected());
 
-            watchListDialogFragment.show(getActivity().getSupportFragmentManager(), "watchlistbutton");*/
+            watchListDialogFragment.show(getActivity().getSupportFragmentManager(), "watchlistbutton");
         }
     }
 

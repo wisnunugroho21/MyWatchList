@@ -24,11 +24,9 @@ import com.example.android.moviedb3.movieDB.GenreTvData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.TVData;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
-import com.example.android.moviedb3.movieDataManager.DatabaseGenreMovieGetter;
 import com.example.android.moviedb3.movieDataManager.DatabaseGenreTvGetter;
 import com.example.android.moviedb3.movieDataManager.DatabaseTVGetter;
 import com.example.android.moviedb3.movieDataManager.GenreTVGetter;
-import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
 
 import java.util.ArrayList;
 
@@ -39,7 +37,7 @@ import java.util.ArrayList;
 public class TVListFragment extends Fragment
 {
     private ArrayList<TVData> tvDataArrayList;
-    private DataDB<String> movieListDB;
+    private DataDB<String> tvListDB;
 
     String idGenre;
     String urlGenreTV;
@@ -75,7 +73,7 @@ public class TVListFragment extends Fragment
     }
 
     public void setTVListDB(DataDB<String> movieListDB) {
-        this.movieListDB = movieListDB;
+        this.tvListDB = movieListDB;
     }
 
     public void setGenre(String idGenre, DataDB<GenreTvData> genreTVDataDB, String urlGenreTV)
@@ -87,33 +85,21 @@ public class TVListFragment extends Fragment
 
     private void GetMovieList(Bundle savedInstanceState)
     {
-        if(savedInstanceState != null)
+        if(tvListDB != null)
         {
-            BundleDataGetter bundleDataGetter = new BundleDataGetter(savedInstanceState);
-            tvDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.TV_DATA_LIST_PERSISTANCE_KEY);
-
-            SetRecyclerView(tvDataArrayList);
-            ShowRecycleView();
+            GetMovieListFromDatabase();
         }
 
-        else
+        if(idGenre != null && genreTVDataDB != null)
         {
-            if(movieListDB != null)
-            {
-                GetMovieListFromDatabase();
-            }
-
-            if(idGenre != null && genreTVDataDB != null)
-            {
-                GetMovieListFromGenreMovie();
-            }
+            GetMovieListFromGenreMovie();
         }
     }
 
     public void GetMovieListFromDatabase()
     {
         ShowLoadingData();
-        DBGetter.GetData(new DatabaseTVGetter(movieListDB, getContext(), new MainTVListObtainedListener()));
+        DBGetter.GetData(new DatabaseTVGetter(tvListDB, getContext(), new MainTVListObtainedListener()));
     }
 
     public void GetMovieListFromGenreMovie()

@@ -52,7 +52,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/all_genre_label"
+        android:text="@string/all_genre_movie_label"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@android:color/white"
         app:layout_constraintLeft_toLeftOf="parent"

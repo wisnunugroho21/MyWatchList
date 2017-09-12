@@ -139,7 +139,7 @@ public class GenreTVGetter implements IMovieDBGetter {
                     if(!isSame)
                     {
                         String idTV = databaseGenreTVData.getIdTV();
-                        boolean isMovieAvaiable = DatabaseMovieIsAvailable.isAvailableFromGenreList(idTV, genreID, context);
+                        boolean isMovieAvaiable = DatabaseTVIsAvailable.isAvailableFromGenreList(idTV, genreID, context);
 
                         if (!isMovieAvaiable)
                         {

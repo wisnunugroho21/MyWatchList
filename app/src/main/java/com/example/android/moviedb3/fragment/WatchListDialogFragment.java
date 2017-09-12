@@ -155,9 +155,9 @@ public class WatchListDialogFragment extends DialogFragment
         @Override
         public void onComplete(boolean isSuccess)
         {
-            if(currentMovieListDataDB != null)
+            if(currentTVListDataDB != null)
             {
-                currentMovieListDataDB.addData(movieID);
+                currentTVListDataDB.addData(tvID);
             }
 
             if(onAsyncTaskCompleteListener != null)

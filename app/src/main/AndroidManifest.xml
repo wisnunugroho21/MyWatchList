@@ -23,13 +23,11 @@
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/AppTheme.TransparentActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".activity.GenreListActivity"
@@ -67,12 +65,30 @@
             android:name=".services.GetMovieListIntentService"
             android:exported="false" />
 
-        <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.TVDetailActivity"
+        <activity android:name=".activity.SettingActivity"
+            android:parentActivityName=".activity.TVMovieListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.TVMovieListActivity" />
+        </activity>
+
+        <activity
+            android:name=".activity.TVDetailActivity"
+            android:theme="@style/AppTheme.TransparentActionBar" />
+
+        <activity android:name=".activity.TVGenreListActivity"
+            android:parentActivityName=".activity.TVMovieListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.TVMovieListActivity" />
+        </activity>
+
+        <activity android:name=".activity.GenreTVListActivity"
+            android:parentActivityName=".activity.TVGenreListActivity"
             android:theme="@style/AppTheme.TransparentActionBar">
-
-
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.GenreListActivity" />
         </activity>
     </application>
 

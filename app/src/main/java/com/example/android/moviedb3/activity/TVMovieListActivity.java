@@ -281,8 +281,12 @@ public class TVMovieListActivity extends AppCompatActivity
                     SetIntialTVListFragment();
                     break;
 
-                case R.id.genre_drawer_item_menu :
+                case R.id.genre_movie_drawer_item_menu:
                     ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, TVMovieListActivity.this));
+                    break;
+
+                case R.id.genre_tv_drawer_item_menu :
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(TVGenreListActivity.class, TVMovieListActivity.this));
                     break;
 
                 case R.id.setting_drawer_item_menu :

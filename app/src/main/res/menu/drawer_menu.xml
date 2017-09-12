@@ -12,9 +12,15 @@
             <menu>
                 <group android:checkableBehavior="none">
                     <item
-                        android:id="@+id/genre_drawer_item_menu"
+                        android:id="@+id/genre_movie_drawer_item_menu"
                         android:icon="@drawable/ic_movie_filter_black_24px"
-                        android:title="@string/genre_label"/>
+                        android:title="@string/genre_movie_label"/>
+
+                    <item
+                        android:id="@+id/genre_tv_drawer_item_menu"
+                        android:icon="@drawable/ic_live_tv_black_24px"
+                        android:title="@string/genre_tv_label"/>
+
                     <item
                         android:id="@+id/people_drawer_item_menu"
                         android:icon="@drawable/ic_people_black_24px"

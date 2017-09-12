@@ -44,7 +44,8 @@
     <string name="mylist_label">My List</string>
     <string name="library_label">Library</string>
 
-    <string name="all_genre_label">All Genres</string>
+    <string name="all_genre_movie_label">All Genre Movie</string>
+    <string name="all_genre_tv_label">All Genre TV</string>
 
     <string name="movie_label">Movies</string>
     <string name="tv_label">TV Shows</string>
@@ -53,6 +54,8 @@
     <string name="feedback_label">Send Feedback</string>
     <string name="discover_movie_label">Discover Movie</string>
     <string name="setting__feedback_label">Setting and Feedback</string>
+    <string name="genre_movie_label">Genre Movie</string>
+    <string name="genre_tv_label">Genre TV</string>
 
     <string name="title_activity_test">testActivity</string>
 
