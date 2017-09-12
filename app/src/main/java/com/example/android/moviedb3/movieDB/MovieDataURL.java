@@ -109,4 +109,75 @@ public class MovieDataURL
         return "https://api.themoviedb.org/3/person/popular?api_key=" + API_KEY + "&language=" + languageID;
     }
 
+    public static String GetCastTVURL(String tvID)
+    {
+        return "https://api.themoviedb.org/3/tv/" + tvID + "/credits?api_key=" + API_KEY;
+    }
+
+    public static String GetCrewTVURL(String tvID)
+    {
+        return "https://api.themoviedb.org/3/tv/" + tvID + "/credits?api_key=" + API_KEY;
+    }
+
+    public static String GetVideoTVURL(String tvID, Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/tv/"+ tvID +"/videos?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetPopularTVURL(Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/tv/popular?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetTopRateTVURL(Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/tv/top_rated?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetAiringTodayTVURL(Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/tv/airing_today?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetOnTheAirTVURL(Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/tv/on_the_air?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetTVURL(String tvID, Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/tv/" + tvID + "?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetTVGenreListURL(Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/genre/tv/list?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetGenreTopRateTVListURL(String idGenre, Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        String regionID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.region_key), context.getString(R.string.region_usa_value));
+
+        return "https://api.themoviedb.org/3/discover/tv?api_key=" + API_KEY + "&language=" + languageID + "&sort_by=vote_average.desc&with_genres=" + idGenre;
+    }
+
+    public static String GetGenrePopularTVListURL(String idGenre, Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        String regionID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.region_key), context.getString(R.string.region_usa_value));
+
+        return "https://api.themoviedb.org/3/discover/tv?api_key=" + API_KEY + "&language=" + languageID + "&sort_by=popularity.desc&with_genres=" + idGenre;
+    }
+
+
+
+
 }

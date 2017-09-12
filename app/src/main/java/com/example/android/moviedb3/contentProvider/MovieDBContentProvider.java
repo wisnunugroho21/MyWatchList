@@ -65,6 +65,48 @@ public class MovieDBContentProvider extends ContentProvider
     public static final int PEOPLE = 1600;
     public static final int PEOPLE_ID = 1601;
 
+    public static final int TV = 1700;
+    public static final int TV_ID = 1701;
+
+    public static final int POPULAR_TV = 1800;
+    public static final int POPULAR_TV_ID = 1801;
+
+    public static final int TOP_RATE_TV = 1900;
+    public static final int TOP_RATE_TV_ID = 1901;
+
+    public static final int AIR_TODAY_TV = 2000;
+    public static final int AIR_TODAY_TV_ID = 2001;
+
+    public static final int ON_THE_AIR_TV = 2100;
+    public static final int ON_THE_AIR_TV_ID = 2101;
+
+    public static final int FAVORITE_TV = 2200;
+    public static final int FAVORITE_TV_ID = 2201;
+
+    public static final int WATCHLIST_TV = 2300;
+    public static final int WATCHLIST_TV_ID = 2301;
+
+    public static final int PLAN_TO_WATCH_TV = 2400;
+    public static final int PLAN_TO_WATCH_TV_ID = 2401;
+
+    public static final int CAST_TV = 2500;
+    public static final int CAST_TV_ID = 2501;
+
+    public static final int CREW_TV = 2600;
+    public static final int CREW_TV_ID = 2601;
+
+    public static final int VIDEO_TV = 2700;
+    public static final int VIDEO_TV_ID = 2701;
+
+    public static final int GENRE_TV_POPULAR = 2800;
+    public static final int GENRE_TV_POPULAR_ID = 2801;
+
+    public static final int GENRE_TV_TOP_RATE = 2900;
+    public static final int GENRE_TV_TOP_RATE_ID = 2901;
+
+    public static final int GENRE_TV = 3000;
+    public static final int GENRE_TV_ID = 3001;
+
     private MovieDBDatabaseHelper movieDBDatabaseHelper;
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
@@ -119,6 +161,48 @@ public class MovieDBContentProvider extends ContentProvider
 
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_DATA_PATH, PEOPLE);
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_DATA_PATH + "/#", PEOPLE_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.TV_DATA_PATH, TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.TV_DATA_PATH + "/#", TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.POPULAR_TV__DATA_PATH, POPULAR_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.POPULAR_TV__DATA_PATH + "/#", POPULAR_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.TOP_RATE_TV__DATA_PATH, TOP_RATE_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.TOP_RATE_TV__DATA_PATH + "/#", TOP_RATE_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.AIR_TODAY_TV__DATA_PATH, AIR_TODAY_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.AIR_TODAY_TV__DATA_PATH + "/#", AIR_TODAY_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.ON_THE_AIR_TV__DATA_PATH, ON_THE_AIR_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.ON_THE_AIR_TV__DATA_PATH + "/#", ON_THE_AIR_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.FAVORITE_TV__DATA_PATH, FAVORITE_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.FAVORITE_TV__DATA_PATH + "/#", FAVORITE_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.WATCHLIST_TV__DATA_PATH, WATCHLIST_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.WATCHLIST_TV__DATA_PATH + "/#", WATCHLIST_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PLAN_TO_WATCH_LIST_TV__DATA_PATH, PLAN_TO_WATCH_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PLAN_TO_WATCH_LIST_TV__DATA_PATH + "/#", PLAN_TO_WATCH_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.CREW_TV__DATA_PATH, CREW_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.CREW_TV__DATA_PATH + "/#", CREW_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.CAST_TV__DATA_PATH, CAST_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.CAST_TV__DATA_PATH + "/#", CAST_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.VIDEO_TV__DATA_PATH, VIDEO_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.VIDEO_TV__DATA_PATH + "/#", VIDEO_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_TV_POPULAR_DATA_PATH, GENRE_TV_POPULAR);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_TV_POPULAR_DATA_PATH + "/#", GENRE_TV_POPULAR_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_TV_TOP_RATE_DATA_PATH, GENRE_TV_TOP_RATE);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_TV_TOP_RATE_DATA_PATH + "/#", GENRE_TV_TOP_RATE_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_TV_DATA_PATH, GENRE_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_TV_DATA_PATH + "/#", GENRE_TV_ID);
 
         return uriMatcher_;
     }
@@ -292,6 +376,147 @@ public class MovieDBContentProvider extends ContentProvider
             case PEOPLE :
                 returnCursor = sqliteDatabase.query
                         (MovieDBContract.PeopleDataEntry.TABLE_PEOPLE_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.TVDataEntry.TABLE_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case POPULAR_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.PopularTVDataEntry.TABLE_POPULAR_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case TOP_RATE_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.TopRateTVDataEntry.TABLE_TOP_RATE_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case AIR_TODAY_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.AirTodayTVDataEntry.TABLE_AIR_TODAY_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case ON_THE_AIR_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.OnTheAirTVDataEntry.TABLE_ON_THE_AIR_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case FAVORITE_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.FavoriteTVDataEntry.TABLE_FAVORITE_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case WATCHLIST_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.WatchlistTVDataEntry.TABLE_WATCHLIST_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case PLAN_TO_WATCH_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.PlanToWatchlistTVDataEntry.TABLE_PLAN_TO_WATCH_LIST_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case CREW_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.CrewTVDataEntry.TABLE_CREW_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case CAST_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.CastTVDataEntry.TABLE_CAST_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case VIDEO_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.VideoTVDataEntry.TABLE_VIDEO_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+
+                break;
+
+            case GENRE_TV_POPULAR :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.GenreTVPopularEntry.TABLE_GENRE_TV_POPULAR_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case GENRE_TV_TOP_RATE :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.GenreTVTopRateEntry.TABLE_GENRE_TV_TOP_RATE_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case GENRE_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA,
                                 projection,
                                 selection,
                                 selectionArgs,
@@ -597,6 +822,244 @@ public class MovieDBContentProvider extends ContentProvider
                 }
                 break;
 
+            case TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.TVDataEntry.TABLE_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.TVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case POPULAR_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.PopularTVDataEntry.TABLE_POPULAR_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.PopularTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case TOP_RATE_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.TopRateTVDataEntry.TABLE_TOP_RATE_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.TopRateTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case AIR_TODAY_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.AirTodayTVDataEntry.TABLE_AIR_TODAY_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.AirTodayTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case ON_THE_AIR_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.OnTheAirTVDataEntry.TABLE_ON_THE_AIR_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.OnTheAirTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case FAVORITE_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.FavoriteTVDataEntry.TABLE_FAVORITE_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.FavoriteTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case WATCHLIST_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.WatchlistTVDataEntry.TABLE_WATCHLIST_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.WatchlistTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case PLAN_TO_WATCH_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.PlanToWatchlistTVDataEntry.TABLE_PLAN_TO_WATCH_LIST_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.PlanToWatchlistTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case CREW_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.CrewTVDataEntry.TABLE_CREW_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.CrewTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case CAST_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.CastTVDataEntry.TABLE_CAST_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.CastTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case VIDEO_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.VideoTVDataEntry.TABLE_VIDEO_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.VideoTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case GENRE_TV_POPULAR :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.GenreTVPopularEntry.TABLE_GENRE_TV_POPULAR_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.GenreTVPopularEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case GENRE_TV_TOP_RATE :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.GenreTVTopRateEntry.TABLE_GENRE_TV_TOP_RATE_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.GenreTVTopRateEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case GENRE_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.GenreTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -793,6 +1256,160 @@ public class MovieDBContentProvider extends ContentProvider
                         MovieDBContract.PeopleDataEntry._ID + "=?", new String[]{ idData });
                 break;
 
+            case TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.TVDataEntry.TABLE_TV_DATA,
+                        "1", null);
+                break;
+
+            case TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.TVDataEntry.TABLE_TV_DATA,
+                        MovieDBContract.TVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case POPULAR_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PopularTVDataEntry.TABLE_POPULAR_TV_DATA,
+                        "1", null);
+                break;
+
+            case POPULAR_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PopularTVDataEntry.TABLE_POPULAR_TV_DATA,
+                        MovieDBContract.PopularTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case TOP_RATE_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.TopRateTVDataEntry.TABLE_TOP_RATE_TV_DATA,
+                        "1", null);
+                break;
+
+            case TOP_RATE_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.TopRateTVDataEntry.TABLE_TOP_RATE_TV_DATA,
+                        MovieDBContract.TopRateTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case AIR_TODAY_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.AirTodayTVDataEntry.TABLE_AIR_TODAY_TV_DATA,
+                        "1", null);
+                break;
+
+            case AIR_TODAY_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.AirTodayTVDataEntry.TABLE_AIR_TODAY_TV_DATA,
+                        MovieDBContract.AirTodayTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case ON_THE_AIR_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.OnTheAirTVDataEntry.TABLE_ON_THE_AIR_TV_DATA,
+                        "1", null);
+                break;
+
+            case ON_THE_AIR_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.OnTheAirTVDataEntry.TABLE_ON_THE_AIR_TV_DATA,
+                        MovieDBContract.OnTheAirTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case FAVORITE_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.FavoriteTVDataEntry.TABLE_FAVORITE_TV_DATA,
+                        "1", null);
+                break;
+
+            case FAVORITE_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.FavoriteTVDataEntry.TABLE_FAVORITE_TV_DATA,
+                        MovieDBContract.FavoriteTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case WATCHLIST_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.WatchlistTVDataEntry.TABLE_WATCHLIST_TV_DATA,
+                        "1", null);
+                break;
+
+            case WATCHLIST_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.WatchlistTVDataEntry.TABLE_WATCHLIST_TV_DATA,
+                        MovieDBContract.WatchlistTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case PLAN_TO_WATCH_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PlanToWatchlistTVDataEntry.TABLE_PLAN_TO_WATCH_LIST_TV_DATA,
+                        "1", null);
+                break;
+
+            case PLAN_TO_WATCH_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PlanToWatchlistTVDataEntry.TABLE_PLAN_TO_WATCH_LIST_TV_DATA,
+                        MovieDBContract.PlanToWatchlistTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case CREW_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.CrewTVDataEntry.TABLE_CREW_TV_DATA,
+                        "1", null);
+                break;
+
+            case CREW_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.CrewTVDataEntry.TABLE_CREW_TV_DATA,
+                        MovieDBContract.CrewTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case CAST_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.CastTVDataEntry.TABLE_CAST_TV_DATA,
+                        "1", null);
+                break;
+
+            case CAST_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.CastTVDataEntry.TABLE_CAST_TV_DATA,
+                        MovieDBContract.CastTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case VIDEO_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.VideoTVDataEntry.TABLE_VIDEO_TV_DATA,
+                        "1", null);
+                break;
+
+            case VIDEO_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.VideoTVDataEntry.TABLE_VIDEO_TV_DATA,
+                        MovieDBContract.VideoTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case GENRE_TV_POPULAR :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreTVPopularEntry.TABLE_GENRE_TV_POPULAR_DATA,
+                        "1", null);
+                break;
+
+            case GENRE_TV_POPULAR_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreTVPopularEntry.TABLE_GENRE_TV_POPULAR_DATA,
+                        MovieDBContract.GenreTVPopularEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case GENRE_TV_TOP_RATE :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreTVTopRateEntry.TABLE_GENRE_TV_TOP_RATE_DATA,
+                        "1", null);
+                break;
+
+            case GENRE_TV_TOP_RATE_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreTVTopRateEntry.TABLE_GENRE_TV_TOP_RATE_DATA,
+                        MovieDBContract.GenreTVTopRateEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case GENRE_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA,
+                        "1", null);
+                break;
+
+            case GENRE_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA,
+                        MovieDBContract.GenreTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -909,6 +1526,90 @@ public class MovieDBContentProvider extends ContentProvider
                 idData = uri.getPathSegments().get(1);
                 dataUpdated = sqliteDatabase.update(MovieDBContract.PeopleDataEntry.TABLE_PEOPLE_DATA,
                         values, MovieDBContract.PeopleDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.TVDataEntry.TABLE_TV_DATA,
+                        values, MovieDBContract.TVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case POPULAR_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.PopularTVDataEntry.TABLE_POPULAR_TV_DATA,
+                        values, MovieDBContract.PopularTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case TOP_RATE_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.TopRateTVDataEntry.TABLE_TOP_RATE_TV_DATA,
+                        values, MovieDBContract.TopRateTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case AIR_TODAY_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.AirTodayTVDataEntry.TABLE_AIR_TODAY_TV_DATA,
+                        values, MovieDBContract.AirTodayTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case ON_THE_AIR_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.OnTheAirTVDataEntry.TABLE_ON_THE_AIR_TV_DATA,
+                        values, MovieDBContract.OnTheAirTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case FAVORITE_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.FavoriteTVDataEntry.TABLE_FAVORITE_TV_DATA,
+                        values, MovieDBContract.FavoriteTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case WATCHLIST_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.WatchlistTVDataEntry.TABLE_WATCHLIST_TV_DATA,
+                        values, MovieDBContract.WatchlistTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case PLAN_TO_WATCH_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.PlanToWatchlistTVDataEntry.TABLE_PLAN_TO_WATCH_LIST_TV_DATA,
+                        values, MovieDBContract.PlanToWatchlistTVDataEntry.COLUMN_TV_ID + "=?", new String[]{ idData });
+                break;
+
+            case CAST_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.CastTVDataEntry.TABLE_CAST_TV_DATA,
+                        values, MovieDBContract.CastTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case CREW_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.CrewTVDataEntry.TABLE_CREW_TV_DATA,
+                        values, MovieDBContract.CrewTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case VIDEO_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.VideoTVDataEntry.TABLE_VIDEO_TV_DATA,
+                        values, MovieDBContract.VideoTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case GENRE_TV_POPULAR_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.GenreTVPopularEntry.TABLE_GENRE_TV_POPULAR_DATA,
+                        values, MovieDBContract.GenreTVPopularEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case GENRE_TV_TOP_RATE_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.GenreTVTopRateEntry.TABLE_GENRE_TV_TOP_RATE_DATA,
+                        values, MovieDBContract.GenreTVTopRateEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case GENRE_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA,
+                        values, MovieDBContract.GenreTVDataEntry._ID + "=?", new String[]{ idData });
                 break;
 
             default:

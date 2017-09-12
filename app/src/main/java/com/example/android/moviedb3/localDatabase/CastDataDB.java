@@ -7,7 +7,6 @@ import android.net.Uri;
 
 import com.example.android.moviedb3.contentProvider.MovieDBContract;
 import com.example.android.moviedb3.movieDB.CastData;
-import com.example.android.moviedb3.movieDB.ReviewData;
 
 import java.util.ArrayList;
 

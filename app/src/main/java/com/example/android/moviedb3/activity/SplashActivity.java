@@ -69,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
     private void LaunchToNextActivity()
     {
         PreferencesUtils.SetData(new DefaultBooleanStatePreference(this), false, MovieDBKeyEntry.SharedPreferencesKey.CHECK_FIRST_TIME);
-        ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, this));
+        ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(TVMovieListActivity.class, this));
         finish();
     }
 
@@ -266,7 +266,7 @@ public class SplashActivity extends AppCompatActivity {
         {
             if(resultCode == MovieDBKeyEntry.GET_MOVIE_LIST_RESULT_SUCCESS)
             {
-                ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, context));
+                ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(TVMovieListActivity.class, context));
                 SplashActivity.this.finish();
             }
         }
@@ -391,7 +391,7 @@ public class SplashActivity extends AppCompatActivity {
         {
             if(amountDataObtained >= 4)
             {
-                ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(MovieListActivity.class, SplashActivity.this));
+                ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(TVMovieListActivity.class, SplashActivity.this));
                 finish();
             }
 

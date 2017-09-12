@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.example.android.moviedb3.R;
-import com.example.android.moviedb3.activity.MovieListActivity;
+import com.example.android.moviedb3.activity.TVMovieListActivity;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 
 /**
@@ -29,7 +29,7 @@ public class PeriodUpdateNotificationUtils
 
     private static PendingIntent createPendingIntent(Context context)
     {
-        Intent intent = new Intent(context, MovieListActivity.class);
+        Intent intent = new Intent(context, TVMovieListActivity.class);
         return PendingIntent.getActivity(context, MovieDBKeyEntry.NotificationKey.NEW_NOW_SHOWING_MOVIE_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

@@ -15,27 +15,29 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MovieDetailActivity"
-            android:theme="@style/AppTheme.TransparentActionBar"></activity>
+            android:theme="@style/AppTheme.TransparentActionBar" />
         <activity
-            android:name=".activity.MovieListActivity"
+            android:name=".activity.TVMovieListActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.TransparentActionBar" />
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/AppTheme.TransparentActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".activity.GenreListActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".activity.MovieListActivity">
+            android:parentActivityName=".activity.TVMovieListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MovieListActivity" />
+                android:value=".activity.TVMovieListActivity" />
         </activity>
         <activity
             android:name=".activity.GenreMovieListActivity"
@@ -55,18 +57,23 @@
             android:name=".services.GetMovieListRepeatingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
-
-        <service android:name=".services.GetMovieListProgressService"
-            android:exported="false"/>
-
+        <service
+            android:name=".services.GetMovieListProgressService"
+            android:exported="false" />
         <service
             android:name=".services.GetMovieListIntentService"
             android:exported="false" />
 
-        <activity android:name=".activity.SettingActivity"></activity>
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.TVDetailActivity"
+            android:theme="@style/AppTheme.TransparentActionBar">
+
+
+
+        </activity>
     </application>
 
 </manifest><!--

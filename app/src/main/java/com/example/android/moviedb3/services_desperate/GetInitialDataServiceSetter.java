@@ -1,25 +1,10 @@
 package com.example.android.moviedb3.services_desperate;
 
-import android.app.job.JobInfo;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 
-import com.example.android.moviedb3.activity.MovieListActivity;
-import com.example.android.moviedb3.activity.SplashActivity;
-import com.example.android.moviedb3.activityShifter.ActivityLauncher;
-import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
-import com.firebase.jobdispatcher.Constraint;
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.Trigger;
 
 import java.util.concurrent.TimeUnit;
 

@@ -3,9 +3,7 @@ package com.example.android.moviedb3.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +22,9 @@ import android.widget.Toast;
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoDataListRecyclerViewAdapter;
+import com.example.android.moviedb3.movieDB.CastData;
+import com.example.android.moviedb3.movieDB.CrewData;
+import com.example.android.moviedb3.movieDB.ReviewData;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
 import com.example.android.moviedb3.movieDataManager.MovieInfoDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DataAvailableCheck;
@@ -41,16 +42,12 @@ import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
 import com.example.android.moviedb3.localDatabase.ReviewDataDB;
 import com.example.android.moviedb3.localDatabase.VideoDataDB;
-import com.example.android.moviedb3.movieDB.CastData;
-import com.example.android.moviedb3.movieDB.CrewData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieData;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
-import com.example.android.moviedb3.movieDB.ReviewData;
 import com.example.android.moviedb3.movieDB.VideoData;
 import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringSetter;
 import com.example.android.moviedb3.movieDB.dateToString.DateToStringSetter;
-import com.firebase.jobdispatcher.Constraint;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -536,13 +533,13 @@ public class MovieDetailFragment extends Fragment {
 
             if(internetNetworkState == MovieDBKeyEntry.InternetNetworkState.CONNECTED)
             {
-                movieData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY);
+                tvData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY);
                 reviewDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_REVIEW_LIST_PERSISTANCE_KEY);
                 castDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CAST_LIST_PERSISTANCE_KEY);
                 crewDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CREW_LIST_PERSISTANCE_KEY);
                 videoDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_VIDEO_LIST_PERSISTANCE_KEY);
 
-                SetMovieDetail(movieData);
+                SetMovieDetail(tvData);
                 SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(reviewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
                 SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(castDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
                 SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(crewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
@@ -557,16 +554,16 @@ public class MovieDetailFragment extends Fragment {
         else
         {
             BundleDataGetter bundleDataGetter = new BundleDataGetter(getArguments());
-            movieData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY);
+            tvData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY);
 
             if(NetworkConnectionChecker.IsConnect(getContext()))
             {
-                if(movieData != null)
+                if(tvData != null)
                 {
                     ShowLoadingData();
 
-                    SetMovieDetail(movieData);
-                    SetAllRecyclerView(movieData);
+                    SetMovieDetail(tvData);
+                    SetAllRecyclerView(tvData);
 
                     return;
                 }
@@ -576,27 +573,27 @@ public class MovieDetailFragment extends Fragment {
         ShowNoInternetAccess();
     }
 
-    private void SetAllRecyclerView(PeopleData movieData) {
-        String reviewURL = MovieDataURL.GetReviewURL(String.valueOf(movieData.getId()));
-        DBGetter.GetDataAsyncTask(new MovieInfoDataGetter<ReviewData>(new ReviewDataListObtainedListener(), new ReviewDataDB(getContext()), new ReviewListJSONParser(), reviewURL, movieData.getId(), getContext()));
+    private void SetAllRecyclerView(PeopleData tvData) {
+        String reviewURL = MovieDataURL.GetReviewURL(String.valueOf(tvData.getId()));
+        DBGetter.GetDataAsyncTask(new MovieInfoDataGetter<ReviewData>(new ReviewDataListObtainedListener(), new ReviewDataDB(getContext()), new ReviewListJSONParser(), reviewURL, tvData.getId(), getContext()));
 
-        String castURLurl = MovieDataURL.GetCastURL(String.valueOf(movieData.getId()));
-        DBGetter.GetDataAsyncTask(new MovieInfoDataGetter<CastData>(new CastDataListObtainedListener(), new CastDataDB(getContext()), new CastListJSONParser(), castURLurl, movieData.getId(), getContext()));
+        String castURLurl = MovieDataURL.GetCastURL(String.valueOf(tvData.getId()));
+        DBGetter.GetDataAsyncTask(new MovieInfoDataGetter<CastData>(new CastDataListObtainedListener(), new CastDataDB(getContext()), new CastListJSONParser(), castURLurl, tvData.getId(), getContext()));
 
-        String crewURL = MovieDataURL.GetCrewURL(String.valueOf(movieData.getId()));
-        DBGetter.GetDataAsyncTask(new MovieInfoDataGetter<CrewData>(new CrewDataListObtainedListener(), new CrewDataDB(getContext()), new CrewListJSONParser(), crewURL, movieData.getId(), getContext()));
+        String crewURL = MovieDataURL.GetCrewURL(String.valueOf(tvData.getId()));
+        DBGetter.GetDataAsyncTask(new MovieInfoDataGetter<CrewData>(new CrewDataListObtainedListener(), new CrewDataDB(getContext()), new CrewListJSONParser(), crewURL, tvData.getId(), getContext()));
 
-        String videoURL = MovieDataURL.GetVideoURL(String.valueOf(movieData.getId()));
-        DBGetter.GetDataAsyncTask(new MovieInfoDataGetter<VideoData>(new VideoDataListObtainedListener(), new VideoDataDB(getContext()), new VideoListJSONParser(), videoURL, movieData.getId(), getContext()));
+        String videoURL = MovieDataURL.GetVideoURL(String.valueOf(tvData.getId()));
+        DBGetter.GetDataAsyncTask(new MovieInfoDataGetter<VideoData>(new VideoDataListObtainedListener(), new VideoDataDB(getContext()), new VideoListJSONParser(), videoURL, tvData.getId(), getContext()));
         /*NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<ReviewData>>(new ReviewListJSONParser(), new ReviewDataListObtainedListener()), reviewURL);
 
-        String castURLurl = MovieDataURL.GetCastURL(String.valueOf(movieData.getId()));
+        String castURLurl = MovieDataURL.GetCastURL(String.valueOf(tvData.getId()));
         NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<CastData>>(new CastListJSONParser(), new CastDataListObtainedListener()), castURLurl);
 
-        String crewURL = MovieDataURL.GetCrewURL(String.valueOf(movieData.getId()));
+        String crewURL = MovieDataURL.GetCrewURL(String.valueOf(tvData.getId()));
         NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<CrewData>>(new CrewListJSONParser(), new CrewDataListObtainedListener()), crewURL);
 
-        String videoURL = MovieDataURL.GetVideoURL(String.valueOf(movieData.getId()));
+        String videoURL = MovieDataURL.GetVideoURL(String.valueOf(tvData.getId()));
         NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<VideoData>>(new VideoListJSONParser(), new VideoDataListObtainedListener()), videoURL);*/
 
 

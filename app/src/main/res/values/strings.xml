@@ -16,6 +16,10 @@
     <string name="duration_label">Duration</string>
     <string name="release_date_label">Release Date</string>
     <string name="rating_label">Rating</string>
+    <string name="episode_season_label">Episode/Season</string>
+    <string name="available_on_label">Available On : </string>
+    <string name="series_status_label">Series Status : </string>
+    <string name="first_release_label">First Release</string>
 
     <string name="review_label">Review</string>
     <string name="video_label">Video</string>
@@ -102,7 +106,7 @@
     <string name="region_and_language_label">Region and Language</string>
     <string name="region_label">Region</string>
     <string name="content_language_label">Content Language</string>
-    
+
     <string name="period_update_screen_key" translatable="false">period_update_screen_key</string>
     <string name="period_update_key" translatable="false">period_update_key</string>
     <string name="period_update_category_key" translatable="false">period_update_category_key</string>

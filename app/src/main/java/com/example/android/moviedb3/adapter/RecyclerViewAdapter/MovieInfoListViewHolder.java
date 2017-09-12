@@ -6,9 +6,6 @@ import android.widget.TextView;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.movieDB.MovieInfoData;
-import com.example.android.moviedb3.movieDB.ReviewData;
-
-import java.util.ArrayList;
 
 /**
  * Created by nugroho on 28/07/17.
@@ -26,9 +23,9 @@ public class MovieInfoListViewHolder extends RecyclerView.ViewHolder
         secondTextView = (TextView) itemView.findViewById(R.id.txt_second_text);
     }
 
-    public void Binding(MovieInfoData movieInfoData)
+    public void Binding(MovieInfoData MovieInfoData)
     {
-        secondTextView.setText(movieInfoData.getSecondText());
-        firstTextView.setText(movieInfoData.getFirstText());
+        secondTextView.setText(MovieInfoData.getSecondText());
+        firstTextView.setText(MovieInfoData.getFirstText());
     }
 }

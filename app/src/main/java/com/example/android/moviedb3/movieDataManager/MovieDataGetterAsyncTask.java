@@ -260,16 +260,16 @@ public class MovieDataGetterAsyncTask implements IMovieDBGetter {
         @Override
         protected ArrayList<PeopleData> doInBackground(Void... params) {
 
-            ArrayList<PeopleData> movieDatas = movieDB.getAllData();
-            ArrayList<String> idMovies = genreMovieDataDB.getAllData();
+            ArrayList<PeopleData> tvDatas = tvDB.getAllData();
+            ArrayList<String> idMovies = genreTVDataDB.getAllData();
 
             ArrayList<PeopleData> expectedMovieDatas = new ArrayList<>();
 
-            if(movieDatas != null)
+            if(tvDatas != null)
             {
                 for (String idMovie:idMovies)
                 {
-                    for (PeopleData movieData:movieDatas)
+                    for (PeopleData movieData:tvDatas)
                     {
                         if(idMovie.equals(movieData.getId()))
                         {
@@ -284,25 +284,25 @@ public class MovieDataGetterAsyncTask implements IMovieDBGetter {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<PeopleData> movieDatas)
+        protected void onPostExecute(ArrayList<PeopleData> tvDatas)
         {
             if(onAllPeopleObtainedListener != null)
             {
-                onAllPeopleObtainedListener.onDataObtained(movieDatas);
+                onAllPeopleObtainedListener.onDataObtained(tvDatas);
             }
         }
     }*/
 
             /*ArrayList<String> deletedIdMovieList = DataCheck.CheckData
-                    (new NoIDListFinder(idMovieList, genreMovieDataDB));*/
+                    (new NoIDListFinder(idTVList, genreTVDataDB));*/
 
-    /*ArrayList<String> willDeletedIdMovieList = DifferentDataFInder.FindData(new IDListDifferentDataFinder(idMovieList, new SameID_IDListCheck(genreMovieDataDB.getAllData())));
+    /*ArrayList<String> willDeletedIdMovieList = DifferentDataFInder.FindData(new IDListDifferentDataFinder(idTVList, new SameID_IDListCheck(genreTVDataDB.getAllData())));
 
             for (String idMovie : willDeletedIdMovieList)
                     {
                     boolean isMovieAvaiable = false;
 
-                    for (DataDB<String> dataDB : otherMovieListDataDB)
+                    for (DataDB<String> dataDB : otherTVListDataDB)
         {
                     *//*if (DataCheck.CheckData(new SameID_IDListCheck(dataDB, idMovie)))
                     {
@@ -320,7 +320,7 @@ public class MovieDataGetterAsyncTask implements IMovieDBGetter {
 
         if (!isMovieAvaiable)
         {
-        movieDB.removeData(idMovie);
+        tvDB.removeData(idMovie);
 
         ArrayList<String> deletedIdMovie = new ArrayList<>();
         deletedIdMovie.add(idMovie);
@@ -367,24 +367,24 @@ public class MovieDataGetterAsyncTask implements IMovieDBGetter {
         }
         }
 
-        DataReplace.ReplaceData(new SameDataReplace<PeopleData>(movieDB, movieDatas, new SameID_DataListCheck<>(movieDB.getAllData())));
-        DataReplace.ReplaceData(new SameIDDataReplace(genreMovieDataDB, idMovieList, new SameID_IDListCheck(genreMovieDataDB.getAllData())));
+        DataReplace.ReplaceData(new SameDataReplace<PeopleData>(tvDB, tvDatas, new SameID_DataListCheck<>(tvDB.getAllData())));
+        DataReplace.ReplaceData(new SameIDDataReplace(genreTVDataDB, idTVList, new SameID_IDListCheck(genreTVDataDB.getAllData())));
 
-            *//*for (PeopleData movieData:movieDatas)
+            *//*for (PeopleData movieData:tvDatas)
             {
-                if(DataCheck.CheckData(new SameID_DataListCheck<PeopleData>(movieDB, movieData.getId())))
+                if(DataCheck.CheckData(new SameID_DataListCheck<PeopleData>(tvDB, movieData.getId())))
                 {
-                    movieDB.removeData(movieData.getId());
+                    tvDB.removeData(movieData.getId());
                 }
 
-                movieDB.addData(movieData);
+                tvDB.addData(movieData);
             }
 
-            genreMovieDataDB.removeAllData();
+            genreTVDataDB.removeAllData();
 
-            for (String idMovie : idMovieList)
+            for (String idMovie : idTVList)
             {
-                genreMovieDataDB.addData(idMovie);
+                genreTVDataDB.addData(idMovie);
             }*//*
 
         return null;*/

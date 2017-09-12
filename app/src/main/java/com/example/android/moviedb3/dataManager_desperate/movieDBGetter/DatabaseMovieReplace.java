@@ -5,10 +5,8 @@ import android.os.AsyncTask;
 
 import com.example.android.moviedb3.dataManager_desperate.dataCheck.DataCheck;
 import com.example.android.moviedb3.dataManager_desperate.dataCheck.SameID_IDListCheck;
-import com.example.android.moviedb3.dataManager_desperate.dataCheck.SameID_IntermedieteListCheck;
 import com.example.android.moviedb3.dataManager_desperate.dataFinder.DataFind;
 import com.example.android.moviedb3.dataManager_desperate.dataFinder.DependencyDataListFinder;
-import com.example.android.moviedb3.dataManager_desperate.dataFinder.IntermedietDataListFinder;
 import com.example.android.moviedb3.dataManager_desperate.dataFinder.NoIDListFinder;
 import com.example.android.moviedb3.dataManager_desperate.dataCheck.SameID_DataListCheck;
 import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
@@ -21,7 +19,6 @@ import com.example.android.moviedb3.localDatabase.ReviewDataDB;
 import com.example.android.moviedb3.localDatabase.VideoDataDB;
 import com.example.android.moviedb3.movieDB.CastData;
 import com.example.android.moviedb3.movieDB.CrewData;
-import com.example.android.moviedb3.movieDB.GenreMovieData;
 import com.example.android.moviedb3.movieDB.MovieData;
 import com.example.android.moviedb3.movieDB.ReviewData;
 import com.example.android.moviedb3.movieDB.VideoData;

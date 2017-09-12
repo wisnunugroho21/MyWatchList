@@ -2,7 +2,6 @@ package com.example.android.moviedb3.movieDataManager;
 
 import android.content.Context;
 
-import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonNetworkConnection.NetworkConnectionChecker;
 import com.example.android.moviedb3.jsonParsing.MovieDetailJSONParser;
@@ -26,7 +25,6 @@ import com.example.android.moviedb3.supportDataManager.dataDelete.BaseDataListDe
 import com.example.android.moviedb3.supportDataManager.dataDelete.DataDelete;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterDefaultThread;
-import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataListGetterAsyncTask;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataListGetterDefaultThread;
 import com.example.android.moviedb3.supportDataManager.dataReplace.AllDataListReplace;
 import com.example.android.moviedb3.supportDataManager.dataReplace.BaseDataListReplace;

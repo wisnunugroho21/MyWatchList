@@ -165,7 +165,7 @@ public class GenreMovieGetter implements IMovieDBGetter {
             }
 
             DataReplace.ReplaceData(new BaseDataListReplace<MovieData>(movieDatas, movieDB, new BaseDataCompare<MovieData>()));
-//            DataReplace.ReplaceData(new BaseDataListReplace<GenreMovieData>(genreMovieDatas, genreMovieDataDB, new IntermedieteDataCompare<GenreMovieData>(IntermedieteDataCompare.CHECK_SECOND_ID)));
+//            DataReplace.ReplaceData(new BaseDataListReplace<GenreMovieData>(genreTvDatas, genreTVDataDB, new IntermedieteDataCompare<GenreMovieData>(IntermedieteDataCompare.CHECK_SECOND_ID)));
 
             for(GenreMovieData genreMovieData:genreMovieDatas)
             {

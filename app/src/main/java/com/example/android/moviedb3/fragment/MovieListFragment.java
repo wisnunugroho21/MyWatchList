@@ -56,7 +56,7 @@ public class MovieListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.main_movie_list, container, false);
+        View view = inflater.inflate(R.layout.main_tv_movie_list, container, false);
 
         movieListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_movie_list);
         loadingDataProgressBar = (ProgressBar) view.findViewById(R.id.pb_loading_data);
@@ -65,12 +65,6 @@ public class MovieListFragment extends Fragment
         GetMovieList(savedInstanceState);
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-        outState.putParcelableArrayList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_LIST_PERSISTANCE_KEY, movieDataArrayList);
     }
 
     public void setMovieListDB(DataDB<String> movieListDB) {
@@ -86,26 +80,14 @@ public class MovieListFragment extends Fragment
 
     private void GetMovieList(Bundle savedInstanceState)
     {
-        if(savedInstanceState != null)
+        if(movieListDB != null)
         {
-            BundleDataGetter bundleDataGetter = new BundleDataGetter(savedInstanceState);
-            movieDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_LIST_PERSISTANCE_KEY);
-
-            SetRecyclerView(movieDataArrayList);
-            ShowRecycleView();
+            GetMovieListFromDatabase();
         }
 
-        else
+        if(idGenre != null && genreMovieDataDB != null)
         {
-            if(movieListDB != null)
-            {
-                GetMovieListFromDatabase();
-            }
-
-            if(idGenre != null && genreMovieDataDB != null)
-            {
-                GetMovieListFromGenreMovie();
-            }
+            GetMovieListFromGenreMovie();
         }
     }
 

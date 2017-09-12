@@ -3,11 +3,6 @@ package com.example.android.moviedb3.dataManager_desperate.movieDBGetter;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.android.moviedb3.dataManager_desperate.dataCheck.DataCheck;
-import com.example.android.moviedb3.dataManager_desperate.dataFinder.DependencyDataListFinder;
-import com.example.android.moviedb3.dataManager_desperate.dataFinder.IntermedietDataListFinder;
-import com.example.android.moviedb3.dataManager_desperate.dataFinder.NoDataListFinder;
-import com.example.android.moviedb3.dataManager_desperate.dataCheck.SameID_IDListCheck;
 import com.example.android.moviedb3.dataManager_desperate.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.dataManager_desperate.dataGetter.NetworkDataGetterSyncTask;
 import com.example.android.moviedb3.dataManager_desperate.dataReplace.AllDataListReplace;
@@ -15,29 +10,19 @@ import com.example.android.moviedb3.dataManager_desperate.dataReplace.ReplaceDat
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonNetworkConnection.NetworkConnectionChecker;
 import com.example.android.moviedb3.jsonParsing.GenreListJSONParser;
-import com.example.android.moviedb3.localDatabase.CastDataDB;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
-import com.example.android.moviedb3.localDatabase.CrewDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
 import com.example.android.moviedb3.localDatabase.GenreDataDB;
 /*import com.example.android.moviedb3.localDatabase.GenreMoviePopularDB;
 import com.example.android.moviedb3.localDatabase.GenreMovieTopRateDB;*/
-import com.example.android.moviedb3.localDatabase.MovieDataDB;
 import com.example.android.moviedb3.localDatabase.NowShowingDataDB;
 import com.example.android.moviedb3.localDatabase.PlanToWatchDataDB;
 import com.example.android.moviedb3.localDatabase.PopularDataDB;
-import com.example.android.moviedb3.localDatabase.ReviewDataDB;
 import com.example.android.moviedb3.localDatabase.TopRateDataDB;
-import com.example.android.moviedb3.localDatabase.VideoDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
-import com.example.android.moviedb3.movieDB.CastData;
-import com.example.android.moviedb3.movieDB.CrewData;
 import com.example.android.moviedb3.movieDB.GenreData;
 import com.example.android.moviedb3.movieDB.GenreMovieData;
-import com.example.android.moviedb3.movieDB.MovieData;
-import com.example.android.moviedb3.movieDB.ReviewData;
-import com.example.android.moviedb3.movieDB.VideoData;
 
 import java.util.ArrayList;
 
@@ -128,7 +113,7 @@ public class GenreDataGetter
         {
             for (GenreMovieData genreMovieData : unexpectedGenreMovieList)
             {
-               /* String idMovie = genreMovieData.getIdMovie();
+               /* String idMovie = genreMovieData.getIdTV();
                 boolean isMovieAvaiable = false;
 
                 for (DataDB<String> dataDB : getInitialOtherMovieListDataDB())
