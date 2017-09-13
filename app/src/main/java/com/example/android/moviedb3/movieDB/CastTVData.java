@@ -13,13 +13,16 @@ public class CastTVData extends DependencyData implements Parcelable, MovieInfoD
     String characterName;
     String tvID;
     String peopleID;
+    String imageCast;
 
-    public CastTVData(String id, String castName, String characterName, String tvID, String peopleID) {
+    public CastTVData(String id, String castName, String characterName,
+                      String tvID, String peopleID, String imageCast) {
         super(id);
         this.castName = castName;
         this.characterName = characterName;
         this.tvID = tvID;
         this.peopleID = peopleID;
+        this.imageCast = imageCast;
     }
 
     public CastTVData(Parcel in)
@@ -29,6 +32,7 @@ public class CastTVData extends DependencyData implements Parcelable, MovieInfoD
         this.characterName = in.readString();
         this.tvID = in.readString();
         this.peopleID = in.readString();
+        this.imageCast = in.readString();
     }
 
     public String getCastName() {
@@ -45,6 +49,15 @@ public class CastTVData extends DependencyData implements Parcelable, MovieInfoD
 
     public String getPeopleID() {
         return peopleID;
+    }
+
+    public String getImageCast() {
+        return imageCast;
+    }
+
+    @Override
+    public String getImage() {
+        return "http://image.tmdb.org/t/p/w92" + imageCast;
     }
 
     @Override
@@ -74,6 +87,7 @@ public class CastTVData extends DependencyData implements Parcelable, MovieInfoD
         dest.writeString(this.characterName);
         dest.writeString(this.tvID);
         dest.writeString(this.peopleID);
+        dest.writeString(this.imageCast);
     }
 
     public static final Creator CREATOR = new Creator()

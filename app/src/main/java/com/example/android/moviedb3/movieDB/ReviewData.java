@@ -12,13 +12,16 @@ public class ReviewData extends DependencyData implements Parcelable, MovieInfoD
     private String name;
     private String reviewContent;
     private String movieID;
+    private String imageReviewer;
 
-    public ReviewData(String id, String name, String reviewContent, String movieID) {
+    public ReviewData(String id, String name, String reviewContent, String movieID,
+                      String imageReviewer) {
 
         super(id);
         this.name = name;
         this.reviewContent = reviewContent;
         this.movieID = movieID;
+        this.imageReviewer = imageReviewer;
     }
 
     public ReviewData(Parcel in)
@@ -27,6 +30,7 @@ public class ReviewData extends DependencyData implements Parcelable, MovieInfoD
         this.name = in.readString();
         this.reviewContent = in.readString();
         this.movieID = in.readString();
+        this.imageReviewer = in.readString();
     }
 
     public String getName() {
@@ -39,6 +43,15 @@ public class ReviewData extends DependencyData implements Parcelable, MovieInfoD
 
     public String getMovieID() {
         return movieID;
+    }
+
+    public String getImageReviewer() {
+        return imageReviewer;
+    }
+
+    @Override
+    public String getImage() {
+        return "image.tmdb.org/t/p/w92" + imageReviewer;
     }
 
     @Override
@@ -67,6 +80,7 @@ public class ReviewData extends DependencyData implements Parcelable, MovieInfoD
         dest.writeString(this.name);
         dest.writeString(this.reviewContent);
         dest.writeString(this.movieID);
+        dest.writeString(this.imageReviewer);
     }
 
     public static final Creator CREATOR = new Creator()

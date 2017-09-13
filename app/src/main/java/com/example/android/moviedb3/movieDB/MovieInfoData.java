@@ -8,4 +8,5 @@ public interface MovieInfoData
 {
     String getFirstText();
     String getSecondText();
+    String getImage();
 }

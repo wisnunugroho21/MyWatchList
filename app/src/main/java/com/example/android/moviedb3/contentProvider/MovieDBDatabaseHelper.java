@@ -93,7 +93,8 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 MovieDBContract.CrewDataEntry.COLUMN_CREW_NAME + " TEXT, " +
                 MovieDBContract.CrewDataEntry.COLUMN_CREW_POSITION + " TEXT, " +
                 MovieDBContract.CrewDataEntry.COLUMN_MOVIE_ID + " TEXT, " +
-                MovieDBContract.CrewDataEntry.COLUMN_PEOPLE_ID + " TEXT " +
+                MovieDBContract.CrewDataEntry.COLUMN_PEOPLE_ID + " TEXT, " +
+                MovieDBContract.CrewDataEntry.COLUMN_IMAGE + " TEXT " +
                 ");";
 
         db.execSQL(SQLITE_CREATE_CREW_TABLE);
@@ -103,7 +104,8 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 MovieDBContract.CastDataEntry.COLUMN_CAST_NAME + " TEXT, " +
                 MovieDBContract.CastDataEntry.COLUMN_CHARACTER_NAME + " TEXT, " +
                 MovieDBContract.CastDataEntry.COLUMN_MOVIE_ID + " TEXT, " +
-                MovieDBContract.CastDataEntry.COLUMN_PEOPLE_ID + " TEXT " +
+                MovieDBContract.CastDataEntry.COLUMN_PEOPLE_ID +" TEXT, " +
+                MovieDBContract.CastTVDataEntry.COLUMN_IMAGE + " TEXT " +
                 ");";
 
         db.execSQL(SQLITE_CREATE_CAST_TABLE);
@@ -234,7 +236,8 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 MovieDBContract.CrewTVDataEntry.COLUMN_CREW_NAME + " TEXT, " +
                 MovieDBContract.CrewTVDataEntry.COLUMN_CREW_POSITION + " TEXT, " +
                 MovieDBContract.CrewTVDataEntry.COLUMN_TV_ID + " TEXT, " +
-                MovieDBContract.CrewTVDataEntry.COLUMN_PEOPLE_ID + " TEXT " +
+                MovieDBContract.CrewTVDataEntry.COLUMN_PEOPLE_ID + " TEXT, " +
+                MovieDBContract.CrewTVDataEntry.COLUMN_IMAGE + " TEXT " +
                 ");";
 
         db.execSQL(SQLITE_CREATE_CREW_TV_TABLE);
@@ -244,7 +247,8 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 MovieDBContract.CastTVDataEntry.COLUMN_CAST_NAME + " TEXT, " +
                 MovieDBContract.CastTVDataEntry.COLUMN_CHARACTER_NAME + " TEXT, " +
                 MovieDBContract.CastTVDataEntry.COLUMN_TV_ID + " TEXT, " +
-                MovieDBContract.CastTVDataEntry.COLUMN_PEOPLE_ID + " TEXT " +
+                MovieDBContract.CastTVDataEntry.COLUMN_PEOPLE_ID + " TEXT, " +
+                MovieDBContract.CastTVDataEntry.COLUMN_IMAGE + " TEXT " +
                 ");";
 
         db.execSQL(SQLITE_CREATE_CAST_TV_TABLE);

@@ -117,6 +117,7 @@ public class MovieDBContract
         public static final String COLUMN_CREW_POSITION = "CrewPosition";
         public static final String COLUMN_MOVIE_ID = "MovieId";
         public static final String COLUMN_PEOPLE_ID = "PeopleID";
+        public static final String COLUMN_IMAGE = "Image";
     }
 
     public static class CastDataEntry implements BaseColumns
@@ -127,6 +128,7 @@ public class MovieDBContract
         public static final String COLUMN_CHARACTER_NAME = "CharacterName";
         public static final String COLUMN_MOVIE_ID = "MovieId";
         public static final String COLUMN_PEOPLE_ID = "PeopleID";
+        public static final String COLUMN_IMAGE = "Image";
     }
 
     public static class ReviewDataEntry implements BaseColumns
@@ -264,6 +266,7 @@ public class MovieDBContract
         public static final String COLUMN_CREW_POSITION = "CrewPosition";
         public static final String COLUMN_TV_ID = "TvId";
         public static final String COLUMN_PEOPLE_ID = "PeopleID";
+        public static final String COLUMN_IMAGE = "Image";
     }
 
     public static class CastTVDataEntry implements BaseColumns
@@ -274,6 +277,7 @@ public class MovieDBContract
         public static final String COLUMN_CHARACTER_NAME = "CharacterName";
         public static final String COLUMN_TV_ID = "TvId";
         public static final String COLUMN_PEOPLE_ID = "PeopleID";
+        public static final String COLUMN_IMAGE = "Image";
     }
 
     public static class VideoTVDataEntry implements BaseColumns

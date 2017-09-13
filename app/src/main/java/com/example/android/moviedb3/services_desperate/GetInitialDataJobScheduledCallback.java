@@ -1,3 +1,4 @@
+/*
 package com.example.android.moviedb3.services_desperate;
 
 import android.content.Context;
@@ -23,9 +24,11 @@ import java.util.ArrayList;
 import io.hypertrack.smart_scheduler.Job;
 import io.hypertrack.smart_scheduler.SmartScheduler;
 
+*/
 /**
  * Created by nugroho on 08/09/17.
- */
+ *//*
+
 
 public class GetInitialDataJobScheduledCallback implements SmartScheduler.JobScheduledCallback
 {
@@ -155,3 +158,4 @@ public class GetInitialDataJobScheduledCallback implements SmartScheduler.JobSch
         }
     }
 }
+*/

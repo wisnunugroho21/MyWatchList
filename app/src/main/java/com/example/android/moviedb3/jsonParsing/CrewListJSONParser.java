@@ -52,7 +52,13 @@ public class CrewListJSONParser implements JSONParser<ArrayList<CrewData>>
                     crewPosition = "";
                 }
 
-                CrewData crewData = new CrewData(id, crewName, crewPosition, movieID, peopleID);
+                String imageCrew = cast.getString("profile_path");
+                if(imageCrew == null || imageCrew.equals("null") || imageCrew.isEmpty())
+                {
+                    imageCrew = "";
+                }
+
+                CrewData crewData = new CrewData(id, crewName, crewPosition, movieID, peopleID, imageCrew);
                 crewDataArrayList.add(crewData);
             }
 

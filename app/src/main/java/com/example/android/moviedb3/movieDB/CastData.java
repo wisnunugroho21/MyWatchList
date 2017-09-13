@@ -13,13 +13,16 @@ public class CastData extends DependencyData implements Parcelable, MovieInfoDat
     String characterName;
     String movieID;
     String peopleID;
+    String imageCast;
 
-    public CastData(String id, String castName, String characterName, String movieID, String peopleID) {
+    public CastData(String id, String castName, String characterName, String movieID, String peopleID,
+                    String imageCast) {
         super(id);
         this.castName = castName;
         this.characterName = characterName;
         this.movieID = movieID;
         this.peopleID = peopleID;
+        this.imageCast = imageCast;
     }
 
     public CastData(Parcel in)
@@ -45,6 +48,15 @@ public class CastData extends DependencyData implements Parcelable, MovieInfoDat
 
     public String getPeopleID() {
         return peopleID;
+    }
+
+    public String getImageCast() {
+        return imageCast;
+    }
+
+    @Override
+    public String getImage() {
+        return "http://image.tmdb.org/t/p/w92" +  imageCast;
     }
 
     @Override

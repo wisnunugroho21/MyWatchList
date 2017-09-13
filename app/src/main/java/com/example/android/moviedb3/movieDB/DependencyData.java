@@ -11,5 +11,4 @@ public abstract class DependencyData extends BaseData
     }
 
     public abstract String getIDDependent();
-
 }

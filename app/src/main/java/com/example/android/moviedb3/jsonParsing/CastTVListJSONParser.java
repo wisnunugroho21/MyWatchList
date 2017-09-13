@@ -52,7 +52,13 @@ public class CastTVListJSONParser implements JSONParser<ArrayList<CastTVData>>
                     castCharacter = "";
                 }
 
-                CastTVData castData = new CastTVData(id, castName, castCharacter, tvID, peopleID);
+                String imageCast = cast.getString("profile_path");
+                if(imageCast == null || imageCast.equals("null") || imageCast.isEmpty())
+                {
+                    imageCast = "";
+                }
+
+                CastTVData castData = new CastTVData(id, castName, castCharacter, tvID, peopleID, imageCast);
                 castTVDataArrayList.add(castData);
             }
 

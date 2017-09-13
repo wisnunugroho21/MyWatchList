@@ -17,8 +17,6 @@ import java.util.ArrayList;
 
 public class CrewTVDataDB extends DataDB<CrewTVData>
 {
-    String crewName;
-    String crewPosition;
     int movieID;
 
     public CrewTVDataDB(Context context) {
@@ -48,8 +46,9 @@ public class CrewTVDataDB extends DataDB<CrewTVData>
             String crewPosition = cursor.getString(cursor.getColumnIndex(MovieDBContract.CrewTVDataEntry.COLUMN_CREW_POSITION));
             String tvID = cursor.getString(cursor.getColumnIndex(MovieDBContract.CrewTVDataEntry.COLUMN_TV_ID));
             String peopleID = cursor.getString(cursor.getColumnIndex(MovieDBContract.CrewTVDataEntry.COLUMN_PEOPLE_ID));
+            String image = cursor.getString(cursor.getColumnIndex(MovieDBContract.CrewTVDataEntry.COLUMN_IMAGE));
 
-            CrewTVData crewData = new CrewTVData(id, crewName, crewPosition, tvID, peopleID);
+            CrewTVData crewData = new CrewTVData(id, crewName, crewPosition, tvID, peopleID, image);
             crewDataArrayList.add(crewData);
 
         } while (cursor.moveToNext());
@@ -68,6 +67,7 @@ public class CrewTVDataDB extends DataDB<CrewTVData>
         contentValues.put(MovieDBContract.CrewTVDataEntry.COLUMN_CREW_POSITION, crewTVData.getCrewPosition());
         contentValues.put(MovieDBContract.CrewTVDataEntry.COLUMN_TV_ID, crewTVData.getTvID());
         contentValues.put(MovieDBContract.CrewTVDataEntry.COLUMN_PEOPLE_ID, crewTVData.getPeopleID());
+        contentValues.put(MovieDBContract.CrewTVDataEntry.COLUMN_IMAGE, crewTVData.getImageCrew());
 
         context.getContentResolver().insert(MovieDBContract.CrewTVDataEntry.CONTENT_URI, contentValues);
     }

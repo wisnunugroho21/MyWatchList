@@ -1,3 +1,4 @@
+/*
 package com.example.android.moviedb3.services_desperate;
 
 import android.app.job.JobParameters;
@@ -26,9 +27,11 @@ import com.example.android.moviedb3.sharedPreferences.SavedDataNumbersUtils;
 
 import java.util.ArrayList;
 
+*/
 /**
  * Created by nugroho on 08/09/17.
- */
+ *//*
+
 
 public class GetInitialDataService extends JobService
 {
@@ -199,6 +202,7 @@ public class GetInitialDataService extends JobService
     }
 }
 
+*/
 /*
 *
 * int numbersDataHasBeenObtained = SavedDataNumbersUtils.GetNumbersDataHasBeenObtained(context);
@@ -259,3 +263,4 @@ public class GetInitialDataService extends JobService
 *
 *
 * */
+

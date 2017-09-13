@@ -295,9 +295,9 @@ public class MovieDetailFragment extends Fragment {
             favoriteState = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.FAVORITE_STATE_PERSISTANCE_KEY);
 
             SetMovieDetail(movieData);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDataArrayList, getContext()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDataArrayList, getContext()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDataArrayList, getContext()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
             SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(videoDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
 
             ShowMovieDetail();
@@ -377,7 +377,7 @@ public class MovieDetailFragment extends Fragment {
                 {
                     reviewDataArrayList = reviewDatas;
 
-                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDatas, getContext()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
                     CheckAndShowMovieDetail();
 
                     return;
@@ -400,7 +400,7 @@ public class MovieDetailFragment extends Fragment {
                 {
                     castDataArrayList = castDatas;
 
-                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas, getContext()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
                     CheckAndShowMovieDetail();
 
                     return;
@@ -423,7 +423,7 @@ public class MovieDetailFragment extends Fragment {
                 {
                     crewDataArrayList = crewDatas;
 
-                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDatas), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDatas, getContext()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
                     CheckAndShowMovieDetail();
 
                     return;

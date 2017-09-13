@@ -43,7 +43,7 @@ public class ReviewDataDB extends DataDB<ReviewData>
             String reviewContent = cursor.getString(cursor.getColumnIndex(MovieDBContract.ReviewDataEntry.COLUMN_REVIEW_CONTENT));
             String movieID = cursor.getString(cursor.getColumnIndex(MovieDBContract.ReviewDataEntry.COLUMN_MOVIE_ID));
 
-            ReviewData reviewData = new ReviewData(id, name, reviewContent, movieID);
+            ReviewData reviewData = new ReviewData(id, name, reviewContent, movieID, "");
             reviewDataArrayList.add(reviewData);
 
         } while (cursor.moveToNext());
@@ -60,7 +60,7 @@ public class ReviewDataDB extends DataDB<ReviewData>
         contentValues.put(MovieDBContract.ReviewDataEntry._ID, reviewData.getId());
         contentValues.put(MovieDBContract.ReviewDataEntry.COLUMN_REVIEWER_NAME, reviewData.getName());
         contentValues.put(MovieDBContract.ReviewDataEntry.COLUMN_REVIEW_CONTENT, reviewData.getReviewContent());
-        contentValues.put(MovieDBContract.ReviewDataEntry.COLUMN_MOVIE_ID, reviewData.getMovieID());
+        contentValues.put(MovieDBContract.ReviewDataEntry.COLUMN_MOVIE_ID, reviewData.getImageReviewer());
 
         context.getContentResolver().insert(MovieDBContract.ReviewDataEntry.CONTENT_URI, contentValues);
     }

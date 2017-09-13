@@ -47,7 +47,7 @@ public class ReviewListJSONParser implements JSONParser<ArrayList<ReviewData>>
                     reviewContent = "";
                 }
 
-                ReviewData reviewData = new ReviewData(id, reviewerName, reviewContent, movieId);
+                ReviewData reviewData = new ReviewData(id, reviewerName, reviewContent, movieId, "");
                 reviewDataArrayList.add(reviewData);
             }
 

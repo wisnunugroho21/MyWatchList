@@ -278,8 +278,8 @@ public class TVDetailFragment extends Fragment {
             favoriteState = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.FAVORITE_STATE_PERSISTANCE_KEY);
 
             SetMovieDetail(tvData);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDataArrayList), new LinearLayoutManager(this.getContext()), castListRecyclerView);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDataArrayList), new LinearLayoutManager(this.getContext()), crewListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDataArrayList, getContext()), new LinearLayoutManager(this.getContext()), castListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDataArrayList, getContext()), new LinearLayoutManager(this.getContext()), crewListRecyclerView);
             SetAdditionalMovieDetailRecyclerView(new VideoTVDataListRecyclerViewAdapter(videoDataArrayList), new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
 
             ShowMovieDetail();
@@ -360,7 +360,7 @@ public class TVDetailFragment extends Fragment {
                 {
                     castDataArrayList = castDatas;
 
-                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas), new LinearLayoutManager(TVDetailFragment.this.getContext()), castListRecyclerView);
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas, getContext()), new LinearLayoutManager(TVDetailFragment.this.getContext()), castListRecyclerView);
                     CheckAndShowMovieDetail();
 
                     return;
@@ -383,7 +383,7 @@ public class TVDetailFragment extends Fragment {
                 {
                     crewDataArrayList = crewDatas;
 
-                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDatas), new LinearLayoutManager(TVDetailFragment.this.getContext()), crewListRecyclerView);
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDatas, getContext()), new LinearLayoutManager(TVDetailFragment.this.getContext()), crewListRecyclerView);
                     CheckAndShowMovieDetail();
 
                     return;

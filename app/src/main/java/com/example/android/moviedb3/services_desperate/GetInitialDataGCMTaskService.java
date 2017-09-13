@@ -1,3 +1,4 @@
+/*
 package com.example.android.moviedb3.services_desperate;
 
 import android.content.Context;
@@ -22,9 +23,11 @@ import com.google.android.gms.gcm.TaskParams;
 
 import java.util.ArrayList;
 
+*/
 /**
  * Created by nugroho on 08/09/17.
- */
+ *//*
+
 
 public class GetInitialDataGCMTaskService extends GcmTaskService
 {
@@ -144,3 +147,4 @@ public class GetInitialDataGCMTaskService extends GcmTaskService
         }
     }
 }
+*/

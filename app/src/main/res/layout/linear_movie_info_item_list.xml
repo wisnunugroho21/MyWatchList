@@ -10,14 +10,14 @@
         android:layout_height="wrap_content"
         android:background="@color/cardview_dark_background">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:srcCompat="@drawable/ic_account_circle_white_48px"
+            android:src="@drawable/ic_account_circle_white_48px"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"

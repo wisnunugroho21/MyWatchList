@@ -1,3 +1,4 @@
+/*
 package com.example.android.moviedb3.services_desperate;
 
 import android.content.Context;
@@ -8,9 +9,11 @@ import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 
 import java.util.concurrent.TimeUnit;
 
+*/
 /**
  * Created by nugroho on 07/09/17.
- */
+ *//*
+
 
 public class GetInitialDataServiceSetter
 {
@@ -38,7 +41,8 @@ public class GetInitialDataServiceSetter
 
     private static void scheduleJob(@NonNull final Context context)
     {
-        /*FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+        */
+/*FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
 
         Job myJob = dispatcher.newJobBuilder()
                 .setService(GetMovieListRepeatingService.class)
@@ -50,8 +54,10 @@ public class GetInitialDataServiceSetter
                 .setReplaceCurrent(true)
                 .build();
 
-        dispatcher.mustSchedule(myJob);*/
-        /*GcmNetworkManager mGcmNetworkManager = GcmNetworkManager.getInstance(context);
+        dispatcher.mustSchedule(myJob);*//*
+
+        */
+/*GcmNetworkManager mGcmNetworkManager = GcmNetworkManager.getInstance(context);
 
         PeriodicTask task = new PeriodicTask.Builder()
                 .setService(GetInitialDataGCMTaskService.class)
@@ -59,18 +65,22 @@ public class GetInitialDataServiceSetter
                 .setPeriod(30L)
                 .build();
 
-        mGcmNetworkManager.schedule(task);*/
+        mGcmNetworkManager.schedule(task);*//*
+
     }
 
     private static void useIntentServiceToGetData(@NonNull final Context context, ResultReceiver resultReceiver)
     {
-        /*Intent intent = new Intent(context, GetMovieListIntentService.class);
+        */
+/*Intent intent = new Intent(context, GetMovieListIntentService.class);
         intent.putExtra(MovieDBKeyEntry.GET_MOVIE_LIST_RESULT_RECEIVER, resultReceiver);
 
-        context.startService(intent);*/
+        context.startService(intent);*//*
+
 
 
     }
 
 
 }
+*/
