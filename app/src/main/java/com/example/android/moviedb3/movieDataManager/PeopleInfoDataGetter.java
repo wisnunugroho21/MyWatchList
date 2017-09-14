@@ -3,60 +3,59 @@ package com.example.android.moviedb3.movieDataManager;
 import android.content.Context;
 import android.os.AsyncTask;
 
-
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonNetworkConnection.NetworkConnectionChecker;
 import com.example.android.moviedb3.jsonParsing.JSONParser;
 import com.example.android.moviedb3.localDatabase.DataDB;
+import com.example.android.moviedb3.movieDB.CastData;
+import com.example.android.moviedb3.movieDB.CastTVData;
+import com.example.android.moviedb3.movieDB.CrewData;
+import com.example.android.moviedb3.movieDB.CrewTVData;
 import com.example.android.moviedb3.movieDB.DependencyData;
-import com.example.android.moviedb3.movieDB.PeopleData;
-import com.example.android.moviedb3.supportDataManager.dataAvailable.DataAvailableCheck;
-import com.example.android.moviedb3.supportDataManager.dataAvailable.DefaultDataAvailableCheck;
-import com.example.android.moviedb3.supportDataManager.dataComparision.BaseDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataComparision.DepedencyDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
-import com.example.android.moviedb3.supportDataManager.sameDataFinder.SameIDDataFinder;
 import com.example.android.moviedb3.supportDataManager.sameDataFinder.SameDataFinder;
+import com.example.android.moviedb3.supportDataManager.sameDataFinder.SameIDDataFinder;
 
 import java.util.ArrayList;
 
 /**
- * Created by nugroho on 30/08/17.
+ * Created by nugroho on 13/09/17.
  */
 
-public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieDBGetter
+public class PeopleInfoDataGetter<Data extends DependencyData> implements IMovieDBGetter
 {
     OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener;
     DataDB<Data> dataDB;
     JSONParser<ArrayList<Data>> jsonParser;
     String URL;
-    String movieID;
+    String peopleID;
     Context context;
 
-    public MovieInfoDataGetter(OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener, DataDB<Data> dataDB, JSONParser<ArrayList<Data>> jsonParser,
-                               String URL, String movieID, Context context) {
+    public PeopleInfoDataGetter(OnDataObtainedListener<ArrayList<Data>> onDataObtainedListener, DataDB<Data> dataDB, JSONParser<ArrayList<Data>> jsonParser,
+                               String URL, String peopleID, Context context) {
         this.onDataObtainedListener = onDataObtainedListener;
         this.dataDB = dataDB;
         this.jsonParser = jsonParser;
         this.URL = URL;
-        this.movieID = movieID;
+        this.peopleID = peopleID;
         this.context = context;
     }
 
     public void getData()
     {
-        NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<Data>>(jsonParser, new MovieInfoObtainedListener()), URL);
+        NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<Data>>(jsonParser, new PeopleInfoObtainedListener()), URL);
     }
 
-    private class MovieInfoObtainedListener implements OnDataObtainedListener<ArrayList<Data>>
+    private class PeopleInfoObtainedListener implements OnDataObtainedListener<ArrayList<Data>>
     {
         @Override
         public void onDataObtained(ArrayList<Data> datas)
         {
             if(datas == null || !NetworkConnectionChecker.IsConnect(context))
             {
-                MovieInfoDatabaseGetter movieInfoGetter = new MovieInfoDatabaseGetter();
+                PeopleInfoDatabaseGetter movieInfoGetter = new PeopleInfoDatabaseGetter();
                 movieInfoGetter.execute();
             }
 
@@ -87,7 +86,7 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
             {
                 for (Data databaseData:databaseDataArrayList)
                 {
-                    if(movieID.equals(databaseData.getIDDependent()))
+                    if(peopleID.equals(databaseData.getIDDependent()))
                     {
                         dataDB.removeData(databaseData.getId());
                     }
@@ -105,19 +104,19 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
         @Override
         protected void onPostExecute(Void aVoid)
         {
-            MovieInfoDatabaseGetter movieInfoDatabaseGetter = new MovieInfoDatabaseGetter();
-            movieInfoDatabaseGetter.execute();
+            PeopleInfoDatabaseGetter peopleInfoDatabaseGetter = new PeopleInfoDatabaseGetter();
+            peopleInfoDatabaseGetter.execute();
         }
     }
 
-    private class MovieInfoDatabaseGetter extends AsyncTask<Void, Void, ArrayList<Data>>
+    private class PeopleInfoDatabaseGetter extends AsyncTask<Void, Void, ArrayList<Data>>
     {
         @Override
         protected ArrayList<Data> doInBackground(Void... params)
         {
             ArrayList<Data> dataArrayList = dataDB.getAllData();
             return SameDataFinder.getDataSameList
-                    (new SameIDDataFinder<Data>(new DepedencyDataCompare<Data>(), dataArrayList, movieID));
+                    (new SameIDDataFinder<Data>(new DepedencyDataCompare<Data>(), dataArrayList, peopleID));
         }
 
         @Override
@@ -128,3 +127,4 @@ public class MovieInfoDataGetter<Data extends DependencyData> implements IMovieD
     }
 
 }
+

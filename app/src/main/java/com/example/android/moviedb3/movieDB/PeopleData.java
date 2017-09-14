@@ -122,6 +122,11 @@ public class PeopleData extends BaseData implements Parcelable
         return knownRoles;
     }
 
+    public String getSmallProfileImage()
+    {
+        return "http://image.tmdb.org/t/p/w185/" + profileImage;
+    }
+
     @Override
     public int describeContents() {
         return 0;

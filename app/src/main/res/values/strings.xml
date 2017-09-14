@@ -46,6 +46,7 @@
 
     <string name="all_genre_movie_label">All Genre Movie</string>
     <string name="all_genre_tv_label">All Genre TV</string>
+    <string name="popular_people_label">Popular People</string>
 
     <string name="movie_label">Movies</string>
     <string name="tv_label">TV Shows</string>
@@ -73,11 +74,12 @@
     <string name="tv_show_casts_label">TV Show Casts</string>
     <string name="more_tv_show_casts_label">More TV Show Casts</string>
     <string name="no_tv_show_casts_label">No TV Show Cast</string>
-    <string name="filmography_label">Filmography</string>
-    <string name="more_filmography_label">More Filmography</string>
-    <string name="no_filmography_label">No Filmography</string>
-    <string name="image_label">Image</string>
-    <string name="no_image_label">No Image</string>
+    <string name="movie_filmography_label">Movie Filmography</string>
+    <string name="more_movie_filmography_label">More Movie Filmography</string>
+    <string name="no_movie_filmography_label">No Movie Filmography</string>
+    <string name="tv_filmography_label">TV Filmography</string>
+    <string name="more_tv_filmography_label">More TV Filmography</string>
+    <string name="no_tv_filmography_label">No TV Filmography</string>
 
     <string name="getting_Data_notification_content_title">Getting All Data</string>
     <string name="getting_data_notification_completed">All Data has been Obtained.</string>
@@ -94,7 +96,6 @@
     <string name="fail_update_period_toas_message">Fail to set period update</string>
     <string name="success_cancel_update_period_toas_message">Successful to cancel period update</string>
     <string name="fail_cancel_update_period_toas_message">Fail to cancel period update</string>
-
 
     <string name="updates_policy_label">Updates Policy</string>
     <string name="periodic_updates_label">Periodic Updates</string>

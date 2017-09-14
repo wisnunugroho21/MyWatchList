@@ -107,6 +107,19 @@ public class MovieDBContentProvider extends ContentProvider
     public static final int GENRE_TV = 3000;
     public static final int GENRE_TV_ID = 3001;
 
+    public static final int PEOPLE_CAST = 3100;
+    public static final int PEOPLE_CAST_ID = 3101;
+
+    public static final int PEOPLE_CREW = 3200;
+    public static final int PEOPLE_CREW_ID = 3201;
+
+    public static final int PEOPLE_CAST_TV = 3300;
+    public static final int PEOPLE_CAST_TV_ID = 3301;
+
+    public static final int PEOPLE_CREW_TV = 3400;
+    public static final int PEOPLE_CREW_TV_ID = 3401;
+
+
     private MovieDBDatabaseHelper movieDBDatabaseHelper;
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
@@ -203,6 +216,18 @@ public class MovieDBContentProvider extends ContentProvider
 
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_TV_DATA_PATH, GENRE_TV);
         uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.GENRE_TV_DATA_PATH + "/#", GENRE_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_CREW_DATA_PATH, PEOPLE_CREW);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_CREW_DATA_PATH + "/#", PEOPLE_CREW_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_CAST_DATA_PATH, PEOPLE_CAST);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_CAST_DATA_PATH + "/#", PEOPLE_CAST_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_CREW_TV__DATA_PATH, PEOPLE_CREW_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_CREW_TV__DATA_PATH + "/#", PEOPLE_CREW_TV_ID);
+
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_CAST_TV__DATA_PATH, PEOPLE_CAST_TV);
+        uriMatcher_.addURI(MovieDBContract.AUTHORITY, MovieDBContract.PEOPLE_CAST_TV__DATA_PATH + "/#", PEOPLE_CAST_TV_ID);
 
         return uriMatcher_;
     }
@@ -523,6 +548,47 @@ public class MovieDBContentProvider extends ContentProvider
                                 null,
                                 null, sortOrder);
                 break;
+
+            case PEOPLE_CREW :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.PeopleCrewDataEntry.TABLE_PEOPLE_CREW_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case PEOPLE_CAST :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.PeopleCastDataEntry.TABLE_PEOPLE_CAST_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case PEOPLE_CREW_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.PeopleCrewTVDataEntry.TABLE_PEOPLE_CREW_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
+            case PEOPLE_CAST_TV :
+                returnCursor = sqliteDatabase.query
+                        (MovieDBContract.PeopleCastTVDataEntry.TABLE_PEOPLE_CAST_TV_DATA,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null, sortOrder);
+                break;
+
 
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
@@ -1060,6 +1126,74 @@ public class MovieDBContentProvider extends ContentProvider
                 }
                 break;
 
+            case PEOPLE_CREW :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.PeopleCrewDataEntry.TABLE_PEOPLE_CREW_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.PeopleCrewDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case PEOPLE_CAST :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.PeopleCastDataEntry.TABLE_PEOPLE_CAST_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.PeopleCastDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case PEOPLE_CREW_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.PeopleCrewTVDataEntry.TABLE_PEOPLE_CREW_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.PeopleCrewTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
+            case PEOPLE_CAST_TV :
+                id = sqliteDatabase.insert(
+                        MovieDBContract.PeopleCastTVDataEntry.TABLE_PEOPLE_CAST_TV_DATA,
+                        null, values);
+
+                if(id > 0)
+                {
+                    returnUri = ContentUris.withAppendedId(
+                            MovieDBContract.PeopleCastTVDataEntry.CONTENT_URI, id);
+                }
+
+                else
+                {
+                    throw new SQLException("Failed to insert database");
+                }
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -1400,14 +1534,58 @@ public class MovieDBContentProvider extends ContentProvider
                 break;
 
             case GENRE_TV :
-                dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA,
-                        "1", null);
-                break;
+            dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA,
+                    "1", null);
+            break;
 
             case GENRE_TV_ID :
                 idData = uri.getPathSegments().get(1);
                 dataDeleted = sqliteDatabase.delete(MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA,
                         MovieDBContract.GenreTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case PEOPLE_CAST :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleDataEntry.TABLE_PEOPLE_DATA,
+                        "1", null);
+                break;
+
+            case PEOPLE_CAST_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleDataEntry.TABLE_PEOPLE_DATA,
+                        MovieDBContract.PeopleDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case PEOPLE_CREW :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleCrewDataEntry.TABLE_PEOPLE_CREW_DATA,
+                        "1", null);
+                break;
+
+            case PEOPLE_CREW_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleCrewDataEntry.TABLE_PEOPLE_CREW_DATA,
+                        MovieDBContract.PeopleCrewDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case PEOPLE_CAST_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleCastTVDataEntry.TABLE_PEOPLE_CAST_TV_DATA,
+                        "1", null);
+                break;
+
+            case PEOPLE_CAST_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleCastTVDataEntry.TABLE_PEOPLE_CAST_TV_DATA,
+                        MovieDBContract.PeopleCastTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case PEOPLE_CREW_TV :
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleCrewTVDataEntry.TABLE_PEOPLE_CREW_TV_DATA,
+                        "1", null);
+                break;
+
+            case PEOPLE_CREW_TV_ID:
+                idData = uri.getPathSegments().get(1);
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleCrewTVDataEntry.TABLE_PEOPLE_CREW_TV_DATA,
+                        MovieDBContract.PeopleCrewTVDataEntry._ID + "=?", new String[]{ idData });
                 break;
 
             default:
@@ -1610,6 +1788,30 @@ public class MovieDBContentProvider extends ContentProvider
                 idData = uri.getPathSegments().get(1);
                 dataUpdated = sqliteDatabase.update(MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA,
                         values, MovieDBContract.GenreTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case PEOPLE_CAST_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.PeopleCastDataEntry.TABLE_PEOPLE_CAST_DATA,
+                        values, MovieDBContract.PeopleCastDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case PEOPLE_CREW_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.PeopleCrewDataEntry.TABLE_PEOPLE_CREW_DATA,
+                        values, MovieDBContract.PeopleCrewDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case PEOPLE_CAST_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.PeopleCastTVDataEntry.TABLE_PEOPLE_CAST_TV_DATA,
+                        values, MovieDBContract.PeopleCastTVDataEntry._ID + "=?", new String[]{ idData });
+                break;
+
+            case PEOPLE_CREW_TV_ID :
+                idData = uri.getPathSegments().get(1);
+                dataUpdated = sqliteDatabase.update(MovieDBContract.PeopleCrewTVDataEntry.TABLE_PEOPLE_CREW_TV_DATA,
+                        values, MovieDBContract.PeopleCrewTVDataEntry._ID + "=?", new String[]{ idData });
                 break;
 
             default:

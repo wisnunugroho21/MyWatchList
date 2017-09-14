@@ -7,17 +7,22 @@ import com.example.android.moviedb3.jsonNetworkConnection.NetworkConnectionCheck
 import com.example.android.moviedb3.jsonParsing.MovieDetailJSONParser;
 import com.example.android.moviedb3.jsonParsing.MovieIDListJSONParser;
 import com.example.android.moviedb3.localDatabase.CastDataDB;
+import com.example.android.moviedb3.localDatabase.CastTVDataDB;
 import com.example.android.moviedb3.localDatabase.CrewDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.MovieDataDB;
+import com.example.android.moviedb3.localDatabase.PeopleDataDB;
 import com.example.android.moviedb3.localDatabase.ReviewDataDB;
 import com.example.android.moviedb3.localDatabase.VideoDataDB;
 import com.example.android.moviedb3.movieDB.CastData;
 import com.example.android.moviedb3.movieDB.CrewData;
 import com.example.android.moviedb3.movieDB.MovieData;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
+import com.example.android.moviedb3.movieDB.PeopleData;
 import com.example.android.moviedb3.movieDB.ReviewData;
 import com.example.android.moviedb3.movieDB.VideoData;
+import com.example.android.moviedb3.supportDataManager.dataAvailable.DataAvailableCheck;
+import com.example.android.moviedb3.supportDataManager.dataAvailable.DefaultDataAvailableCheck;
 import com.example.android.moviedb3.supportDataManager.dataComparision.BaseDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataComparision.DepedencyDataCompare;
 import com.example.android.moviedb3.supportDataManager.dataComparision.IDCompare;
@@ -112,6 +117,7 @@ public class MovieDataGetter implements IMovieDBGetter
                         (new DepedencyDataCompare<ReviewData>(), new ReviewDataDB(context), idMovie));
                 DataDelete.Delete(new BaseDataListDelete<VideoData>
                         (new DepedencyDataCompare<VideoData>(), new VideoDataDB(context), idMovie));
+
                 DataDelete.Delete(new BaseDataListDelete<CastData>
                         (new DepedencyDataCompare<CastData>(), new CastDataDB(context), idMovie));
                 DataDelete.Delete(new BaseDataListDelete<CrewData>

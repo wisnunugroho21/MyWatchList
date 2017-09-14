@@ -100,7 +100,8 @@ public class MovieDataURL
     public static String GetPeopleDetailURL(String idPeople, Context context)
     {
         String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
-        return "https://api.themoviedb.org/3/person/" + idPeople +" ?api_key=" + API_KEY + "&language=" + languageID;
+        String url = "https://api.themoviedb.org/3/person/" + idPeople +"?api_key=" + API_KEY + "&language=" + languageID;
+        return url;
     }
 
     public static String GetPopularPeopleListURL(Context context)

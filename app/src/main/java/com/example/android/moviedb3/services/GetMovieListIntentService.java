@@ -26,6 +26,7 @@ import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
 import com.example.android.moviedb3.movieDataManager.GenreDataGetter;
 import com.example.android.moviedb3.movieDataManager.MovieDataGetter;
+import com.example.android.moviedb3.movieDataManager.PeopleDataGetter;
 import com.example.android.moviedb3.movieDataManager.TVDataGetter;
 import com.example.android.moviedb3.movieDataManager.TVGenreDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
@@ -64,6 +65,8 @@ public class GetMovieListIntentService extends IntentService
         GetPopularTVList();
         GetTopRateTVList();
         GetTVGenreList();
+
+        GetPopularPeopleList();
 
         GettingAllDataNotificationUtils.showNotificationCompleted(context);
 
@@ -127,6 +130,11 @@ public class GetMovieListIntentService extends IntentService
     private void GetTVGenreList()
     {
         DBGetter.GetData(new TVGenreDataGetter(context, MovieDataURL.GetTVGenreListURL(this)));
+    }
+
+    private void GetPopularPeopleList()
+    {
+        DBGetter.GetData(new PeopleDataGetter(context));
     }
 
     private ArrayList<DataDB<String>> getInitialOtherNowShowingMovieListDataDB()

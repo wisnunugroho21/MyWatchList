@@ -14,7 +14,6 @@ public class MovieDBContract
 
     public static final String GENRE_TV_DATA_PATH = "genreTVData";
     public static final String GENRE_DATA_PATH = "genreData";
-    public static final String PEOPLE_DATA_PATH = "peopleData";
 
     public static final String MOVIE_DATA_PATH = "movieData";
     public static final String POPULAR_DATA_PATH = "popularData";
@@ -44,6 +43,12 @@ public class MovieDBContract
     public static final String VIDEO_TV__DATA_PATH = "videoTVData";
     public static final String GENRE_TV_POPULAR_DATA_PATH = "genreMoviePopularTVData";
     public static final String GENRE_TV_TOP_RATE_DATA_PATH = "genreMovieTopRateTVData";
+
+    public static final String PEOPLE_DATA_PATH = "peopleData";
+    public static final String PEOPLE_CAST_DATA_PATH = "peopleCastData";
+    public static final String PEOPLE_CREW_DATA_PATH = "peopleCrewData";
+    public static final String PEOPLE_CAST_TV__DATA_PATH = "peopleCastTVData";
+    public static final String PEOPLE_CREW_TV__DATA_PATH = "peopleCrewTVData";
 
     public static final class MovieDataEntry implements BaseColumns
     {
@@ -179,19 +184,6 @@ public class MovieDBContract
         public static final String COLUMN_GENRE_ID = "GenreID";
     }
 
-    public static class PeopleDataEntry implements BaseColumns
-    {
-        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PEOPLE_DATA_PATH).build();
-        public static final String TABLE_PEOPLE_DATA = "PeopleData";
-        public static final String COLUMN_PEOPLE_NAME = "PeopleName";
-        public static final String COLUMN_PLACE_OF_BIRTH = "PlaceOfBirth";
-        public static final String COLUMN_BIRTHDAY = "Birthday";
-        public static final String COLUMN_BIOGRAPHY = "Biography";
-        public static final String COLUMN_PROFILE_IMAGE = "ProfileImage";
-        public static final String COLUMN_OTHER_NAME = "OtherName";
-        public static final String COLUMN_KNOWN_ROLES = "KnownRoles";
-    }
-
     public static final class TVDataEntry implements BaseColumns
     {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TV_DATA_PATH).build();
@@ -303,6 +295,63 @@ public class MovieDBContract
         public static final String TABLE_GENRE_TV_TOP_RATE_DATA = "GenreTVTopRateData";
         public static final String COLUMN_TV_ID = "TvId";
         public static final String COLUMN_GENRE_ID = "GenreID";
+    }
+
+    public static class PeopleDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PEOPLE_DATA_PATH).build();
+        public static final String TABLE_PEOPLE_DATA = "PeopleData";
+        public static final String COLUMN_PEOPLE_NAME = "PeopleName";
+        public static final String COLUMN_PLACE_OF_BIRTH = "PlaceOfBirth";
+        public static final String COLUMN_BIRTHDAY = "Birthday";
+        public static final String COLUMN_BIOGRAPHY = "Biography";
+        public static final String COLUMN_PROFILE_IMAGE = "ProfileImage";
+        public static final String COLUMN_OTHER_NAME = "OtherName";
+        public static final String COLUMN_KNOWN_ROLES = "KnownRoles";
+    }
+
+    public static class PeopleCrewDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PEOPLE_CREW_DATA_PATH).build();
+        public static final String TABLE_PEOPLE_CREW_DATA = "PeopleCrewData";
+        public static final String COLUMN_MOVIE_NAME = "MovieName";
+        public static final String COLUMN_CREW_POSITION = "CrewPosition";
+        public static final String COLUMN_MOVIE_ID = "MovieId";
+        public static final String COLUMN_PEOPLE_ID = "PeopleID";
+        public static final String COLUMN_IMAGE = "Image";
+    }
+
+    public static class PeopleCastDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PEOPLE_CAST_DATA_PATH).build();
+        public static final String TABLE_PEOPLE_CAST_DATA = "PeopleCastData";
+        public static final String COLUMN_MOVIE_NAME = "MovieName";
+        public static final String COLUMN_CHARACTER_NAME = "CharacterName";
+        public static final String COLUMN_MOVIE_ID = "MovieId";
+        public static final String COLUMN_PEOPLE_ID = "PeopleID";
+        public static final String COLUMN_IMAGE = "Image";
+    }
+
+    public static class PeopleCrewTVDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PEOPLE_CREW_TV__DATA_PATH).build();
+        public static final String TABLE_PEOPLE_CREW_TV_DATA = "PeopleCrewTVData";
+        public static final String COLUMN_TV_NAME = "TVName";
+        public static final String COLUMN_CREW_POSITION = "CrewPosition";
+        public static final String COLUMN_TV_ID = "TvId";
+        public static final String COLUMN_PEOPLE_ID = "PeopleID";
+        public static final String COLUMN_IMAGE = "Image";
+    }
+
+    public static class PeopleCastTVDataEntry implements BaseColumns
+    {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PEOPLE_CAST_TV__DATA_PATH).build();
+        public static final String TABLE_PEOPLE_CAST_TV_DATA = "PeopleCastTVData";
+        public static final String COLUMN_TV_NAME = "TVName";
+        public static final String COLUMN_CHARACTER_NAME = "CharacterName";
+        public static final String COLUMN_TV_ID = "TvId";
+        public static final String COLUMN_PEOPLE_ID = "PeopleID";
+        public static final String COLUMN_IMAGE = "Image";
     }
 
 }

@@ -40,7 +40,42 @@ public class PeoplePopularListJSONParser implements JSONParser<ArrayList<PeopleD
                 for(int b = 0; b < known_for_array_list.length(); b++)
                 {
                     JSONObject known_for_json_object = known_for_array_list.getJSONObject(b);
-                    known_for += known_for_json_object.getString("title");
+
+                    if(b == known_for_array_list.length() - 1)
+                    {
+                        if(known_for_json_object.has("title"))
+                        {
+                            known_for += known_for_json_object.getString("title");
+                        }
+
+                        else if(known_for_json_object.has("name"))
+                        {
+                            known_for += known_for_json_object.getString("name");
+                        }
+
+                        else
+                        {
+                            known_for += "";
+                        }
+                    }
+
+                    else
+                    {
+                        if(known_for_json_object.has("title"))
+                        {
+                            known_for += known_for_json_object.getString("title") + "\n";
+                        }
+
+                        else if(known_for_json_object.has("name"))
+                        {
+                            known_for += known_for_json_object.getString("name") + "\n";
+                        }
+
+                        else
+                        {
+                            known_for += "";
+                        }
+                    }
                 }
 
                 PeopleData peopleData = new PeopleData(id, known_for);

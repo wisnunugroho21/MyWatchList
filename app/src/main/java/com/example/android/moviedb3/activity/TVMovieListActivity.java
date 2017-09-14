@@ -292,6 +292,9 @@ public class TVMovieListActivity extends AppCompatActivity
                 case R.id.setting_drawer_item_menu :
                     ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SettingActivity.class, TVMovieListActivity.this));
                     break;
+
+                case R.id.people_drawer_item_menu :
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(PeoplePopularListActivity.class, TVMovieListActivity.this));
             }
 
             drawer.closeDrawer(GravityCompat.START);

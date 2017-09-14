@@ -57,7 +57,7 @@ public class PeopleDataDB extends DataDB<PeopleData>
             String othersName = cursor.getString(cursor.getColumnIndex(MovieDBContract.PeopleDataEntry.COLUMN_OTHER_NAME));
             String knownRoles = cursor.getString(cursor.getColumnIndex(MovieDBContract.PeopleDataEntry.COLUMN_KNOWN_ROLES));
 
-            PeopleData peopleData = new PeopleData(id, name, placeOfBirth, birthdayDate, biography, profileImage, othersName);
+            PeopleData peopleData = new PeopleData(id, name, placeOfBirth, birthdayDate, biography, profileImage, othersName, knownRoles);
             peopleDataArrayList.add(peopleData);
 
         } while (cursor.moveToNext());
@@ -82,6 +82,7 @@ public class PeopleDataDB extends DataDB<PeopleData>
         contentValues.put(MovieDBContract.PeopleDataEntry.COLUMN_BIOGRAPHY, peopleData.getBiography());
         contentValues.put(MovieDBContract.PeopleDataEntry.COLUMN_PROFILE_IMAGE, peopleData.getProfileImage());
         contentValues.put(MovieDBContract.PeopleDataEntry.COLUMN_OTHER_NAME, peopleData.getOthersName());
+        contentValues.put(MovieDBContract.PeopleDataEntry.COLUMN_KNOWN_ROLES, peopleData.getKnownRoles());
 
         context.getContentResolver().insert(MovieDBContract.PeopleDataEntry.CONTENT_URI, contentValues);
     }

@@ -34,8 +34,6 @@ public class DefaultDataAvailableCheck<Data> implements IDataAvailableCheck
             }
         }
 
-
-
         return false;
     }
 }

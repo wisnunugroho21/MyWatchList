@@ -284,6 +284,50 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 ");";
 
         db.execSQL(SQLITE_CREATE_GENRE_TV_TABLE);
+
+        final String SQLITE_CREATE_PEOPLE_CREW_TABLE = "CREATE TABLE " + MovieDBContract.PeopleCrewDataEntry.TABLE_PEOPLE_CREW_DATA + " (" +
+                MovieDBContract.PeopleCrewDataEntry._ID + " TEXT, " +
+                MovieDBContract.PeopleCrewDataEntry.COLUMN_MOVIE_NAME + " TEXT, " +
+                MovieDBContract.PeopleCrewDataEntry.COLUMN_CREW_POSITION + " TEXT, " +
+                MovieDBContract.PeopleCrewDataEntry.COLUMN_MOVIE_ID + " TEXT, " +
+                MovieDBContract.PeopleCrewDataEntry.COLUMN_PEOPLE_ID + " TEXT, " +
+                MovieDBContract.PeopleCrewDataEntry.COLUMN_IMAGE + " TEXT " +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_PEOPLE_CREW_TABLE);
+
+        final String SQLITE_CREATE_PEOPLE_CAST_TABLE = "CREATE TABLE " + MovieDBContract.PeopleCastDataEntry.TABLE_PEOPLE_CAST_DATA + " (" +
+                MovieDBContract.PeopleCastDataEntry._ID + " TEXT, " +
+                MovieDBContract.PeopleCastDataEntry.COLUMN_MOVIE_NAME + " TEXT, " +
+                MovieDBContract.PeopleCastDataEntry.COLUMN_CHARACTER_NAME + " TEXT, " +
+                MovieDBContract.PeopleCastDataEntry.COLUMN_MOVIE_ID + " TEXT, " +
+                MovieDBContract.PeopleCastDataEntry.COLUMN_PEOPLE_ID +" TEXT, " +
+                MovieDBContract.PeopleCastDataEntry.COLUMN_IMAGE + " TEXT " +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_PEOPLE_CAST_TABLE);
+
+        final String SQLITE_CREATE_PEOPLE_CREW_TV_TABLE = "CREATE TABLE " + MovieDBContract.PeopleCrewTVDataEntry.TABLE_PEOPLE_CREW_TV_DATA + " (" +
+                MovieDBContract.PeopleCrewTVDataEntry._ID + " TEXT, " +
+                MovieDBContract.PeopleCrewTVDataEntry.COLUMN_TV_NAME + " TEXT, " +
+                MovieDBContract.PeopleCrewTVDataEntry.COLUMN_CREW_POSITION + " TEXT, " +
+                MovieDBContract.PeopleCrewTVDataEntry.COLUMN_TV_ID + " TEXT, " +
+                MovieDBContract.PeopleCrewTVDataEntry.COLUMN_PEOPLE_ID + " TEXT, " +
+                MovieDBContract.PeopleCrewTVDataEntry.COLUMN_IMAGE + " TEXT " +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_PEOPLE_CREW_TV_TABLE);
+
+        final String SQLITE_CREATE_PEOPLE_CAST_TV_TABLE = "CREATE TABLE " + MovieDBContract.PeopleCastTVDataEntry.TABLE_PEOPLE_CAST_TV_DATA + " (" +
+                MovieDBContract.PeopleCastTVDataEntry._ID + " TEXT, " +
+                MovieDBContract.PeopleCastTVDataEntry.COLUMN_TV_NAME + " TEXT, " +
+                MovieDBContract.PeopleCastTVDataEntry.COLUMN_CHARACTER_NAME + " TEXT, " +
+                MovieDBContract.PeopleCastTVDataEntry.COLUMN_TV_ID + " TEXT, " +
+                MovieDBContract.PeopleCastTVDataEntry.COLUMN_PEOPLE_ID + " TEXT, " +
+                MovieDBContract.PeopleCastTVDataEntry.COLUMN_IMAGE + " TEXT " +
+                ");";
+
+        db.execSQL(SQLITE_CREATE_PEOPLE_CAST_TV_TABLE);
     }
 
     @Override
@@ -315,6 +359,11 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.GenreTVPopularEntry.TABLE_GENRE_TV_POPULAR_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.GenreTVTopRateEntry.TABLE_GENRE_TV_TOP_RATE_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.GenreTVDataEntry.TABLE_GENRE_TV_DATA);
+
+        db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.PeopleCastDataEntry.TABLE_PEOPLE_CAST_DATA);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.PeopleCrewDataEntry.TABLE_PEOPLE_CREW_DATA);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.PeopleCastTVDataEntry.TABLE_PEOPLE_CAST_TV_DATA);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieDBContract.PeopleCastTVDataEntry.TABLE_PEOPLE_CAST_TV_DATA);
 
         onCreate(db);
     }
