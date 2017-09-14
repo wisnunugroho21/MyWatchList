@@ -43,6 +43,8 @@ public class MovieDBKeyEntry
         public static final String TV_CREW_LIST_PERSISTANCE_KEY = "TVCrewList";
         public static final String TV_VIDEO_LIST_PERSISTANCE_KEY = "TVVideoList";
 
+        public static final String PEOPLE_DATA_PERSISTANCE_KEY = "PeopleData";
+
         public static final String INTERNET_NETWORK_STATE_PERSISTANCE_KEY = "InternetNetworkState";
         public static final String ADDITIONAL_MOVIE_DETAIL_STATE_PERSISTANCE_KEY = "AdditionalMovieDetailState";
     }

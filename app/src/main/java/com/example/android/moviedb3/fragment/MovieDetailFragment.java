@@ -175,7 +175,8 @@ public class MovieDetailFragment extends Fragment {
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    private void SetMovieDetail(MovieData movieData) {
+    private void SetMovieDetail(MovieData movieData)
+    {
         Picasso.with(getContext()).
                 load(movieData.getBackdropImageFullURL()).
                 placeholder(R.drawable.ic_cached_black_48px).
@@ -537,13 +538,13 @@ public class MovieDetailFragment extends Fragment {
                 reviewDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_REVIEW_LIST_PERSISTANCE_KEY);
                 castDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CAST_LIST_PERSISTANCE_KEY);
                 crewDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_CREW_LIST_PERSISTANCE_KEY);
-                videoDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_VIDEO_LIST_PERSISTANCE_KEY);
+                castTVDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.MOVIE_VIDEO_LIST_PERSISTANCE_KEY);
 
                 SetMovieDetail(tvData);
-                SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(reviewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
-                SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(castDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
-                SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(crewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
-                SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(videoDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
+                SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(reviewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), movieCastListRecyclerView);
+                SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(castDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), tvCastListRecyclerView);
+                SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter(crewDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext()), movieCrewListRecyclerView);
+                SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(castTVDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), tvCrewListRecyclerView);
 
                 ShowMovieDetail();
 

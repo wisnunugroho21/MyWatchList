@@ -23,8 +23,10 @@ public class PeopleData extends BaseData implements Parcelable
     String profileImage;
     String othersName;
     String knownRoles;
+    String backdropImageURL;
 
-    public PeopleData(String id, String name, String placeOfBirth, Calendar birthtdayDate, String biography, String profileImage, String othersName, String knownRoles) {
+    public PeopleData(String id, String name, String placeOfBirth, Calendar birthtdayDate, String biography, String profileImage, String othersName, String knownRoles,
+                      String backdropImageURL) {
         super(id);
         this.name = name;
         this.placeOfBirth = placeOfBirth;
@@ -33,6 +35,7 @@ public class PeopleData extends BaseData implements Parcelable
         this.profileImage = profileImage;
         this.othersName = othersName;
         this.knownRoles = knownRoles;
+        this.backdropImageURL = backdropImageURL;
     }
 
     public PeopleData(String id, String knownRoles) {
@@ -64,6 +67,7 @@ public class PeopleData extends BaseData implements Parcelable
         this.profileImage = in.readString();
         this.othersName = in.readString();
         this.knownRoles = in.readString();
+        this.backdropImageURL = in.readString();
     }
 
     public void setName(String name) {
@@ -90,8 +94,8 @@ public class PeopleData extends BaseData implements Parcelable
         this.othersName = othersName;
     }
 
-    public void setKnownRoles(String knownRoles) {
-        this.knownRoles = knownRoles;
+    public void setBackdropImageURL(String backdropImageURL) {
+        this.backdropImageURL = backdropImageURL;
     }
 
     public String getName() {
@@ -122,9 +126,23 @@ public class PeopleData extends BaseData implements Parcelable
         return knownRoles;
     }
 
+    public String getBackdropImageURL() {
+        return backdropImageURL;
+    }
+
     public String getSmallProfileImage()
     {
+        return "http://image.tmdb.org/t/p/w92/" + profileImage;
+    }
+
+    public String getFullProfileImage()
+    {
         return "http://image.tmdb.org/t/p/w185/" + profileImage;
+    }
+
+    public String getBackdropImageFullURL()
+    {
+        return "http://image.tmdb.org/t/p/w500/" + backdropImageURL;
     }
 
     @Override
@@ -145,6 +163,8 @@ public class PeopleData extends BaseData implements Parcelable
         dest.writeString(this.getBiography());
         dest.writeString(this.getProfileImage());
         dest.writeString(this.getOthersName());
+        dest.writeString(this.getKnownRoles());
+        dest.writeString(this.getBackdropImageURL());
     }
 
     public static final Creator CREATOR = new Creator()

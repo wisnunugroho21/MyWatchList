@@ -1,6 +1,7 @@
 package com.example.android.moviedb3.jsonParsing;
 
 import com.example.android.moviedb3.movieDB.PeopleCrewData;
+import com.example.android.moviedb3.movieDB.PeopleCrewTVData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,17 +13,17 @@ import java.util.ArrayList;
  * Created by nugroho on 14/09/17.
  */
 
-public class PeopleCrewTVListJSONParser implements JSONParser<ArrayList<PeopleCrewData>>
+public class PeopleCrewTVListJSONParser implements JSONParser<ArrayList<PeopleCrewTVData>>
 {
     @Override
-    public ArrayList<PeopleCrewData> Parse(JSONObject jsonObject) {
+    public ArrayList<PeopleCrewTVData> Parse(JSONObject jsonObject) {
 
         if(jsonObject == null)
         {
             return null;
         }
 
-        ArrayList<PeopleCrewData> crewDataArrayList = new ArrayList<>();
+        ArrayList<PeopleCrewTVData> peopleCrewTVDataArrayList = new ArrayList<>();
         String peopleID ;
 
         try
@@ -58,11 +59,11 @@ public class PeopleCrewTVListJSONParser implements JSONParser<ArrayList<PeopleCr
                     imageMovie = "";
                 }
 
-                PeopleCrewData crewData = new PeopleCrewData(id, tvName, crewPosition, movieID, peopleID, imageMovie);
-                crewDataArrayList.add(crewData);
+                PeopleCrewTVData crewData = new PeopleCrewTVData(id, tvName, crewPosition, movieID, peopleID, imageMovie);
+                peopleCrewTVDataArrayList.add(crewData);
             }
 
-            return crewDataArrayList;
+            return peopleCrewTVDataArrayList;
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -308,6 +308,7 @@ public class MovieDBContract
         public static final String COLUMN_PROFILE_IMAGE = "ProfileImage";
         public static final String COLUMN_OTHER_NAME = "OtherName";
         public static final String COLUMN_KNOWN_ROLES = "KnownRoles";
+        public static final String COLUMN_BACKDROP_IMAGE = "BackdropImage";
     }
 
     public static class PeopleCrewDataEntry implements BaseColumns

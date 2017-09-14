@@ -1545,14 +1545,14 @@ public class MovieDBContentProvider extends ContentProvider
                 break;
 
             case PEOPLE_CAST :
-                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleDataEntry.TABLE_PEOPLE_DATA,
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleCastDataEntry.TABLE_PEOPLE_CAST_DATA,
                         "1", null);
                 break;
 
             case PEOPLE_CAST_ID :
                 idData = uri.getPathSegments().get(1);
-                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleDataEntry.TABLE_PEOPLE_DATA,
-                        MovieDBContract.PeopleDataEntry._ID + "=?", new String[]{ idData });
+                dataDeleted = sqliteDatabase.delete(MovieDBContract.PeopleCastDataEntry.TABLE_PEOPLE_CAST_DATA,
+                        MovieDBContract.PeopleCastDataEntry._ID + "=?", new String[]{ idData });
                 break;
 
             case PEOPLE_CREW :

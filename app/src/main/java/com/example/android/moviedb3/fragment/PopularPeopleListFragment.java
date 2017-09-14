@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activity.GenreMovieListActivity;
+import com.example.android.moviedb3.activity.PeopleDetailActivity;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.PeoplePopularListRecyclerViewAdapter;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
@@ -115,9 +116,9 @@ public class PopularPeopleListFragment extends Fragment
         @Override
         public void OnDataChoose(PeopleData peopleData)
         {
-            /*Intent intent = new Intent(getContext(), GenreMovieListActivity.class);
-            intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.GENRE_PERSISTANCE_KEY, genreData);
-            startActivity(intent);*/
+            Intent intent = new Intent(getContext(), PeopleDetailActivity.class);
+            intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.PEOPLE_DATA_PERSISTANCE_KEY, peopleData);
+            startActivity(intent);
         }
     }
 }

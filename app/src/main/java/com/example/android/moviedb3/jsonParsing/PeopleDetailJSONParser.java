@@ -4,6 +4,7 @@ import com.example.android.moviedb3.movieDB.PeopleData;
 import com.example.android.moviedb3.movieDB.stringToDate.NumericDateStringToDateSetter;
 import com.example.android.moviedb3.movieDB.stringToDate.StringToDateSetter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,10 +58,14 @@ public class PeopleDetailJSONParser implements JSONParser<PeopleData>
                 }
                 peopleData.setName(name);
 
-                String also_known_as = jsonObject.getString("also_known_as");
-                if(also_known_as == null || also_known_as.equals("null"))
+                String also_known_as = "";
+                JSONArray also_known_as_array = jsonObject.getJSONArray("also_known_as");
+                if(also_known_as_array.length() > 0)
                 {
-                    also_known_as = "";
+                    for(int a = 0; a < 1; a++)
+                    {
+                        also_known_as = also_known_as_array.getString(a);
+                    }
                 }
                 peopleData.setOthersName(also_known_as);
 

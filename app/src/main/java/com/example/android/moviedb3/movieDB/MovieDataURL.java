@@ -110,6 +110,36 @@ public class MovieDataURL
         return "https://api.themoviedb.org/3/person/popular?api_key=" + API_KEY + "&language=" + languageID;
     }
 
+    public static String GetBackdropImagePeopleURL(String peopleID, Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/person/" + peopleID + "/tagged_images?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetPeopleMovieCastURL(String peopleID, Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/person/" + peopleID + "/movie_credits?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetPeopleMovieCrewURL(String peopleID, Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/person/" + peopleID + "/movie_credits?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetPeopleTVCastURL(String peopleID, Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/person/" + peopleID + "/tv_credits?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
+    public static String GetPeopleTVCrewURL(String peopleID, Context context)
+    {
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/person/" + peopleID + "/tv_credits?api_key=" + API_KEY + "&language=" + languageID;
+    }
+
     public static String GetCastTVURL(String tvID)
     {
         return "https://api.themoviedb.org/3/tv/" + tvID + "/credits?api_key=" + API_KEY;

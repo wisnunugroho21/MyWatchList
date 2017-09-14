@@ -7,6 +7,7 @@ import com.example.android.moviedb3.jsonNetworkConnection.JSONHTTPReceiver;
 import com.example.android.moviedb3.jsonNetworkConnection.JSONReceiver;
 import com.example.android.moviedb3.jsonNetworkConnection.NetworkConnectionChecker;
 import com.example.android.moviedb3.jsonParsing.JSONParser;
+import com.example.android.moviedb3.jsonParsing.PeopleBackdropImageJSONParser;
 import com.example.android.moviedb3.jsonParsing.PeopleDetailJSONParser;
 import com.example.android.moviedb3.jsonParsing.PeoplePopularListJSONParser;
 import com.example.android.moviedb3.localDatabase.CastDataDB;
@@ -88,9 +89,12 @@ public class PeopleDataGetter implements IMovieDBGetter
             for (PeopleData people:peopleDataArrayList)
             {
                 JSONParser<PeopleData> peopleDataJSONParser = new PeopleDetailJSONParser(people);
-
                 JSONObject jsonObject = jsonReceiver.ReceiveData(MovieDataURL.GetPeopleDetailURL(people.getId(), context));
-                dataList.add(peopleDataJSONParser.Parse(jsonObject));
+                PeopleData newPeopleData = peopleDataJSONParser.Parse(jsonObject);
+
+                JSONParser<PeopleData> peopleBackdropImageJSONParser = new PeopleBackdropImageJSONParser(newPeopleData);
+                JSONObject jsonObject2 = jsonReceiver.ReceiveData(MovieDataURL.GetBackdropImagePeopleURL(newPeopleData.getId(), context));
+                dataList.add(peopleBackdropImageJSONParser.Parse(jsonObject2));
             }
 
             DatabaseGenreReplace(dataList);

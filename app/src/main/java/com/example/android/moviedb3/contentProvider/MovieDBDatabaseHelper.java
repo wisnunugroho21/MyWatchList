@@ -159,7 +159,8 @@ public class MovieDBDatabaseHelper  extends SQLiteOpenHelper{
                 MovieDBContract.PeopleDataEntry.COLUMN_BIOGRAPHY + " TEXT, " +
                 MovieDBContract.PeopleDataEntry.COLUMN_PROFILE_IMAGE + " TEXT, " +
                 MovieDBContract.PeopleDataEntry.COLUMN_OTHER_NAME + " TEXT, " +
-                MovieDBContract.PeopleDataEntry.COLUMN_KNOWN_ROLES + " TEXT " +
+                MovieDBContract.PeopleDataEntry.COLUMN_KNOWN_ROLES + " TEXT, " +
+                MovieDBContract.PeopleDataEntry.COLUMN_BACKDROP_IMAGE + " TEXT " +
                 ");";
 
         db.execSQL(SQLITE_CREATE_PEOPLE_TABLE);

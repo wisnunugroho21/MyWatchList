@@ -90,7 +90,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.GenreListActivity" />
         </activity>
-        <activity android:name=".activity.PeoplePopularListActivity"></activity>
+        <activity android:name=".activity.PeoplePopularListActivity"
+            android:parentActivityName=".activity.TVMovieListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.TVMovieListActivity"/>
+        </activity>
+        <activity android:name=".activity.PeopleDetailActivity"
+            android:theme="@style/AppTheme.TransparentActionBar"/>
     </application>
 
 </manifest><!--
