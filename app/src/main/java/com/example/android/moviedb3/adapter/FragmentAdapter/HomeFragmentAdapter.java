@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.fragment.MovieListFragment;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
@@ -44,8 +45,8 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter
         movieListFragments.add(nowShowingMovieListFragment);
         movieListFragments.add(comingSoonMovieListFragment);
 
-        pageTitle.add("Now Showing");
-        pageTitle.add("Coming Soon");
+        pageTitle.add(context.getString(R.string.now_showing_label));
+        pageTitle.add(context.getString(R.string.coming_soon_label));
     }
 
     @Override

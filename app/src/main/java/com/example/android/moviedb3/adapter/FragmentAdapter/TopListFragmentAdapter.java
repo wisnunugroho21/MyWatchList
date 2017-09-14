@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.fragment.MovieDetailFragment;
 import com.example.android.moviedb3.fragment.MovieListFragment;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
@@ -45,8 +46,8 @@ public class TopListFragmentAdapter extends FragmentStatePagerAdapter
         movieListFragments.add(popularMovieListFragment);
         movieListFragments.add(topRateMovieListFragment);
 
-        pageTitle.add("Popular");
-        pageTitle.add("Top Rate");
+        pageTitle.add(context.getString(R.string.popular_label));
+        pageTitle.add(context.getString(R.string.top_rate_label));
     }
 
     @Override

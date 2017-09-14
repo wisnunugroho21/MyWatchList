@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.fragment.TVListFragment;
 import com.example.android.moviedb3.localDatabase.AirTodayDataDB;
 import com.example.android.moviedb3.localDatabase.OnTheAirDataDB;
@@ -37,8 +38,8 @@ public class HomeTVFragmentAdapter  extends FragmentStatePagerAdapter
         tvListFragments.add(airingTodayTVListFragment);
         tvListFragments.add(onTheAirTVListFragment);
 
-        pageTitle.add("Airing Today");
-        pageTitle.add("On The Air");
+        pageTitle.add(context.getString(R.string.airing_today_label));
+        pageTitle.add(context.getString(R.string.on_the_air_label));
     }
 
     @Override

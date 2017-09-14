@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.fragment.MovieListFragment;
 import com.example.android.moviedb3.fragment.TVListFragment;
 import com.example.android.moviedb3.localDatabase.GenreMoviePopularDB;
@@ -44,8 +45,8 @@ public class GenreTVFragmentAdapter extends FragmentStatePagerAdapter
         tvListFragments.add(popularMovieListFragment);
         tvListFragments.add(topRateMovieListFragment);
 
-        pageTitle.add("Popular");
-        pageTitle.add("Top Rate");
+        pageTitle.add(context.getString(R.string.popular_label));
+        pageTitle.add(context.getString(R.string.top_rate_label));
     }
 
     @Override

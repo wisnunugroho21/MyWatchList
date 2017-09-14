@@ -2,6 +2,10 @@
     <string name="app_name">My WatchList</string>
     <string name="app_motto">All Movie for You!</string>
 
+    <string name="now_showing_label">Now Showing</string>
+    <string name="coming_soon_label">Coming Soon</string>
+    <string name="airing_today_label">Airing Today</string>
+    <string name="on_the_air_label">On The Air</string>
     <string name="top_rate_label">Top Rate</string>
     <string name="popular_label">Popular</string>
     <string name="watched_label">Watched</string>
