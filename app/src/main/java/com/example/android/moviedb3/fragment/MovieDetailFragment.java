@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
+import com.example.android.moviedb3.activity.DataInfoListActivity;
 import com.example.android.moviedb3.activity.MovieDetailActivity;
 import com.example.android.moviedb3.activity.PeopleDetailActivity;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
@@ -312,7 +313,7 @@ public class MovieDetailFragment extends Fragment {
             favoriteState = getArguments().getBoolean(MovieDBKeyEntry.MovieDataPersistance.FAVORITE_STATE_PERSISTANCE_KEY);
 
             SetMovieDetail(movieData);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDataArrayList, getContext()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDataArrayList, getContext(), true), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
             SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDataArrayList, getContext(), new OnMovieCastChoosedListener()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
             SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDataArrayList, getContext(), new OnMovieCrewChoosedListener()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
             SetAdditionalMovieDetailRecyclerView(new VideoDataListRecyclerViewAdapter(videoDataArrayList), new LinearLayoutManager(MovieDetailFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
@@ -426,6 +427,17 @@ public class MovieDetailFragment extends Fragment {
         return dataDBArrayList;
     }
 
+    private <Data extends MovieInfoData>void GoToMoreDataInfoList(ArrayList<Data> movieInfoDatas, String pageTitle, String labelTitle)
+    {
+        Intent intent = new Intent(getContext(), DataInfoListActivity.class);
+
+        intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.DATA_INFO_PAGE_TITLE_PERSISTANCE_KEY, pageTitle);
+        intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.DATA_INFO_LABEL_TITLE_PERSISTANCE_KEY, labelTitle);
+        intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.DATA_INFO_LIST_PERSISTANCE_KEY, movieInfoDatas);
+
+        startActivity(intent);
+    }
+
     private class InsertFavoriteMovie extends AsyncTask<Void, Void, Void>
     {
         @Override
@@ -521,7 +533,24 @@ public class MovieDetailFragment extends Fragment {
                 {
                     reviewDataArrayList = reviewDatas;
 
-                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDatas, getContext()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
+                    if(reviewDataArrayList.size() > 5)
+                    {
+                        moreReviewButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                GoToMoreDataInfoList(reviewDataArrayList, movieData.getOriginalTitle(), getString(R.string.review_label));
+                            }
+                        });
+                    }
+
+                    else
+                    {
+                        moreReviewButton.setVisibility(View.GONE);
+                    }
+
+
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(reviewDatas, getContext(), true), new LinearLayoutManager(MovieDetailFragment.this.getContext()), reviewListRecyclerView);
                     CheckAndShowMovieDetail();
 
                     return;
@@ -543,6 +572,23 @@ public class MovieDetailFragment extends Fragment {
                 if(!castDatas.isEmpty())
                 {
                     castDataArrayList = castDatas;
+
+                    if(castDataArrayList.size() > 5)
+                    {
+                        moreCastButton.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                GoToMoreDataInfoList(castDataArrayList, movieData.getOriginalTitle(), getString(R.string.cast_label));
+                            }
+                        });
+                    }
+
+                    else
+                    {
+                        moreCastButton.setVisibility(View.GONE);
+                    }
 
                     SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas, getContext(), new OnMovieCastChoosedListener()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
                     CheckAndShowMovieDetail();
@@ -566,6 +612,22 @@ public class MovieDetailFragment extends Fragment {
                 if(!crewDatas.isEmpty())
                 {
                     crewDataArrayList = crewDatas;
+
+                    if(crewDataArrayList.size() > 5)
+                    {
+                        moreCrewButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                GoToMoreDataInfoList(crewDataArrayList, movieData.getOriginalTitle(), getString(R.string.crew_label));
+                            }
+                        });
+                    }
+
+                    else
+                    {
+                        moreCrewButton.setVisibility(View.GONE);
+                    }
 
                     SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDatas, getContext(), new OnMovieCrewChoosedListener()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), crewListRecyclerView);
                     CheckAndShowMovieDetail();

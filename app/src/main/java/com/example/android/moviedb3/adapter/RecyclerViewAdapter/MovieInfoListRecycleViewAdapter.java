@@ -23,15 +23,22 @@ public class MovieInfoListRecycleViewAdapter<Data extends MovieInfoData> extends
     private ArrayList<Data> movieInfoDataArrayList;
     private Context context;
     private OnDataChooseListener<MovieInfoData> onDataChooseListener;
+    private boolean isLimitSizeToFive;
 
-    public MovieInfoListRecycleViewAdapter(ArrayList<Data> movieInfoDataArrayList, Context context) {
+    public MovieInfoListRecycleViewAdapter(ArrayList<Data> movieInfoDataArrayList, Context context, boolean isLimitSizeToFive) {
         this.movieInfoDataArrayList = movieInfoDataArrayList;
         this.context = context;
+        this.isLimitSizeToFive = isLimitSizeToFive;
     }
 
     public MovieInfoListRecycleViewAdapter(ArrayList<Data> movieInfoDataArrayList, Context context, OnDataChooseListener<MovieInfoData> onDataChooseListener) {
         this.movieInfoDataArrayList = movieInfoDataArrayList;
         this.context = context;
+        this.onDataChooseListener = onDataChooseListener;
+        isLimitSizeToFive = true;
+    }
+
+    public void setOnDataChooseListener(OnDataChooseListener<MovieInfoData> onDataChooseListener) {
         this.onDataChooseListener = onDataChooseListener;
     }
 
@@ -71,9 +78,17 @@ public class MovieInfoListRecycleViewAdapter<Data extends MovieInfoData> extends
 
         int length;
 
-        if(movieInfoDataArrayList.size() > 5)
+        if(isLimitSizeToFive)
         {
-            length = 5;
+            if(movieInfoDataArrayList.size() > 5)
+            {
+                length = 5;
+            }
+
+            else
+            {
+                length = movieInfoDataArrayList.size();
+            }
         }
 
         else

@@ -103,16 +103,23 @@ public class PeopleDetailJSONParser implements JSONParser<PeopleData>
         else {
             try {
 
-                String birthdayString = jsonObject.getString("birthday");
                 Calendar birthday;
-                if(birthdayString == null || birthdayString.isEmpty() || birthdayString.equals("null"))
+                if(jsonObject.has("birthday"))
                 {
-                    birthday = new GregorianCalendar(2000, 1, 1);
+                    String birthdayString = jsonObject.getString("birthday");
+                    if(birthdayString == null || birthdayString.isEmpty() || birthdayString.equals("null"))
+                    {
+                        birthday = new GregorianCalendar(1000, 1, 1);
+                    }
+                    else
+                    {
+                        StringToDateSetter stringToDateSetter = new NumericDateStringToDateSetter();
+                        birthday = stringToDateSetter.getDateTime(birthdayString);
+                    }
                 }
                 else
                 {
-                    StringToDateSetter stringToDateSetter = new NumericDateStringToDateSetter();
-                    birthday = stringToDateSetter.getDateTime(birthdayString);
+                    birthday = new GregorianCalendar(1000, 1, 1);
                 }
 
                 String id = jsonObject.getString("id");
@@ -123,23 +130,36 @@ public class PeopleDetailJSONParser implements JSONParser<PeopleData>
                 }
 
                 String also_known_as = "";
-                JSONArray also_known_as_array = jsonObject.getJSONArray("also_known_as");
-                if(also_known_as_array.length() > 0)
+                if(jsonObject.has("also_known_as"))
                 {
-                    for(int a = 0; a < 1; a++)
+                    JSONArray also_known_as_array = jsonObject.getJSONArray("also_known_as");
+                    if(also_known_as_array.length() > 0)
                     {
-                        also_known_as = also_known_as_array.getString(a);
+                        for(int a = 0; a < 1; a++)
+                        {
+                            also_known_as = also_known_as_array.getString(a);
+                        }
                     }
                 }
 
-                String biography = jsonObject.getString("biography");
-                if (biography == null || biography.equals("null")) {
-                    biography = "";
+                String biography = "";
+                if(jsonObject.has("biography"))
+                {
+                    biography = jsonObject.getString("biography");
+                    if (biography == null || biography.equals("null")) {
+                        biography = "";
+                    }
                 }
 
-                String place_of_birth = jsonObject.getString("place_of_birth");
-                if (place_of_birth == null || place_of_birth.equals("place_of_birth")) {
-                    place_of_birth = "";
+
+                String place_of_birth = "";
+                if(jsonObject.has("place_of_birth"))
+                {
+                    place_of_birth = jsonObject.getString("place_of_birth");
+                    if (place_of_birth == null || place_of_birth.equals("place_of_birth"))
+                    {
+                        place_of_birth = "";
+                    }
                 }
 
                 String profile_path = jsonObject.getString("profile_path");

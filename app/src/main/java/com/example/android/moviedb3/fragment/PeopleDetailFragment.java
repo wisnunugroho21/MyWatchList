@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.android.moviedb3.R;
+import com.example.android.moviedb3.activity.DataInfoListActivity;
 import com.example.android.moviedb3.activity.MovieDetailActivity;
 import com.example.android.moviedb3.activity.TVDetailActivity;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
@@ -43,11 +44,9 @@ import com.example.android.moviedb3.movieDB.PeopleData;
 import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringSetter;
 import com.example.android.moviedb3.movieDB.dateToString.DateToStringSetter;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
-import com.example.android.moviedb3.movieDataManager.MovieDetailGetterAsyncTask;
 import com.example.android.moviedb3.movieDataManager.MovieInfoDataGetter;
 import com.example.android.moviedb3.movieDataManager.PeopleDetailGetterAsyncTask;
 import com.example.android.moviedb3.movieDataManager.PeopleInfoDataGetter;
-import com.example.android.moviedb3.movieDataManager.TVDetailGetterAsyncTask;
 import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
 import com.squareup.picasso.Picasso;
 
@@ -72,7 +71,7 @@ public class PeopleDetailFragment extends Fragment
     TextView biographyTextView;
 
     RecyclerView movieCastListRecyclerView;
-    Button movieCastButton;
+    Button moreMovieCastButton;
     TextView nomovieCastTextView;
     RecyclerView tvCastListRecyclerView;
     Button moretvCastButton;
@@ -120,7 +119,7 @@ public class PeopleDetailFragment extends Fragment
         biographyTextView = (TextView) view.findViewById(R.id.txt_biography);
 
         movieCastListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_movie_cast_list);
-        movieCastButton = (Button) view.findViewById(R.id.btn_more_movie_casts);
+        moreMovieCastButton = (Button) view.findViewById(R.id.btn_more_movie_casts);
         nomovieCastTextView = (TextView) view.findViewById(R.id.txt_no_movie_casts);
         tvCastListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_tv_show_cast_list);
         notvCastTextView = (TextView) view.findViewById(R.id.txt_no_tv_cast);
@@ -215,7 +214,7 @@ public class PeopleDetailFragment extends Fragment
     {
         movieCastListRecyclerView.setVisibility(View.GONE);
         nomovieCastTextView.setVisibility(View.VISIBLE);
-        movieCastButton.setVisibility(View.GONE);
+        moreMovieCastButton.setVisibility(View.GONE);
     }
 
     public void ShowNoCrews()
@@ -318,6 +317,17 @@ public class PeopleDetailFragment extends Fragment
         }
     }
 
+    private <Data extends MovieInfoData>void GoToMoreDataInfoList(ArrayList<Data> movieInfoDatas, String pageTitle, String labelTitle)
+    {
+        Intent intent = new Intent(getContext(), DataInfoListActivity.class);
+
+        intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.DATA_INFO_PAGE_TITLE_PERSISTANCE_KEY, pageTitle);
+        intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.DATA_INFO_LABEL_TITLE_PERSISTANCE_KEY, labelTitle);
+        intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.DATA_INFO_LIST_PERSISTANCE_KEY, movieInfoDatas);
+
+        startActivity(intent);
+    }
+
     private class PeopleDataObtainedListener implements OnDataObtainedListener<PeopleData>
     {
         @Override
@@ -347,6 +357,23 @@ public class PeopleDetailFragment extends Fragment
                     rolesNumber += peopleCastDataArrayList.size();
                     rolesTextView.setText(String.valueOf(rolesNumber));
 
+                    if(peopleCastDataArrayList.size() > 5)
+                    {
+                        moreMovieCastButton.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                GoToMoreDataInfoList(peopleCastDataArrayList, peopleData.getName(), getString(R.string.movie_cast_label));
+                            }
+                        });
+                    }
+
+                    else
+                    {
+                        moreMovieCastButton.setVisibility(View.GONE);
+                    }
+
                     SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(peopleCastDatas, getContext(), new OnMovieCastChoosedListener()), new LinearLayoutManager(PeopleDetailFragment.this.getContext()), movieCastListRecyclerView);
                     CheckAndShowMovieDetail();
 
@@ -372,6 +399,21 @@ public class PeopleDetailFragment extends Fragment
                     filmographyNumbers += peopleCrewDataArrayList.size();
                     filmographyTextView.setText(String.valueOf(filmographyNumbers));
 
+                    if(peopleCrewDataArrayList.size() > 5)
+                    {
+                        moreMovieCrewButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                GoToMoreDataInfoList(peopleCrewDataArrayList, peopleData.getName(), getString(R.string.movie_filmography_label));
+                            }
+                        });
+                    }
+
+                    else
+                    {
+                        moreMovieCrewButton.setVisibility(View.GONE);
+                    }
+
                     SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(peopleCrewDatas, getContext(), new OnMovieCrewChoosedListener()), new LinearLayoutManager(PeopleDetailFragment.this.getContext()), movieCrewListRecyclerView);
                     CheckAndShowMovieDetail();
 
@@ -394,8 +436,24 @@ public class PeopleDetailFragment extends Fragment
                 if(!peopleCastTvDatas.isEmpty())
                 {
                     peopleCastTvDataArrayList = peopleCastTvDatas;
-                    rolesNumber += peopleCastTvDatas.size();
+                    rolesNumber += peopleCastTvDataArrayList.size();
                     rolesTextView.setText(String.valueOf(rolesNumber));
+
+                    if(peopleCastTvDataArrayList.size() > 5)
+                    {
+                        moretvCastButton.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v) {
+                                GoToMoreDataInfoList(peopleCastTvDataArrayList, peopleData.getName(), getString(R.string.tv_show_casts_label));
+                            }
+                        });
+                    }
+
+                    else
+                    {
+                        moretvCastButton.setVisibility(View.GONE);
+                    }
 
                     SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(peopleCastTvDatas, getContext(), new OnTVCastChoosedListener()), new LinearLayoutManager(PeopleDetailFragment.this.getContext()), tvCastListRecyclerView);
                     CheckAndShowMovieDetail();
@@ -419,8 +477,25 @@ public class PeopleDetailFragment extends Fragment
                 if(!peopleCrewTVDatas.isEmpty())
                 {
                     peopleCrewTVDataArrayList = peopleCrewTVDatas;
-                    filmographyNumbers += peopleCrewTVDatas.size();
+                    filmographyNumbers += peopleCrewTVDataArrayList.size();
                     filmographyTextView.setText(String.valueOf(filmographyNumbers));
+
+                    if(peopleCrewTVDataArrayList.size() > 5)
+                    {
+                        moreTVCrewButton.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                GoToMoreDataInfoList(peopleCrewTVDataArrayList, peopleData.getName(), getString(R.string.tv_filmography_label));
+                            }
+                        });
+                    }
+
+                    else
+                    {
+                        moreTVCrewButton.setVisibility(View.GONE);
+                    }
 
                     SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(peopleCrewTVDatas, getContext(), new OnTVCrewChoosedListener()), new LinearLayoutManager(PeopleDetailFragment.this.getContext()), tvCrewListRecyclerView);
                     CheckAndShowMovieDetail();

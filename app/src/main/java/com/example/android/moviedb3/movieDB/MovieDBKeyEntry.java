@@ -40,13 +40,21 @@ public class MovieDBKeyEntry
         public static final String TV_DATA_LIST_PERSISTANCE_KEY = "TVDataList";
         public static final String TV_GENRE_PERSISTANCE_KEY = "TVGenreData";
 
-        public static final String TV_REVIEW_LIST_PERSISTANCE_KEY = "TVReviewList";
         public static final String TV_CAST_LIST_PERSISTANCE_KEY = "TVCastList";
         public static final String TV_CREW_LIST_PERSISTANCE_KEY = "TVCrewList";
         public static final String TV_VIDEO_LIST_PERSISTANCE_KEY = "TVVideoList";
 
+        public static final String PEOPLE_MOVIE_CAST_LIST_PERSISTANCE_KEY = "PeopleMovieCastList";
+        public static final String PEOPLE_MOVIE_CREW_LIST_PERSISTANCE_KEY = "PeopleMovieCrewList";
+        public static final String PEOPLE_TV_CAST_LIST_PERSISTANCE_KEY = "PeopleTVCastList";
+        public static final String PEOPLE_TV_CREW_LIST_PERSISTANCE_KEY = "PeopleTVCrewList";
+
         public static final String PEOPLE_DATA_PERSISTANCE_KEY = "PeopleData";
         public static final String PEOPLE_ID_PERSISTANCE_KEY = "PeopleIDData";
+
+        public static final String DATA_INFO_LIST_PERSISTANCE_KEY = "DataInfoList";
+        public static final String DATA_INFO_PAGE_TITLE_PERSISTANCE_KEY = "DataInfoPageTitle";
+        public static final String DATA_INFO_LABEL_TITLE_PERSISTANCE_KEY = "DataInfoLabelTitle";
 
         public static final String INTERNET_NETWORK_STATE_PERSISTANCE_KEY = "InternetNetworkState";
         public static final String ADDITIONAL_MOVIE_DETAIL_STATE_PERSISTANCE_KEY = "AdditionalMovieDetailState";

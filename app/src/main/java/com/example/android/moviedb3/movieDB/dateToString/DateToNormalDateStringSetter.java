@@ -9,8 +9,17 @@ import java.util.Calendar;
 public class DateToNormalDateStringSetter implements  DateToStringSetter
 {
     @Override
-    public String getDateString(Calendar calendar) {
-        return MonthNameIndexer.GetMonthName(calendar.get(Calendar.MONTH)) + " " +
-                calendar.get(Calendar.YEAR);
+    public String getDateString(Calendar calendar)
+    {
+        if(String.valueOf(calendar.get(Calendar.YEAR)).equals("1000"))
+        {
+            return "-";
+        }
+
+        else
+        {
+            return MonthNameIndexer.GetMonthName(calendar.get(Calendar.MONTH)) + " " +
+                    calendar.get(Calendar.YEAR);
+        }
     }
 }

@@ -32,6 +32,7 @@ public class CastData extends DependencyData implements Parcelable, MovieInfoDat
         this.characterName = in.readString();
         this.movieID = in.readString();
         this.peopleID = in.readString();
+        this.imageCast = in.readString();
     }
 
     public String getCastName() {
@@ -86,6 +87,7 @@ public class CastData extends DependencyData implements Parcelable, MovieInfoDat
         dest.writeString(this.characterName);
         dest.writeString(this.movieID);
         dest.writeString(this.peopleID);
+        dest.writeString(this.imageCast);
     }
 
     public static final Creator CREATOR = new Creator()
