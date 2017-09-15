@@ -1,5 +1,6 @@
 package com.example.android.moviedb3.fragment;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,8 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
+import com.example.android.moviedb3.activity.PeopleDetailActivity;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoTVDataListRecyclerViewAdapter;
+import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonParsing.CastTVListJSONParser;
 import com.example.android.moviedb3.jsonParsing.CrewTVListJSONParser;
@@ -38,10 +41,13 @@ import com.example.android.moviedb3.localDatabase.PopularTVDataDB;
 import com.example.android.moviedb3.localDatabase.TopRatedTVDataDB;
 import com.example.android.moviedb3.localDatabase.VideoTVDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistTvDataDB;
+import com.example.android.moviedb3.movieDB.CastData;
 import com.example.android.moviedb3.movieDB.CastTVData;
+import com.example.android.moviedb3.movieDB.CrewData;
 import com.example.android.moviedb3.movieDB.CrewTVData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
+import com.example.android.moviedb3.movieDB.MovieInfoData;
 import com.example.android.moviedb3.movieDB.TVData;
 import com.example.android.moviedb3.movieDB.VideoTVData;
 import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringSetter;
@@ -286,11 +292,11 @@ public class TVDetailFragment extends Fragment {
             castDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.TV_CAST_LIST_PERSISTANCE_KEY);
             crewDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.TV_CREW_LIST_PERSISTANCE_KEY);
             videoDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.TV_VIDEO_LIST_PERSISTANCE_KEY);
-            favoriteState = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.FAVORITE_STATE_PERSISTANCE_KEY);
+            favoriteState = getArguments().getBoolean(MovieDBKeyEntry.MovieDataPersistance.FAVORITE_STATE_PERSISTANCE_KEY);
 
             SetTVDetail(tvData);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDataArrayList, getContext()), new LinearLayoutManager(this.getContext()), castListRecyclerView);
-            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDataArrayList, getContext()), new LinearLayoutManager(this.getContext()), crewListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDataArrayList, getContext(), new OnTVCastChoosedListener()), new LinearLayoutManager(this.getContext()), castListRecyclerView);
+            SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDataArrayList, getContext(), new OnTVCrewChoosedListener()), new LinearLayoutManager(this.getContext()), crewListRecyclerView);
             SetAdditionalMovieDetailRecyclerView(new VideoTVDataListRecyclerViewAdapter(videoDataArrayList), new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
 
             ShowMovieDetail();
@@ -308,7 +314,6 @@ public class TVDetailFragment extends Fragment {
 
                 if (tvData != null)
                 {
-
                     SetTVDetail(tvData);
                     SetInitialFavoriteState();
                     SetAllRecyclerView(tvData);
@@ -635,6 +640,38 @@ public class TVDetailFragment extends Fragment {
         protected void onPostExecute(Boolean aBoolean)
         {
             onDataObtainedListener.onDataObtained(aBoolean);
+        }
+    }
+
+    private class OnTVCastChoosedListener implements OnDataChooseListener<MovieInfoData>
+    {
+        @Override
+        public void OnDataChoose(MovieInfoData movieInfoData)
+        {
+            if(movieInfoData instanceof CastTVData)
+            {
+                CastTVData castTVData = (CastTVData) movieInfoData;
+
+                Intent intent = new Intent(getContext(), PeopleDetailActivity.class);
+                intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.PEOPLE_ID_PERSISTANCE_KEY, castTVData.getPeopleID());
+                startActivity(intent);
+            }
+        }
+    }
+
+    private class OnTVCrewChoosedListener implements OnDataChooseListener<MovieInfoData>
+    {
+        @Override
+        public void OnDataChoose(MovieInfoData movieInfoData)
+        {
+            if(movieInfoData instanceof CrewTVData)
+            {
+                CrewTVData crewTVData = (CrewTVData) movieInfoData;
+
+                Intent intent = new Intent(getContext(), PeopleDetailActivity.class);
+                intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.PEOPLE_ID_PERSISTANCE_KEY, crewTVData.getPeopleID());
+                startActivity(intent);
+            }
         }
     }
 }

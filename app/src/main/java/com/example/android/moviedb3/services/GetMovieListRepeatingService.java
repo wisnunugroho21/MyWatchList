@@ -6,19 +6,29 @@ import android.os.AsyncTask;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
+import com.example.android.moviedb3.localDatabase.AirTodayDataDB;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
+import com.example.android.moviedb3.localDatabase.FavoriteTVDataDB;
 import com.example.android.moviedb3.localDatabase.NowShowingDataDB;
+import com.example.android.moviedb3.localDatabase.OnTheAirDataDB;
 import com.example.android.moviedb3.localDatabase.PlanToWatchDataDB;
+import com.example.android.moviedb3.localDatabase.PlanToWatchTVDataDB;
 import com.example.android.moviedb3.localDatabase.PopularDataDB;
+import com.example.android.moviedb3.localDatabase.PopularTVDataDB;
 import com.example.android.moviedb3.localDatabase.TopRateDataDB;
+import com.example.android.moviedb3.localDatabase.TopRatedTVDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
+import com.example.android.moviedb3.localDatabase.WatchlistTvDataDB;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
 import com.example.android.moviedb3.movieDataManager.GenreDataGetter;
 import com.example.android.moviedb3.movieDataManager.MovieDataGetter;
+import com.example.android.moviedb3.movieDataManager.PeopleDataGetter;
+import com.example.android.moviedb3.movieDataManager.TVDataGetter;
+import com.example.android.moviedb3.movieDataManager.TVGenreDataGetter;
 import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 import com.firebase.jobdispatcher.JobParameters;
@@ -78,6 +88,14 @@ public class GetMovieListRepeatingService extends JobService
             GetPopularMovieList();
             GetTopRateMovieList();
             GetGenreList();
+
+            GetAiringTodayTVList();
+            GetOnTheAirTVList();
+            GetPopularTVList();
+            GetTopRateTVList();
+            GetTVGenreList();
+
+            GetPopularPeopleList();
 
             String typeNotificationString = PreferencesUtils.GetData(new DefaultStringStatePreference(getApplicationContext()), getString(R.string.type_notification_key), getString(R.string.normal_led_notification_value));
             int typeNotification = 0;
@@ -151,6 +169,40 @@ public class GetMovieListRepeatingService extends JobService
             DBGetter.GetData(new GenreDataGetter(context, MovieDataURL.GetGenreListURL(context)));
         }
 
+        private void GetAiringTodayTVList()
+        {
+            DBGetter.GetData(new TVDataGetter(context, new AirTodayDataDB(context),
+                    getInitialOtherAiringTodayTVListDataDB(), MovieDataURL.GetAiringTodayTVURL(context)));
+        }
+
+        private void GetOnTheAirTVList()
+        {
+            DBGetter.GetData(new TVDataGetter(context, new OnTheAirDataDB(context),
+                    getInitialOtherOnTheAirTVListDataDB(), MovieDataURL.GetOnTheAirTVURL(context)));
+        }
+
+        private void GetPopularTVList()
+        {
+            DBGetter.GetData(new TVDataGetter(context, new PopularTVDataDB(context),
+                    getInitialOtherPopularTVListDataDB(), MovieDataURL.GetPopularTVURL(context)));
+        }
+
+        private void GetTopRateTVList()
+        {
+            DBGetter.GetData(new TVDataGetter(context, new TopRatedTVDataDB(context),
+                    getInitialOtherTopRateTVListDataDB(), MovieDataURL.GetTopRateTVURL(context)));
+        }
+
+        private void GetTVGenreList()
+        {
+            DBGetter.GetData(new TVGenreDataGetter(context, MovieDataURL.GetTVGenreListURL(context)));
+        }
+
+        private void GetPopularPeopleList()
+        {
+            DBGetter.GetData(new PeopleDataGetter(context));
+        }
+
         private ArrayList<DataDB<String>> getInitialOtherNowShowingMovieListDataDB()
         {
             ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
@@ -203,6 +255,62 @@ public class GetMovieListRepeatingService extends JobService
             dataDBArrayList.add(new FavoriteDataDB(context));
             dataDBArrayList.add(new WatchlistDataDB(context));
             dataDBArrayList.add(new PlanToWatchDataDB(context));
+
+            return dataDBArrayList;
+        }
+
+        private ArrayList<DataDB<String>> getInitialOtherAiringTodayTVListDataDB()
+        {
+            ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+            dataDBArrayList.add(new OnTheAirDataDB(context));
+            dataDBArrayList.add(new PopularTVDataDB(context));
+            dataDBArrayList.add(new TopRatedTVDataDB(context));
+            dataDBArrayList.add(new FavoriteTVDataDB(context));
+            dataDBArrayList.add(new WatchlistTvDataDB(context));
+            dataDBArrayList.add(new PlanToWatchTVDataDB(context));
+
+            return dataDBArrayList;
+        }
+
+        private ArrayList<DataDB<String>> getInitialOtherOnTheAirTVListDataDB()
+        {
+            ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+            dataDBArrayList.add(new AirTodayDataDB(context));
+            dataDBArrayList.add(new PopularTVDataDB(context));
+            dataDBArrayList.add(new TopRatedTVDataDB(context));
+            dataDBArrayList.add(new FavoriteTVDataDB(context));
+            dataDBArrayList.add(new WatchlistTvDataDB(context));
+            dataDBArrayList.add(new PlanToWatchTVDataDB(context));
+
+            return dataDBArrayList;
+        }
+
+        private ArrayList<DataDB<String>> getInitialOtherPopularTVListDataDB()
+        {
+            ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+            dataDBArrayList.add(new TopRatedTVDataDB(context));
+            dataDBArrayList.add(new AirTodayDataDB(context));
+            dataDBArrayList.add(new OnTheAirDataDB(context));
+            dataDBArrayList.add(new FavoriteTVDataDB(context));
+            dataDBArrayList.add(new WatchlistTvDataDB(context));
+            dataDBArrayList.add(new PlanToWatchTVDataDB(context));
+
+            return dataDBArrayList;
+        }
+
+        private ArrayList<DataDB<String>> getInitialOtherTopRateTVListDataDB()
+        {
+            ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+            dataDBArrayList.add(new PopularTVDataDB(context));
+            dataDBArrayList.add(new AirTodayDataDB(context));
+            dataDBArrayList.add(new OnTheAirDataDB(context));
+            dataDBArrayList.add(new FavoriteTVDataDB(context));
+            dataDBArrayList.add(new WatchlistTvDataDB(context));
+            dataDBArrayList.add(new PlanToWatchTVDataDB(context));
 
             return dataDBArrayList;
         }

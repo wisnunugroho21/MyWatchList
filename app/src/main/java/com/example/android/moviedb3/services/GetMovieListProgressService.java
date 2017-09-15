@@ -13,19 +13,29 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
+import com.example.android.moviedb3.localDatabase.AirTodayDataDB;
 import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
+import com.example.android.moviedb3.localDatabase.FavoriteTVDataDB;
 import com.example.android.moviedb3.localDatabase.NowShowingDataDB;
+import com.example.android.moviedb3.localDatabase.OnTheAirDataDB;
 import com.example.android.moviedb3.localDatabase.PlanToWatchDataDB;
+import com.example.android.moviedb3.localDatabase.PlanToWatchTVDataDB;
 import com.example.android.moviedb3.localDatabase.PopularDataDB;
+import com.example.android.moviedb3.localDatabase.PopularTVDataDB;
 import com.example.android.moviedb3.localDatabase.TopRateDataDB;
+import com.example.android.moviedb3.localDatabase.TopRatedTVDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
+import com.example.android.moviedb3.localDatabase.WatchlistTvDataDB;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
 import com.example.android.moviedb3.movieDataManager.GenreDataGetter;
 import com.example.android.moviedb3.movieDataManager.MovieDataGetter;
+import com.example.android.moviedb3.movieDataManager.PeopleDataGetter;
+import com.example.android.moviedb3.movieDataManager.TVDataGetter;
+import com.example.android.moviedb3.movieDataManager.TVGenreDataGetter;
 import com.example.android.moviedb3.sharedPreferences.DefaultIntegerStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 
@@ -49,23 +59,41 @@ public class GetMovieListProgressService extends IntentService
     protected void onHandleIntent(@Nullable Intent intent)
     {
         context = this;
-        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 5, 0));
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 0));
 
         GetNowShowingMovieList();
-        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 5, 1));
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 1));
 
         GetComingSoonMovieList();
-        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 5, 2));
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 2));
 
         GetPopularMovieList();
-        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 5, 3));
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 3));
 
         GetTopRateMovieList();
-        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 5, 4));
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 4));
 
         GetGenreList();
-        SendMessageToActivity();
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 5));
 
+        GetAiringTodayTVList();
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 6));
+
+        GetOnTheAirTVList();
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 7));
+
+        GetPopularTVList();
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 8));
+
+        GetTopRateTVList();
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 9));
+
+        GetTVGenreList();
+        startForeground(notification_id, GettingAllDataNotificationUtils.createNotificationWithProgress(context, 11, 10));
+
+        GetPopularPeopleList();
+
+        SendMessageToActivity();
         GettingAllDataNotificationUtils.showNotificationCompleted(context);
         stopForeground(true);
     }
@@ -80,30 +108,64 @@ public class GetMovieListProgressService extends IntentService
     private void GetNowShowingMovieList()
     {
         DBGetter.GetData(new MovieDataGetter(context, new NowShowingDataDB(context),
-                getInitialOtherNowShowingMovieListDataDB(), MovieDataURL.GetNowShowingURL(context), new newNowShowingMovieObtained()));
+                getInitialOtherNowShowingMovieListDataDB(), MovieDataURL.GetNowShowingURL(this), new newNowShowingMovieObtained()));
     }
 
     private void GetComingSoonMovieList()
     {
         DBGetter.GetData(new MovieDataGetter(context, new ComingSoonDataDB(context),
-                getInitialOtherComingSoonMovieListDataDB(), MovieDataURL.GetComingSoonURL(context)));
+                getInitialOtherComingSoonMovieListDataDB(), MovieDataURL.GetComingSoonURL(this)));
     }
 
     private void GetPopularMovieList()
     {
         DBGetter.GetData(new MovieDataGetter(context, new PopularDataDB(context),
-                getInitialOtherPopularMovieListDataDB(), MovieDataURL.GetPopularURL(context)));
+                getInitialOtherPopularMovieListDataDB(), MovieDataURL.GetPopularURL(this)));
     }
 
     private void GetTopRateMovieList()
     {
         DBGetter.GetData(new MovieDataGetter(context, new TopRateDataDB(context),
-                getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL(context)));
+                getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL(this)));
     }
 
     private void GetGenreList()
     {
-        DBGetter.GetData(new GenreDataGetter(context, MovieDataURL.GetGenreListURL(context)));
+        DBGetter.GetData(new GenreDataGetter(context, MovieDataURL.GetGenreListURL(this)));
+    }
+
+    private void GetAiringTodayTVList()
+    {
+        DBGetter.GetData(new TVDataGetter(context, new AirTodayDataDB(context),
+                getInitialOtherAiringTodayTVListDataDB(), MovieDataURL.GetAiringTodayTVURL(this)));
+    }
+
+    private void GetOnTheAirTVList()
+    {
+        DBGetter.GetData(new TVDataGetter(context, new OnTheAirDataDB(context),
+                getInitialOtherOnTheAirTVListDataDB(), MovieDataURL.GetOnTheAirTVURL(this)));
+    }
+
+    private void GetPopularTVList()
+    {
+        DBGetter.GetData(new TVDataGetter(context, new PopularTVDataDB(context),
+                getInitialOtherPopularTVListDataDB(), MovieDataURL.GetPopularTVURL(this)));
+    }
+
+    private void GetTopRateTVList()
+    {
+        DBGetter.GetData(new TVDataGetter(context, new TopRatedTVDataDB(context),
+                getInitialOtherTopRateTVListDataDB(), MovieDataURL.GetTopRateTVURL(this)));
+    }
+
+    private void GetTVGenreList()
+    {
+        DBGetter.GetData(new TVGenreDataGetter(context, MovieDataURL.GetTVGenreListURL(this)));
+    }
+
+    private void GetPopularPeopleList()
+    {
+        DBGetter.GetData(new PeopleDataGetter(context));
     }
 
     private ArrayList<DataDB<String>> getInitialOtherNowShowingMovieListDataDB()
@@ -158,6 +220,62 @@ public class GetMovieListProgressService extends IntentService
         dataDBArrayList.add(new FavoriteDataDB(context));
         dataDBArrayList.add(new WatchlistDataDB(context));
         dataDBArrayList.add(new PlanToWatchDataDB(context));
+
+        return dataDBArrayList;
+    }
+
+    private ArrayList<DataDB<String>> getInitialOtherAiringTodayTVListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new OnTheAirDataDB(context));
+        dataDBArrayList.add(new PopularTVDataDB(context));
+        dataDBArrayList.add(new TopRatedTVDataDB(context));
+        dataDBArrayList.add(new FavoriteTVDataDB(context));
+        dataDBArrayList.add(new WatchlistTvDataDB(context));
+        dataDBArrayList.add(new PlanToWatchTVDataDB(context));
+
+        return dataDBArrayList;
+    }
+
+    private ArrayList<DataDB<String>> getInitialOtherOnTheAirTVListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new AirTodayDataDB(context));
+        dataDBArrayList.add(new PopularTVDataDB(context));
+        dataDBArrayList.add(new TopRatedTVDataDB(context));
+        dataDBArrayList.add(new FavoriteTVDataDB(context));
+        dataDBArrayList.add(new WatchlistTvDataDB(context));
+        dataDBArrayList.add(new PlanToWatchTVDataDB(context));
+
+        return dataDBArrayList;
+    }
+
+    private ArrayList<DataDB<String>> getInitialOtherPopularTVListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new TopRatedTVDataDB(context));
+        dataDBArrayList.add(new AirTodayDataDB(context));
+        dataDBArrayList.add(new OnTheAirDataDB(context));
+        dataDBArrayList.add(new FavoriteTVDataDB(context));
+        dataDBArrayList.add(new WatchlistTvDataDB(context));
+        dataDBArrayList.add(new PlanToWatchTVDataDB(context));
+
+        return dataDBArrayList;
+    }
+
+    private ArrayList<DataDB<String>> getInitialOtherTopRateTVListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new PopularTVDataDB(context));
+        dataDBArrayList.add(new AirTodayDataDB(context));
+        dataDBArrayList.add(new OnTheAirDataDB(context));
+        dataDBArrayList.add(new FavoriteTVDataDB(context));
+        dataDBArrayList.add(new WatchlistTvDataDB(context));
+        dataDBArrayList.add(new PlanToWatchTVDataDB(context));
 
         return dataDBArrayList;
     }

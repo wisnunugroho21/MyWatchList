@@ -61,7 +61,7 @@ public class TVListFragment extends Fragment
         loadingDataProgressBar = (ProgressBar) view.findViewById(R.id.pb_loading_data);
         noDataTextView = (TextView) view.findViewById(R.id.txt_no_data);
 
-        GetMovieList(savedInstanceState);
+        GetMovieList();
 
         return view;
     }
@@ -83,16 +83,18 @@ public class TVListFragment extends Fragment
         this.urlGenreTV = urlGenreTV;
     }
 
-    private void GetMovieList(Bundle savedInstanceState)
+    private void GetMovieList()
     {
         if(tvListDB != null)
         {
             GetMovieListFromDatabase();
+            return;
         }
 
         if(idGenre != null && genreTVDataDB != null)
         {
             GetMovieListFromGenreMovie();
+            return;
         }
     }
 
@@ -162,6 +164,8 @@ public class TVListFragment extends Fragment
         @Override
         public void onDataObtained(ArrayList<TVData> tvDatas)
         {
+            DataDB<String> tvDB = TVListFragment.this.tvListDB;
+
             if(tvDatas == null)
             {
                 ShowNoDataLayout();

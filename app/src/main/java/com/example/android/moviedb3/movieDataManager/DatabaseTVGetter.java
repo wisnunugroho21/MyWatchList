@@ -51,8 +51,10 @@ public class DatabaseTVGetter implements IMovieDBGetter
             ArrayList<TVData> tvDatas = tvDB.getAllData();
             ArrayList<String> idTV = tvListDB.getAllData();
 
-            return SameDataFinder.getDataSameList(new SameIDDataFinder<TVData>
+            ArrayList<TVData> expectedTvList =  SameDataFinder.getDataSameList(new SameIDDataFinder<TVData>
                     (new BaseDataCompare<TVData>(), tvDatas, idTV));
+
+            return expectedTvList;
         }
 
         @Override

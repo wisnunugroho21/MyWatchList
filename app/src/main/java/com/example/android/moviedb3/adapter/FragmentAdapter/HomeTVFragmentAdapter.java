@@ -33,7 +33,7 @@ public class HomeTVFragmentAdapter  extends FragmentStatePagerAdapter
         airingTodayTVListFragment.setTVListDB(new AirTodayDataDB(context));
 
         TVListFragment onTheAirTVListFragment = new TVListFragment();
-        airingTodayTVListFragment.setTVListDB(new OnTheAirDataDB(context));
+        onTheAirTVListFragment.setTVListDB(new OnTheAirDataDB(context));
 
         tvListFragments.add(airingTodayTVListFragment);
         tvListFragments.add(onTheAirTVListFragment);
