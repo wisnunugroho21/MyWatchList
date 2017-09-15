@@ -35,10 +35,7 @@ public class GettingAllDataNotificationUtils
 
     public static Notification createNotificationWithProgress(Context context, int maxValues, int values)
     {
-        double mValues = (double) values;
-        double mMaxValues = (double) maxValues;
-
-        double percent = mValues / mMaxValues * 100;
+        int percent = values * 100 / maxValues;
         String contentText = context.getString(R.string.getting_data_notification_still_progress) + " " + String.valueOf(percent) + "%";
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
