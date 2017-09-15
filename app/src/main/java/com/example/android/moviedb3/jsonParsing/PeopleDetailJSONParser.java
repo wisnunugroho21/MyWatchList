@@ -23,6 +23,7 @@ public class PeopleDetailJSONParser implements JSONParser<PeopleData>
         this.peopleData = peopleData;
     }
 
+
     public PeopleDetailJSONParser() {
     }
 
@@ -121,9 +122,14 @@ public class PeopleDetailJSONParser implements JSONParser<PeopleData>
                     name = "";
                 }
 
-                String also_known_as = jsonObject.getString("also_known_as");
-                if (also_known_as == null || also_known_as.equals("null")) {
-                    also_known_as = "";
+                String also_known_as = "";
+                JSONArray also_known_as_array = jsonObject.getJSONArray("also_known_as");
+                if(also_known_as_array.length() > 0)
+                {
+                    for(int a = 0; a < 1; a++)
+                    {
+                        also_known_as = also_known_as_array.getString(a);
+                    }
                 }
 
                 String biography = jsonObject.getString("biography");

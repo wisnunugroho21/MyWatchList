@@ -1,5 +1,6 @@
 package com.example.android.moviedb3.fragment;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,12 +21,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
+import com.example.android.moviedb3.activity.MovieDetailActivity;
+import com.example.android.moviedb3.activity.PeopleDetailActivity;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoDataListRecyclerViewAdapter;
+import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
+import com.example.android.moviedb3.localDatabase.ComingSoonDataDB;
+import com.example.android.moviedb3.localDatabase.NowShowingDataDB;
+import com.example.android.moviedb3.localDatabase.PlanToWatchDataDB;
+import com.example.android.moviedb3.localDatabase.PopularDataDB;
+import com.example.android.moviedb3.localDatabase.TopRateDataDB;
+import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
 import com.example.android.moviedb3.movieDB.CastData;
 import com.example.android.moviedb3.movieDB.CrewData;
+import com.example.android.moviedb3.movieDB.MovieInfoData;
+import com.example.android.moviedb3.movieDB.PeopleCastData;
 import com.example.android.moviedb3.movieDB.ReviewData;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
+import com.example.android.moviedb3.movieDataManager.DatabaseMovieInsertandRemove;
+import com.example.android.moviedb3.movieDataManager.MovieDetailGetterAsyncTask;
 import com.example.android.moviedb3.movieDataManager.MovieInfoDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DataAvailableCheck;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DefaultDataAvailableCheck;
@@ -48,6 +62,8 @@ import com.example.android.moviedb3.movieDB.MovieDataURL;
 import com.example.android.moviedb3.movieDB.VideoData;
 import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringSetter;
 import com.example.android.moviedb3.movieDB.dateToString.DateToStringSetter;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -306,16 +322,28 @@ public class MovieDetailFragment extends Fragment {
         }
         else
         {
-            BundleDataGetter bundleDataGetter = new BundleDataGetter(getArguments());
-            movieData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY);
+            ShowLoadingData();
 
-            if (movieData != null)
+            if(getArguments().containsKey(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY))
+            {
+                BundleDataGetter bundleDataGetter = new BundleDataGetter(getArguments());
+                movieData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.MOVIE_DATA_PERSISTANCE_KEY);
+
+                if (movieData != null)
+                {
+                    SetMovieDetail(movieData);
+                    SetInitialFavoriteState();
+                    SetAllRecyclerView(movieData);
+                }
+            }
+
+            else if(getArguments().containsKey(MovieDBKeyEntry.MovieDataPersistance.MOVIE_ID_PERSISTANCE_KEY))
             {
                 ShowLoadingData();
+                String movieID = getArguments().getString(MovieDBKeyEntry.MovieDataPersistance.MOVIE_ID_PERSISTANCE_KEY);
 
-                SetMovieDetail(movieData);
-                SetInitialFavoriteState();
-                SetAllRecyclerView(movieData);
+                MovieDetailGetterAsyncTask movieDetailGetterAsyncTask = new MovieDetailGetterAsyncTask(movieID, getContext(), new MovieDataObtainedListener());
+                movieDetailGetterAsyncTask.GetData();
             }
         }
     }
@@ -332,20 +360,24 @@ public class MovieDetailFragment extends Fragment {
 
         if(favoriteState)
         {
+            RemoveFavoriteMovie removeFavoriteMovie = new RemoveFavoriteMovie();
+            removeFavoriteMovie.execute();
+
             favoriteState = false;
             SetFavoriteLabel(favoriteState);
 
             dataDB.removeData(movieData.getId());
-            Toast.makeText(MovieDetailFragment.this.getContext(), "Remove this movie from favorite list", Toast.LENGTH_SHORT).show();
         }
 
         else
         {
+            InsertFavoriteMovie insertFavoriteMovie = new InsertFavoriteMovie();
+            insertFavoriteMovie.execute();
+
             favoriteState = true;
             SetFavoriteLabel(favoriteState);
 
             dataDB.addData(movieData.getId());
-            Toast.makeText(MovieDetailFragment.this.getContext(), "Insert this movie to favorite list", Toast.LENGTH_SHORT).show();
         }
 
         MovieDetailFragment.this.getActivity().setResult(MovieDBKeyEntry.DatabaseHasChanged.FAVORITE_DATA_CHANGED);
@@ -364,6 +396,117 @@ public class MovieDetailFragment extends Fragment {
         {
             favoriteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white_24px, 0, 0);
             favoriteButton.setText(R.string.un_favorite_label);
+        }
+    }
+
+    private ArrayList<DataDB<String>> getInitialOtherFavoriteMovieListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new NowShowingDataDB(getContext()));
+        dataDBArrayList.add(new ComingSoonDataDB(getContext()));
+        dataDBArrayList.add(new PopularDataDB(getContext()));
+        dataDBArrayList.add(new TopRateDataDB(getContext()));
+        dataDBArrayList.add(new WatchlistDataDB(getContext()));
+        dataDBArrayList.add(new PlanToWatchDataDB(getContext()));
+
+        return dataDBArrayList;
+    }
+
+    private ArrayList<DataDB<String>> getInitialOtherWatchAndPlanWatchMovieListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new NowShowingDataDB(getContext()));
+        dataDBArrayList.add(new ComingSoonDataDB(getContext()));
+        dataDBArrayList.add(new PopularDataDB(getContext()));
+        dataDBArrayList.add(new TopRateDataDB(getContext()));
+        dataDBArrayList.add(new FavoriteDataDB(getContext()));
+
+        return dataDBArrayList;
+    }
+
+    private class InsertFavoriteMovie extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseMovieInsertandRemove databaseMovieInsertandRemove = new DatabaseMovieInsertandRemove();
+            databaseMovieInsertandRemove.Insert(movieData, castDataArrayList, crewDataArrayList, videoDataArrayList, reviewDataArrayList, getContext());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            Toast.makeText(MovieDetailFragment.this.getContext(), "Insert this movie to favorite list", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class RemoveFavoriteMovie extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseMovieInsertandRemove databaseMovieInsertandRemove = new DatabaseMovieInsertandRemove();
+            databaseMovieInsertandRemove.Remove(movieData.getId(), getInitialOtherFavoriteMovieListDataDB(), getContext());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            Toast.makeText(MovieDetailFragment.this.getContext(), "Remove this movie from favorite list", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class InsertWatchAndPlanWatchMovie extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseMovieInsertandRemove databaseMovieInsertandRemove = new DatabaseMovieInsertandRemove();
+            databaseMovieInsertandRemove.Insert(movieData, castDataArrayList, crewDataArrayList, videoDataArrayList, reviewDataArrayList, getContext());
+
+            return null;
+        }
+    }
+
+    private class RemoveWatchAndPlanWatchMovie extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseMovieInsertandRemove databaseMovieInsertandRemove = new DatabaseMovieInsertandRemove();
+            databaseMovieInsertandRemove.Remove(movieData.getId(), getInitialOtherWatchAndPlanWatchMovieListDataDB(), getContext());
+
+            return null;
+        }
+    }
+
+    private class MovieDataObtainedListener implements OnDataObtainedListener<MovieData>
+    {
+        @Override
+        public void onDataObtained(MovieData movieData)
+        {
+            if (movieData != null)
+            {
+                MovieDetailFragment.this.movieData = movieData;
+
+                SetMovieDetail(movieData);
+                SetInitialFavoriteState();
+
+                NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<ReviewData>>
+                        (new ReviewListJSONParser(), new ReviewDataListObtainedListener()), MovieDataURL.GetReviewURL(movieData.getId(), getContext()));
+                NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<CastData>>
+                        (new CastListJSONParser(), new CastDataListObtainedListener()), MovieDataURL.GetCastURL(movieData.getId()));
+                NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<CrewData>>
+                        (new CrewListJSONParser(), new CrewDataListObtainedListener()), MovieDataURL.GetCrewURL(movieData.getId()));
+                NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<VideoData>>
+                        (new VideoListJSONParser(), new VideoDataListObtainedListener()), MovieDataURL.GetVideoURL(movieData.getId(), getContext()));
+            }
         }
     }
 
@@ -401,7 +544,7 @@ public class MovieDetailFragment extends Fragment {
                 {
                     castDataArrayList = castDatas;
 
-                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas, getContext()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
+                    SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDatas, getContext(), new OnMovieCastChoosedListener()), new LinearLayoutManager(MovieDetailFragment.this.getContext()), castListRecyclerView);
                     CheckAndShowMovieDetail();
 
                     return;
@@ -496,6 +639,24 @@ public class MovieDetailFragment extends Fragment {
         @Override
         public void onDataObtained(Integer integer)
         {
+            InsertWatchAndPlanWatchMovie insertWatchAndPlanWatchMovie = new InsertWatchAndPlanWatchMovie();
+            RemoveWatchAndPlanWatchMovie removeWatchAndPlanWatchMovie = new RemoveWatchAndPlanWatchMovie();
+
+            switch (integer)
+            {
+                case MovieDBKeyEntry.DatabaseHasChanged.REMOVE_MY_LIST :
+                    removeWatchAndPlanWatchMovie.execute();
+                    break;
+
+                case MovieDBKeyEntry.DatabaseHasChanged.INSERT_TO_WATCHED_LIST :
+                    insertWatchAndPlanWatchMovie.execute();
+                    break;
+
+                case MovieDBKeyEntry.DatabaseHasChanged.INSERT_PLAN_TO_WATCH_LIST :
+                    insertWatchAndPlanWatchMovie.execute();
+                    break;
+            }
+
             MovieDetailFragment.this.getActivity().setResult(integer);
         }
     }
@@ -521,6 +682,22 @@ public class MovieDetailFragment extends Fragment {
         protected void onPostExecute(Boolean aBoolean)
         {
             onDataObtainedListener.onDataObtained(aBoolean);
+        }
+    }
+
+    private class OnMovieCastChoosedListener implements OnDataChooseListener<MovieInfoData>
+    {
+        @Override
+        public void OnDataChoose(MovieInfoData movieInfoData)
+        {
+            if(movieInfoData instanceof CastData)
+            {
+                CastData castData = (CastData) movieInfoData;
+
+                Intent intent = new Intent(getContext(), PeopleDetailActivity.class);
+                intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.PEOPLE_ID_PERSISTANCE_KEY, castData.getPeopleID());
+                startActivity(intent);
+            }
         }
     }
 }

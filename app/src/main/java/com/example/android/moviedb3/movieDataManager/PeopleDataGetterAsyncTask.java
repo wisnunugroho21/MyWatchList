@@ -8,16 +8,31 @@ import com.example.android.moviedb3.jsonNetworkConnection.JSONHTTPReceiver;
 import com.example.android.moviedb3.jsonNetworkConnection.JSONReceiver;
 import com.example.android.moviedb3.jsonNetworkConnection.NetworkConnectionChecker;
 import com.example.android.moviedb3.jsonParsing.JSONParser;
+import com.example.android.moviedb3.jsonParsing.PeopleBackdropImageJSONParser;
 import com.example.android.moviedb3.jsonParsing.PeopleDetailJSONParser;
 import com.example.android.moviedb3.jsonParsing.PeoplePopularListJSONParser;
 import com.example.android.moviedb3.localDatabase.DataDB;
+import com.example.android.moviedb3.localDatabase.PeopleCastDataDB;
+import com.example.android.moviedb3.localDatabase.PeopleCastTVDataDB;
+import com.example.android.moviedb3.localDatabase.PeopleCrewDataDB;
+import com.example.android.moviedb3.localDatabase.PeopleCrewTVDataDB;
 import com.example.android.moviedb3.localDatabase.PeopleDataDB;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
+import com.example.android.moviedb3.movieDB.PeopleCastData;
+import com.example.android.moviedb3.movieDB.PeopleCastTvData;
+import com.example.android.moviedb3.movieDB.PeopleCrewData;
+import com.example.android.moviedb3.movieDB.PeopleCrewTVData;
 import com.example.android.moviedb3.movieDB.PeopleData;
+import com.example.android.moviedb3.supportDataManager.dataComparision.BaseDataCompare;
+import com.example.android.moviedb3.supportDataManager.dataComparision.DepedencyDataCompare;
+import com.example.android.moviedb3.supportDataManager.dataDelete.BaseDataListDelete;
+import com.example.android.moviedb3.supportDataManager.dataDelete.DataDelete;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
 import com.example.android.moviedb3.supportDataManager.dataReplace.AllDataListReplace;
 import com.example.android.moviedb3.supportDataManager.dataReplace.DataReplace;
+import com.example.android.moviedb3.supportDataManager.noDataFinder.NoDataFinder;
+import com.example.android.moviedb3.supportDataManager.noDataFinder.NoIDDataFinder;
 
 import org.json.JSONObject;
 
@@ -88,9 +103,12 @@ public class PeopleDataGetterAsyncTask implements IMovieDBGetter {
             for (PeopleData people:peopleList)
             {
                 JSONParser<PeopleData> peopleDataJSONParser = new PeopleDetailJSONParser(people);
-
                 JSONObject jsonObject = jsonReceiver.ReceiveData(MovieDataURL.GetPeopleDetailURL(people.getId(), context));
-                dataList.add(peopleDataJSONParser.Parse(jsonObject));
+                PeopleData newPeopleData = peopleDataJSONParser.Parse(jsonObject);
+
+                JSONParser<PeopleData> peopleBackdropImageJSONParser = new PeopleBackdropImageJSONParser(newPeopleData);
+                JSONObject jsonObject2 = jsonReceiver.ReceiveData(MovieDataURL.GetBackdropImagePeopleURL(newPeopleData.getId(), context));
+                dataList.add(peopleBackdropImageJSONParser.Parse(jsonObject2));
             }
 
             return  dataList;
@@ -137,7 +155,31 @@ public class PeopleDataGetterAsyncTask implements IMovieDBGetter {
         @Override
         protected Void doInBackground(Void... params)
         {
-            DataReplace.ReplaceData(new AllDataListReplace<PeopleData>(new PeopleDataDB(context), datas));
+            ArrayList<String> networkPeopleIDList = new ArrayList<>();
+            for (PeopleData people:datas)
+            {
+                networkPeopleIDList.add(people.getId());
+            }
+
+            ArrayList<String> willDeletedIdPeopleList = NoDataFinder.FindNotSameID
+                    (new NoIDDataFinder<>(new BaseDataCompare<PeopleData>(), dataDB.getAllData(), networkPeopleIDList));
+
+            for (String idPeople : willDeletedIdPeopleList)
+            {
+                DataDelete.Delete(new BaseDataListDelete<PeopleCastData>
+                        (new DepedencyDataCompare<PeopleCastData>(), new PeopleCastDataDB(context), idPeople));
+
+                DataDelete.Delete(new BaseDataListDelete<PeopleCrewData>
+                        (new DepedencyDataCompare<PeopleCrewData>(), new PeopleCrewDataDB(context), idPeople));
+
+                DataDelete.Delete(new BaseDataListDelete<PeopleCastTvData>
+                        (new DepedencyDataCompare<PeopleCastTvData>(), new PeopleCastTVDataDB(context), idPeople));
+
+                DataDelete.Delete(new BaseDataListDelete<PeopleCrewTVData>
+                        (new DepedencyDataCompare<PeopleCrewTVData>(), new PeopleCrewTVDataDB(context), idPeople));
+            }
+
+            DataReplace.ReplaceData(new AllDataListReplace<PeopleData>(dataDB, datas));
             return null;
         }
 
@@ -161,7 +203,10 @@ public class PeopleDataGetterAsyncTask implements IMovieDBGetter {
         @Override
         protected void onPostExecute(ArrayList<PeopleData> datas)
         {
-            onDataObtainedListener.onDataObtained(datas);
+            if(onDataObtainedListener != null)
+            {
+                onDataObtainedListener.onDataObtained(datas);
+            }
         }
     }
 }

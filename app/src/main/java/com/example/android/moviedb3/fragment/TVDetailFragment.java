@@ -26,12 +26,18 @@ import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.jsonParsing.CastTVListJSONParser;
 import com.example.android.moviedb3.jsonParsing.CrewTVListJSONParser;
 import com.example.android.moviedb3.jsonParsing.VideoTVListJSONParser;
+import com.example.android.moviedb3.localDatabase.AirTodayDataDB;
 import com.example.android.moviedb3.localDatabase.CastTVDataDB;
 import com.example.android.moviedb3.localDatabase.CrewTVDataDB;
 import com.example.android.moviedb3.localDatabase.DataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteDataDB;
 import com.example.android.moviedb3.localDatabase.FavoriteTVDataDB;
+import com.example.android.moviedb3.localDatabase.OnTheAirDataDB;
+import com.example.android.moviedb3.localDatabase.PlanToWatchTVDataDB;
+import com.example.android.moviedb3.localDatabase.PopularTVDataDB;
+import com.example.android.moviedb3.localDatabase.TopRatedTVDataDB;
 import com.example.android.moviedb3.localDatabase.VideoTVDataDB;
+import com.example.android.moviedb3.localDatabase.WatchlistTvDataDB;
 import com.example.android.moviedb3.movieDB.CastTVData;
 import com.example.android.moviedb3.movieDB.CrewTVData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
@@ -41,11 +47,16 @@ import com.example.android.moviedb3.movieDB.VideoTVData;
 import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringSetter;
 import com.example.android.moviedb3.movieDB.dateToString.DateToStringSetter;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
+import com.example.android.moviedb3.movieDataManager.DatabaseTVInsertandRemove;
+import com.example.android.moviedb3.movieDataManager.MovieDetailGetterAsyncTask;
+import com.example.android.moviedb3.movieDataManager.TVDetailGetterAsyncTask;
 import com.example.android.moviedb3.movieDataManager.TVInfoDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DataAvailableCheck;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DefaultDataAvailableCheck;
 import com.example.android.moviedb3.supportDataManager.dataComparision.IDCompare;
 import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
+import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -167,7 +178,7 @@ public class TVDetailFragment extends Fragment {
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    private void SetMovieDetail(TVData tvData) {
+    private void SetTVDetail(TVData tvData) {
         Picasso.with(getContext()).
                 load(tvData.getBackdropImageFullURL()).
                 placeholder(R.drawable.ic_cached_black_48px).
@@ -277,7 +288,7 @@ public class TVDetailFragment extends Fragment {
             videoDataArrayList = bundleDataGetter.getDataList(MovieDBKeyEntry.MovieDataPersistance.TV_VIDEO_LIST_PERSISTANCE_KEY);
             favoriteState = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.FAVORITE_STATE_PERSISTANCE_KEY);
 
-            SetMovieDetail(tvData);
+            SetTVDetail(tvData);
             SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(castDataArrayList, getContext()), new LinearLayoutManager(this.getContext()), castListRecyclerView);
             SetAdditionalMovieDetailRecyclerView(new MovieInfoListRecycleViewAdapter<>(crewDataArrayList, getContext()), new LinearLayoutManager(this.getContext()), crewListRecyclerView);
             SetAdditionalMovieDetailRecyclerView(new VideoTVDataListRecyclerViewAdapter(videoDataArrayList), new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false), videoListRecyclerView);
@@ -288,16 +299,29 @@ public class TVDetailFragment extends Fragment {
 
         else
         {
-            BundleDataGetter bundleDataGetter = new BundleDataGetter(getArguments());
-            tvData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.TV_DATA_PERSISTANCE_KEY);
+            ShowLoadingData();
 
-            if (tvData != null)
+            if(getArguments().containsKey(MovieDBKeyEntry.MovieDataPersistance.TV_DATA_PERSISTANCE_KEY))
+            {
+                BundleDataGetter bundleDataGetter = new BundleDataGetter(getArguments());
+                tvData = bundleDataGetter.getData(MovieDBKeyEntry.MovieDataPersistance.TV_DATA_PERSISTANCE_KEY);
+
+                if (tvData != null)
+                {
+
+                    SetTVDetail(tvData);
+                    SetInitialFavoriteState();
+                    SetAllRecyclerView(tvData);
+                }
+            }
+
+            else if(getArguments().containsKey(MovieDBKeyEntry.MovieDataPersistance.TV_ID_PERSISTANCE_KEY))
             {
                 ShowLoadingData();
+                String tvID = getArguments().getString(MovieDBKeyEntry.MovieDataPersistance.TV_ID_PERSISTANCE_KEY);
 
-                SetMovieDetail(tvData);
-                SetInitialFavoriteState();
-                SetAllRecyclerView(tvData);
+                TVDetailGetterAsyncTask tvDetailGetterAsyncTask = new TVDetailGetterAsyncTask(tvID, getContext(), new TVDataObtainedListener());
+                tvDetailGetterAsyncTask.GetData();
             }
         }
     }
@@ -314,20 +338,24 @@ public class TVDetailFragment extends Fragment {
 
         if(favoriteState)
         {
+            RemoveFavoriteTV removeFavoriteTV = new RemoveFavoriteTV();
+            removeFavoriteTV.execute();
+
             favoriteState = false;
             SetFavoriteLabel(favoriteState);
 
             dataDB.removeData(tvData.getId());
-            Toast.makeText(this.getContext(), "Remove this movie from favorite list", Toast.LENGTH_SHORT).show();
         }
 
         else
         {
+            InsertFavoriteMovie insertFavoriteMovie = new InsertFavoriteMovie();
+            insertFavoriteMovie.execute();
+
             favoriteState = true;
             SetFavoriteLabel(favoriteState);
 
             dataDB.addData(tvData.getId());
-            Toast.makeText(this.getContext(), "Insert this movie to favorite list", Toast.LENGTH_SHORT).show();
         }
 
         this.getActivity().setResult(MovieDBKeyEntry.DatabaseHasChanged.FAVORITE_DATA_CHANGED);
@@ -346,6 +374,115 @@ public class TVDetailFragment extends Fragment {
         {
             favoriteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white_24px, 0, 0);
             favoriteButton.setText(R.string.un_favorite_label);
+        }
+    }
+
+    private ArrayList<DataDB<String>> getInitialOtherFavoriteTVListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new AirTodayDataDB(getContext()));
+        dataDBArrayList.add(new OnTheAirDataDB(getContext()));
+        dataDBArrayList.add(new PopularTVDataDB(getContext()));
+        dataDBArrayList.add(new TopRatedTVDataDB(getContext()));
+        dataDBArrayList.add(new WatchlistTvDataDB(getContext()));
+        dataDBArrayList.add(new PlanToWatchTVDataDB(getContext()));
+
+        return dataDBArrayList;
+    }
+
+    private ArrayList<DataDB<String>> getInitialOtherWatchAndPlanWatchTVListDataDB()
+    {
+        ArrayList<DataDB<String>> dataDBArrayList = new ArrayList<>();
+
+        dataDBArrayList.add(new AirTodayDataDB(getContext()));
+        dataDBArrayList.add(new OnTheAirDataDB(getContext()));
+        dataDBArrayList.add(new PopularTVDataDB(getContext()));
+        dataDBArrayList.add(new TopRatedTVDataDB(getContext()));
+        dataDBArrayList.add(new FavoriteTVDataDB(getContext()));
+
+        return dataDBArrayList;
+    }
+
+    private class InsertFavoriteMovie extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseTVInsertandRemove databaseTVInsertandRemove = new DatabaseTVInsertandRemove();
+            databaseTVInsertandRemove.Insert(tvData, castDataArrayList, crewDataArrayList, videoDataArrayList, getContext());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            Toast.makeText(TVDetailFragment.this.getContext(), "Insert this tv to favorite list", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class RemoveFavoriteTV extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseTVInsertandRemove databaseTVInsertandRemove = new DatabaseTVInsertandRemove();
+            databaseTVInsertandRemove.Remove(tvData.getId(), getInitialOtherFavoriteTVListDataDB(), getContext());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            Toast.makeText(TVDetailFragment.this.getContext(), "Remove this movie from favorite list", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class InsertWatchAndPlanWatchTV extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseTVInsertandRemove databaseTVInsertandRemove = new DatabaseTVInsertandRemove();
+            databaseTVInsertandRemove.Insert(tvData, castDataArrayList, crewDataArrayList, videoDataArrayList, getContext());
+
+            return null;
+        }
+    }
+
+    private class RemoveWatchAndPlanWatchTV extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseTVInsertandRemove databaseTVInsertandRemove = new DatabaseTVInsertandRemove();
+            databaseTVInsertandRemove.Remove(tvData.getId(), getInitialOtherWatchAndPlanWatchTVListDataDB(), getContext());
+
+            return null;
+        }
+    }
+
+    private class TVDataObtainedListener implements OnDataObtainedListener<TVData>
+    {
+        @Override
+        public void onDataObtained(TVData tvData)
+        {
+            if (tvData != null)
+            {
+                TVDetailFragment.this.tvData = tvData;
+
+                SetTVDetail(tvData);
+                SetInitialFavoriteState();
+
+                NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<CastTVData>>
+                        (new CastTVListJSONParser(), new CastDataListObtainedListener()), MovieDataURL.GetCastTVURL(tvData.getId()));
+                NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<CrewTVData>>
+                        (new CrewTVListJSONParser(), new CrewDataListObtainedListener()), MovieDataURL.GetCrewTVURL(tvData.getId()));
+                NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<VideoTVData>>
+                        (new VideoTVListJSONParser(), new VideoDataListObtainedListener()), MovieDataURL.GetVideoTVURL(tvData.getId(), getContext()));
+            }
         }
     }
 
@@ -455,6 +592,24 @@ public class TVDetailFragment extends Fragment {
         @Override
         public void onDataObtained(Integer integer)
         {
+            InsertWatchAndPlanWatchTV insertWatchAndPlanWatchTV = new InsertWatchAndPlanWatchTV();
+            RemoveWatchAndPlanWatchTV removeWatchAndPlanWatchTV = new RemoveWatchAndPlanWatchTV();
+
+            switch (integer)
+            {
+                case MovieDBKeyEntry.DatabaseHasChanged.REMOVE_MY_LIST :
+                    removeWatchAndPlanWatchTV.execute();
+                    break;
+
+                case MovieDBKeyEntry.DatabaseHasChanged.INSERT_TO_WATCHED_LIST :
+                    insertWatchAndPlanWatchTV.execute();
+                    break;
+
+                case MovieDBKeyEntry.DatabaseHasChanged.INSERT_PLAN_TO_WATCH_LIST :
+                    insertWatchAndPlanWatchTV.execute();
+                    break;
+            }
+
             TVDetailFragment.this.getActivity().setResult(integer);
         }
     }

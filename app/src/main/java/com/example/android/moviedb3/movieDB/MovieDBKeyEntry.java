@@ -24,6 +24,7 @@ public class MovieDBKeyEntry
     public class MovieDataPersistance
     {
         public static final String MOVIE_DATA_PERSISTANCE_KEY = "MovieData";
+        public static final String MOVIE_ID_PERSISTANCE_KEY = "MovieIDData";
         public static final String MOVIE_DATA_LIST_PERSISTANCE_KEY = "MovieDataList";
         public static final String GENRE_PERSISTANCE_KEY = "GenreData";
 
@@ -35,6 +36,7 @@ public class MovieDBKeyEntry
         public static final String FAVORITE_STATE_PERSISTANCE_KEY = "FavoriteState";
 
         public static final String TV_DATA_PERSISTANCE_KEY = "TVData";
+        public static final String TV_ID_PERSISTANCE_KEY = "TVIDData";
         public static final String TV_DATA_LIST_PERSISTANCE_KEY = "TVDataList";
         public static final String TV_GENRE_PERSISTANCE_KEY = "TVGenreData";
 
@@ -44,6 +46,7 @@ public class MovieDBKeyEntry
         public static final String TV_VIDEO_LIST_PERSISTANCE_KEY = "TVVideoList";
 
         public static final String PEOPLE_DATA_PERSISTANCE_KEY = "PeopleData";
+        public static final String PEOPLE_ID_PERSISTANCE_KEY = "PeopleIDData";
 
         public static final String INTERNET_NETWORK_STATE_PERSISTANCE_KEY = "InternetNetworkState";
         public static final String ADDITIONAL_MOVIE_DETAIL_STATE_PERSISTANCE_KEY = "AdditionalMovieDetailState";

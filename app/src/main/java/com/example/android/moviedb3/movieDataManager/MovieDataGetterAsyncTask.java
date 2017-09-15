@@ -187,7 +187,7 @@ public class MovieDataGetterAsyncTask implements IMovieDBGetter {
 
 
     /*DataDB<Data> parentDataDB;
-    OnDataObtainedListener<ArrayList<Data>> onAllPeopleObtainedListener;
+    OnDataObtainedListener<ArrayList<Data>> onPeopleObtainedListener;
 
     JSONParser<ArrayList<Data>> dataListjsonParser;
     String[] urlList;
@@ -195,16 +195,16 @@ public class MovieDataGetterAsyncTask implements IMovieDBGetter {
     JSONParser<Data> dataJSONParser;
     String url;
 
-    public AllDataListReplace(@NonNull DataDB<Data> parentDataDB, OnDataObtainedListener<ArrayList<Data>> onAllPeopleObtainedListener, @NonNull JSONParser<ArrayList<Data>> dataListjsonParser, @NonNull String url) {
+    public AllDataListReplace(@NonNull DataDB<Data> parentDataDB, OnDataObtainedListener<ArrayList<Data>> onPeopleObtainedListener, @NonNull JSONParser<ArrayList<Data>> dataListjsonParser, @NonNull String url) {
         this.parentDataDB = parentDataDB;
-        this.onAllPeopleObtainedListener = onAllPeopleObtainedListener;
+        this.onPeopleObtainedListener = onPeopleObtainedListener;
         this.dataListjsonParser = dataListjsonParser;
         this.url = url;
     }
 
-    public AllDataListReplace(@NonNull DataDB<Data> parentDataDB, OnDataObtainedListener<ArrayList<Data>> onAllPeopleObtainedListener, @NonNull JSONParser<Data> dataJSONParser, @NonNull String... urlList) {
+    public AllDataListReplace(@NonNull DataDB<Data> parentDataDB, OnDataObtainedListener<ArrayList<Data>> onPeopleObtainedListener, @NonNull JSONParser<Data> dataJSONParser, @NonNull String... urlList) {
         this.parentDataDB = parentDataDB;
-        this.onAllPeopleObtainedListener = onAllPeopleObtainedListener;
+        this.onPeopleObtainedListener = onPeopleObtainedListener;
         this.dataJSONParser = dataJSONParser;
         this.urlList = urlList;
     }*/
@@ -227,30 +227,30 @@ public class MovieDataGetterAsyncTask implements IMovieDBGetter {
 
 
 
-    /*public <Data> void GetDataAsyncTask(@NonNull DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onAllPeopleObtainedListener, @NonNull JSONParser<Data> dataJSONParser, @NonNull String... urlList)
+    /*public <Data> void GetDataAsyncTask(@NonNull DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onPeopleObtainedListener, @NonNull JSONParser<Data> dataJSONParser, @NonNull String... urlList)
     {
-        NetworkDataGetter.GetDataAsyncTask(new NetworkDataListGetterAsyncTask<Data>(dataJSONParser, new AllDataListReplace.OnDataListObtained(database, onAllPeopleObtainedListener)), urlList);
+        NetworkDataGetter.GetDataAsyncTask(new NetworkDataListGetterAsyncTask<Data>(dataJSONParser, new AllDataListReplace.OnDataListObtained(database, onPeopleObtainedListener)), urlList);
     }
 
-    public <Data> void GetDataAsyncTask(@NonNull DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onAllPeopleObtainedListener, @NonNull JSONParser<ArrayList<Data>> dataListjsonParser, @NonNull String url)
+    public <Data> void GetDataAsyncTask(@NonNull DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onPeopleObtainedListener, @NonNull JSONParser<ArrayList<Data>> dataListjsonParser, @NonNull String url)
     {
-        NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<Data>>(dataListjsonParser, new AllDataListReplace.OnDataListObtained(database, onAllPeopleObtainedListener)), url);
+        NetworkDataGetter.GetDataAsyncTask(new NetworkDataGetterAsyncTask<ArrayList<Data>>(dataListjsonParser, new AllDataListReplace.OnDataListObtained(database, onPeopleObtainedListener)), url);
     }
 
     private class OnDataListObtained<Data> implements OnDataObtainedListener<ArrayList<Data>>
     {
         DataDB<Data> database;
-        OnDataObtainedListener<ArrayList<Data>> onAllPeopleObtainedListener;
+        OnDataObtainedListener<ArrayList<Data>> onPeopleObtainedListener;
 
-        public OnDataListObtained(DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onAllPeopleObtainedListener) {
+        public OnDataListObtained(DataDB<Data> database, OnDataObtainedListener<ArrayList<Data>> onPeopleObtainedListener) {
             this.database = database;
-            this.onAllPeopleObtainedListener = onAllPeopleObtainedListener;
+            this.onPeopleObtainedListener = onPeopleObtainedListener;
         }
 
         @Override
         public void onDataObtained(ArrayList<Data> datas)
         {
-            *//*AllDataListReplace.SetDataInDatabaseAsyncTask<Data> setDataInDatabaseAsyncTask = new AllDataListReplace.SetDataInDatabaseAsyncTask(datas, database, onAllPeopleObtainedListener);
+            *//*AllDataListReplace.SetDataInDatabaseAsyncTask<Data> setDataInDatabaseAsyncTask = new AllDataListReplace.SetDataInDatabaseAsyncTask(datas, database, onPeopleObtainedListener);
             setDataInDatabaseAsyncTask.execute();*//*
         }
     }*/
@@ -286,9 +286,9 @@ public class MovieDataGetterAsyncTask implements IMovieDBGetter {
         @Override
         protected void onPostExecute(ArrayList<PeopleData> tvDatas)
         {
-            if(onAllPeopleObtainedListener != null)
+            if(onPeopleObtainedListener != null)
             {
-                onAllPeopleObtainedListener.onDataObtained(tvDatas);
+                onPeopleObtainedListener.onDataObtained(tvDatas);
             }
         }
     }*/

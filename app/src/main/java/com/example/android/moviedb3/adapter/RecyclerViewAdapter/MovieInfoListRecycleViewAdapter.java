@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.moviedb3.R;
+import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
+import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
 import com.example.android.moviedb3.movieDB.MovieInfoData;
+import com.example.android.moviedb3.movieDB.ReviewData;
 
 import java.util.ArrayList;
 
@@ -19,17 +22,43 @@ public class MovieInfoListRecycleViewAdapter<Data extends MovieInfoData> extends
 {
     private ArrayList<Data> movieInfoDataArrayList;
     private Context context;
+    private OnDataChooseListener<MovieInfoData> onDataChooseListener;
 
     public MovieInfoListRecycleViewAdapter(ArrayList<Data> movieInfoDataArrayList, Context context) {
         this.movieInfoDataArrayList = movieInfoDataArrayList;
         this.context = context;
     }
 
+    public MovieInfoListRecycleViewAdapter(ArrayList<Data> movieInfoDataArrayList, Context context, OnDataChooseListener<MovieInfoData> onDataChooseListener) {
+        this.movieInfoDataArrayList = movieInfoDataArrayList;
+        this.context = context;
+        this.onDataChooseListener = onDataChooseListener;
+    }
+
     @Override
     public MovieInfoListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.linear_movie_info_item_list, parent, false);
-        return new MovieInfoListViewHolder(view, context);
+        View view;
+
+        if(movieInfoDataArrayList.get(0) instanceof ReviewData)
+        {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_item_list, parent, false);
+        }
+
+        else
+        {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.linear_movie_info_item_list, parent, false);
+        }
+
+        if(onDataChooseListener != null)
+        {
+            return new MovieInfoListViewHolder(view, context, onDataChooseListener);
+        }
+
+        else
+        {
+            return new MovieInfoListViewHolder(view, context);
+        }
     }
 
     @Override

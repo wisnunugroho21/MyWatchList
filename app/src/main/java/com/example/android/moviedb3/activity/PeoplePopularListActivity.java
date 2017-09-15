@@ -17,7 +17,7 @@ public class PeoplePopularListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_people_popular_list);setGenreListFragment();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.genre_label);
+        getSupportActionBar().setTitle(R.string.people_label);
     }
 
     private void setGenreListFragment()
