@@ -1,5 +1,6 @@
 package com.example.android.moviedb3.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -24,4 +25,6 @@ public class PeoplePopularListActivity extends AppCompatActivity {
     {
         FragmentShifter.InitializeFragment(new DefaultFragmentShifter(getSupportFragmentManager(), R.id.people_list_layout, new PopularPeopleListFragment()));
     }
+
+
 }

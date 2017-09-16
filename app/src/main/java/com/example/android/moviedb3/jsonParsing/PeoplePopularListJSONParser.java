@@ -37,7 +37,7 @@ public class PeoplePopularListJSONParser implements JSONParser<ArrayList<PeopleD
 
                 String known_for = "";
 
-                for(int b = 0; b < known_for_array_list.length(); b++)
+                for(int b = 0; b < 2; b++)
                 {
                     JSONObject known_for_json_object = known_for_array_list.getJSONObject(b);
 

@@ -1,5 +1,6 @@
 package com.example.android.moviedb3.activity;
 
+import android.content.Intent;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;

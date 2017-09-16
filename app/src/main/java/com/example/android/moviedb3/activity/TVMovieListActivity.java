@@ -55,6 +55,9 @@ public class TVMovieListActivity extends AppCompatActivity
 
     SettingChangedListener settingChangedListener;
     GetMovieListBroadcastReceiver getMovieListBroadcastReceiver;
+    UpdateYoursMovieListBroadcastReceiver updateYoursMovieListBroadcastReceiver;
+
+    int btvHeight;
 
     boolean isMovieMode = true;
 
@@ -82,13 +85,14 @@ public class TVMovieListActivity extends AppCompatActivity
         SetNavigationDrawer();
         registerSettingChangedListener();
         registerMovieListBroadcastReceiver();
+        registerUpdateYoursMovieListBroadcastReceiver();
+
+        btvHeight = movieListBottomNavigationView.getHeight();
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, data);
-
         switch (resultCode)
         {
             case MovieDBKeyEntry.DatabaseHasChanged.FAVORITE_DATA_CHANGED :
@@ -111,7 +115,7 @@ public class TVMovieListActivity extends AppCompatActivity
                         MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
                 break;
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -129,6 +133,7 @@ public class TVMovieListActivity extends AppCompatActivity
 
         unregisterSettingChangedListener();
         unregisterMovieListBroadcastReceiver();
+        unregisterUpdateYoursMovieListBroadcastReceiver();
     }
 
     private void registerSettingChangedListener()
@@ -162,6 +167,20 @@ public class TVMovieListActivity extends AppCompatActivity
         }
     }
 
+    private void registerUpdateYoursMovieListBroadcastReceiver()
+    {
+        updateYoursMovieListBroadcastReceiver = new UpdateYoursMovieListBroadcastReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(updateYoursMovieListBroadcastReceiver, new IntentFilter(MovieDBKeyEntry.Messanger.UPDATE_MOVIE_LIST_MESSANGER));
+    }
+
+    private void unregisterUpdateYoursMovieListBroadcastReceiver()
+    {
+        if(updateYoursMovieListBroadcastReceiver != null)
+        {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(updateYoursMovieListBroadcastReceiver);
+        }
+    }
+
     private void SetNavigationDrawer()
     {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -180,6 +199,7 @@ public class TVMovieListActivity extends AppCompatActivity
     private void SetIntialMovieListFragment()
     {
         isMovieMode = true;
+        getSupportActionBar().setTitle(getString(R.string.movie_label));
 
         SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
                 MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
@@ -188,6 +208,7 @@ public class TVMovieListActivity extends AppCompatActivity
     private void SetIntialTVListFragment()
     {
         isMovieMode = false;
+        getSupportActionBar().setTitle(getString(R.string.tv_label));
 
         SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
                 MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
@@ -225,8 +246,11 @@ public class TVMovieListActivity extends AppCompatActivity
         viewPager.setAdapter(fragmentPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.setScrollPosition(selectedPageIndex, 0f, true);
-        viewPager.setCurrentItem(selectedPageIndex);
+        TabLayout.Tab tab = tabLayout.getTabAt(selectedPageIndex);
+        tab.select();
+
+        /*tabLayout.setScrollPosition(selectedPageIndex, 0f, true);
+        viewPager.setCurrentItem(selectedPageIndex)*/;
     }
 
     private void startGetDataService()
@@ -273,28 +297,28 @@ public class TVMovieListActivity extends AppCompatActivity
         {
             switch (item.getItemId())
             {
-                case R.id.movie_drawer_item_menu :
+                case R.id.movie_drawer_item_menu:
                     SetIntialMovieListFragment();
                     break;
 
-                case R.id.tv_drawer_item_menu :
+                case R.id.tv_drawer_item_menu:
                     SetIntialTVListFragment();
                     break;
 
                 case R.id.genre_movie_drawer_item_menu:
-                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, TVMovieListActivity.this));
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(GenreListActivity.class, 0, TVMovieListActivity.this));
                     break;
 
-                case R.id.genre_tv_drawer_item_menu :
-                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(TVGenreListActivity.class, TVMovieListActivity.this));
+                case R.id.genre_tv_drawer_item_menu:
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(TVGenreListActivity.class, 0, TVMovieListActivity.this));
                     break;
 
-                case R.id.setting_drawer_item_menu :
+                case R.id.setting_drawer_item_menu:
                     ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SettingActivity.class, TVMovieListActivity.this));
                     break;
 
-                case R.id.people_drawer_item_menu :
-                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(PeoplePopularListActivity.class, TVMovieListActivity.this));
+                case R.id.people_drawer_item_menu:
+                    ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(PeoplePopularListActivity.class, 0, TVMovieListActivity.this));
             }
 
             drawer.closeDrawer(GravityCompat.START);
@@ -424,6 +448,40 @@ public class TVMovieListActivity extends AppCompatActivity
                 Toast.makeText(context, R.string.fail_cancel_update_period_toas_message, Toast.LENGTH_SHORT).show();
                 PreferencesUtils.SetData(new DefaultBooleanStatePreference(context),true, getString(R.string.period_update_key));
             }
+        }
+    }
+
+    private class UpdateYoursMovieListBroadcastReceiver extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            int result = intent.getIntExtra(MovieDBKeyEntry.Messanger.UPDATE_YOURS_MOVIE_LIST, 0);
+
+            switch (result)
+            {
+                case MovieDBKeyEntry.DatabaseHasChanged.FAVORITE_DATA_CHANGED :
+                    SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
+                            MovieDBKeyEntry.MovieListPageIndex.FAVORITE_PAGE_INDEX);
+                    break;
+
+                case MovieDBKeyEntry.DatabaseHasChanged.INSERT_PLAN_TO_WATCH_LIST:
+                    SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
+                            MovieDBKeyEntry.MovieListPageIndex.PLAN_TO_WATCH_PAGE_INDEX);
+                    break;
+
+                case MovieDBKeyEntry.DatabaseHasChanged.INSERT_TO_WATCHED_LIST:
+                    SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
+                            MovieDBKeyEntry.MovieListPageIndex.WATCHED_PAGE_INDEX);
+                    break;
+
+                case MovieDBKeyEntry.DatabaseHasChanged.REMOVE_MY_LIST:
+                    SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
+                            MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
+                    break;
+            }
+
+            movieListBottomNavigationView.animate().translationY(btvHeight).setDuration(100);
         }
     }
 }

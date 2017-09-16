@@ -1,10 +1,12 @@
 package com.example.android.moviedb3.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -381,7 +383,7 @@ public class MovieDetailFragment extends Fragment {
             dataDB.addData(movieData.getId());
         }
 
-        MovieDetailFragment.this.getActivity().setResult(MovieDBKeyEntry.DatabaseHasChanged.FAVORITE_DATA_CHANGED);
+        SendMessageToActivity(MovieDBKeyEntry.DatabaseHasChanged.FAVORITE_DATA_CHANGED);
         return favoriteState;
     }
 
@@ -438,13 +440,28 @@ public class MovieDetailFragment extends Fragment {
         startActivity(intent);
     }
 
+    private void SendMessageToActivity(int result)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(MovieDBKeyEntry.Messanger.UPDATE_YOURS_MOVIE_LIST, result);
+        intent.setAction(MovieDBKeyEntry.Messanger.UPDATE_MOVIE_LIST_MESSANGER);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+    }
+
     private class InsertFavoriteMovie extends AsyncTask<Void, Void, Void>
     {
+        Context context;
+
+        public InsertFavoriteMovie()
+        {
+            context = MovieDetailFragment.this.getContext();
+        }
+
         @Override
         protected Void doInBackground(Void... params)
         {
             DatabaseMovieInsertandRemove databaseMovieInsertandRemove = new DatabaseMovieInsertandRemove();
-            databaseMovieInsertandRemove.Insert(movieData, castDataArrayList, crewDataArrayList, videoDataArrayList, reviewDataArrayList, getContext());
+            databaseMovieInsertandRemove.Insert(movieData, castDataArrayList, crewDataArrayList, videoDataArrayList, reviewDataArrayList, context);
 
             return null;
         }
@@ -452,17 +469,24 @@ public class MovieDetailFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid)
         {
-            Toast.makeText(MovieDetailFragment.this.getContext(), "Insert this movie to favorite list", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Insert this movie to favorite list", Toast.LENGTH_SHORT).show();
         }
     }
 
     private class RemoveFavoriteMovie extends AsyncTask<Void, Void, Void>
     {
+        Context context;
+
+        public RemoveFavoriteMovie()
+        {
+            context = MovieDetailFragment.this.getContext();
+        }
+
         @Override
         protected Void doInBackground(Void... params)
         {
             DatabaseMovieInsertandRemove databaseMovieInsertandRemove = new DatabaseMovieInsertandRemove();
-            databaseMovieInsertandRemove.Remove(movieData.getId(), getInitialOtherFavoriteMovieListDataDB(), getContext());
+            databaseMovieInsertandRemove.Remove(movieData.getId(), getInitialOtherFavoriteMovieListDataDB(), context);
 
             return null;
         }
@@ -470,31 +494,57 @@ public class MovieDetailFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid)
         {
-            Toast.makeText(MovieDetailFragment.this.getContext(), "Remove this movie from favorite list", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Remove this movie from favorite list", Toast.LENGTH_SHORT).show();
         }
     }
 
     private class InsertWatchAndPlanWatchMovie extends AsyncTask<Void, Void, Void>
     {
+        Context context;
+
+        public InsertWatchAndPlanWatchMovie()
+        {
+            context = MovieDetailFragment.this.getContext();
+        }
+
         @Override
         protected Void doInBackground(Void... params)
         {
             DatabaseMovieInsertandRemove databaseMovieInsertandRemove = new DatabaseMovieInsertandRemove();
-            databaseMovieInsertandRemove.Insert(movieData, castDataArrayList, crewDataArrayList, videoDataArrayList, reviewDataArrayList, getContext());
+            databaseMovieInsertandRemove.Insert(movieData, castDataArrayList, crewDataArrayList, videoDataArrayList, reviewDataArrayList, context);
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            Toast.makeText(context, "Add this movie from the list", Toast.LENGTH_SHORT).show();
         }
     }
 
     private class RemoveWatchAndPlanWatchMovie extends AsyncTask<Void, Void, Void>
     {
+        Context context;
+
+        public RemoveWatchAndPlanWatchMovie()
+        {
+            context = MovieDetailFragment.this.getContext();
+        }
+
         @Override
         protected Void doInBackground(Void... params)
         {
             DatabaseMovieInsertandRemove databaseMovieInsertandRemove = new DatabaseMovieInsertandRemove();
-            databaseMovieInsertandRemove.Remove(movieData.getId(), getInitialOtherWatchAndPlanWatchMovieListDataDB(), getContext());
+            databaseMovieInsertandRemove.Remove(movieData.getId(), getInitialOtherWatchAndPlanWatchMovieListDataDB(), context);
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            Toast.makeText(context, "Remove this movie from the list", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -719,7 +769,7 @@ public class MovieDetailFragment extends Fragment {
                     break;
             }
 
-            MovieDetailFragment.this.getActivity().setResult(integer);
+            SendMessageToActivity(integer);
         }
     }
 

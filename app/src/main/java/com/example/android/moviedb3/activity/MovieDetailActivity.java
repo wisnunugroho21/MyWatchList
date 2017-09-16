@@ -1,5 +1,6 @@
 package com.example.android.moviedb3.activity;
 
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,4 @@ public class MovieDetailActivity extends AppCompatActivity {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
         FragmentShifter.InitializeFragment(new DefaultFragmentShifter(getSupportFragmentManager(), R.id.movie_detail_layout, movieDetailFragment, getIntent().getExtras()));
     }
-
-
 }

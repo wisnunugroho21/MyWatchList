@@ -92,6 +92,12 @@ public class MovieDBKeyEntry
         public static final int YOURS_PAGE_ADAPTER_INDEX = 3;
     }
 
+    public class Messanger
+    {
+        public static final String UPDATE_MOVIE_LIST_MESSANGER = "UpdateMovieListMessanger";
+        public static final String UPDATE_YOURS_MOVIE_LIST = "UpdateYoursMovieList";
+    }
+
     public class InternetNetworkState
     {
         public static final int CONNECTED = 847;

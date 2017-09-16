@@ -36,6 +36,12 @@ public class DefaultIActivityLauncher implements IActivityLauncher
         this.activity = activity;
     }
 
+    public DefaultIActivityLauncher(Class targetActivity, int requestCode, Activity activity) {
+        this.targetActivity = targetActivity;
+        this.requestCode = requestCode;
+        this.activity = activity;
+    }
+
     @Override
     public void LaunchActivity()
     {
