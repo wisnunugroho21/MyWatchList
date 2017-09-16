@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activity.MovieDetailActivity;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
+import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MainLinearMovieListRecyclerViewAdapter;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MainMovieListRecyclerViewAdapter;
 import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
@@ -27,7 +29,6 @@ import com.example.android.moviedb3.movieDataManager.DBGetter;
 import com.example.android.moviedb3.movieDataManager.DatabaseGenreMovieGetter;
 import com.example.android.moviedb3.movieDataManager.DatabaseMovieGetter;
 import com.example.android.moviedb3.movieDataManager.GenreMovieGetter;
-import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class MovieListFragment extends Fragment
 {
     private ArrayList<MovieData> movieDataArrayList;
     private DataDB<String> movieListDB;
+    private boolean isLinearList = false;
 
     String idGenre;
     String urlGenreMovie;
@@ -49,7 +51,8 @@ public class MovieListFragment extends Fragment
     TextView noDataTextView;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
     }
 
@@ -75,6 +78,11 @@ public class MovieListFragment extends Fragment
         this.idGenre = idGenre;
         this.genreMovieDataDB = genreMovieDataDB;
         this.urlGenreMovie = urlGenreMovie;
+    }
+
+    public void setLinearList(boolean linearList)
+    {
+        isLinearList = linearList;
     }
 
     private void GetMovieList()
@@ -130,13 +138,29 @@ public class MovieListFragment extends Fragment
             return;
         }
 
-        MainMovieListRecyclerViewAdapter mainMovieListRecyclerViewAdapter = new MainMovieListRecyclerViewAdapter(movieDataArrayList, getContext(), new MainMovieDataChoosedListener());
-        movieListRecyclerView.setAdapter(mainMovieListRecyclerViewAdapter);
+        if(isLinearList)
+        {
+            MainLinearMovieListRecyclerViewAdapter mainMovieListRecyclerViewAdapter = new MainLinearMovieListRecyclerViewAdapter(movieDataArrayList, getContext(), new MainMovieDataChoosedListener());
+            movieListRecyclerView.setAdapter(mainMovieListRecyclerViewAdapter);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        movieListRecyclerView.setLayoutManager(gridLayoutManager);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+            movieListRecyclerView.setLayoutManager(linearLayoutManager);
 
-        movieListRecyclerView.setHasFixedSize(true);
+            movieListRecyclerView.setHasFixedSize(true);
+        }
+
+        else
+        {
+            MainMovieListRecyclerViewAdapter mainMovieListRecyclerViewAdapter = new MainMovieListRecyclerViewAdapter(movieDataArrayList, getContext(), new MainMovieDataChoosedListener());
+            movieListRecyclerView.setAdapter(mainMovieListRecyclerViewAdapter);
+
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+            movieListRecyclerView.setLayoutManager(gridLayoutManager);
+
+            movieListRecyclerView.setHasFixedSize(true);
+        }
+
+
     }
 
     private class MainMovieDataChoosedListener implements OnDataChooseListener<MovieData>

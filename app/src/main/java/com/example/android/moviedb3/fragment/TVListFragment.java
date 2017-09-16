@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activity.TVDetailActivity;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
+import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MainLinearTVListRecyclerViewAdapter;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MainTVListRecyclerViewAdapter;
 import com.example.android.moviedb3.eventHandler.OnAsyncTaskCompleteListener;
 import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
@@ -38,6 +40,7 @@ public class TVListFragment extends Fragment
 {
     private ArrayList<TVData> tvDataArrayList;
     private DataDB<String> tvListDB;
+    private boolean isLinearList = false;
 
     String idGenre;
     String urlGenreTV;
@@ -81,6 +84,10 @@ public class TVListFragment extends Fragment
         this.idGenre = idGenre;
         this.genreTVDataDB = genreTVDataDB;
         this.urlGenreTV = urlGenreTV;
+    }
+
+    public void setLinearList(boolean linearList) {
+        isLinearList = linearList;
     }
 
     private void GetMovieList()
@@ -138,13 +145,27 @@ public class TVListFragment extends Fragment
             return;
         }
 
-        MainTVListRecyclerViewAdapter mainMovieListRecyclerViewAdapter = new MainTVListRecyclerViewAdapter(tvDataArrayList, getContext(), new MainTVDataChoosedListener());
-        tvListRecyclerView.setAdapter(mainMovieListRecyclerViewAdapter);
+        if(isLinearList)
+        {
+            MainLinearTVListRecyclerViewAdapter mainLinearTVListRecyclerViewAdapter = new MainLinearTVListRecyclerViewAdapter(tvDataArrayList, getContext(), new MainTVDataChoosedListener());
+            tvListRecyclerView.setAdapter(mainLinearTVListRecyclerViewAdapter);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        tvListRecyclerView.setLayoutManager(gridLayoutManager);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+            tvListRecyclerView.setLayoutManager(linearLayoutManager);
 
-        tvListRecyclerView.setHasFixedSize(true);
+            tvListRecyclerView.setHasFixedSize(true);
+        }
+
+        else
+        {
+            MainTVListRecyclerViewAdapter mainMovieListRecyclerViewAdapter = new MainTVListRecyclerViewAdapter(tvDataArrayList, getContext(), new MainTVDataChoosedListener());
+            tvListRecyclerView.setAdapter(mainMovieListRecyclerViewAdapter);
+
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+            tvListRecyclerView.setLayoutManager(gridLayoutManager);
+
+            tvListRecyclerView.setHasFixedSize(true);
+        }
     }
 
     private class MainTVDataChoosedListener implements OnDataChooseListener<TVData>

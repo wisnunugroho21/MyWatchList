@@ -30,7 +30,7 @@ public class GenreMovieFragmentAdapter  extends FragmentStatePagerAdapter
     ArrayList<MovieListFragment> movieListFragments;
     ArrayList<String> pageTitle;
 
-    public GenreMovieFragmentAdapter(FragmentManager fm, Context context, String idGenre) {
+    public GenreMovieFragmentAdapter(FragmentManager fm, Context context, String idGenre, boolean isLinearList) {
         super(fm);
         this.context = context;
         this.idGenre = idGenre;
@@ -40,9 +40,11 @@ public class GenreMovieFragmentAdapter  extends FragmentStatePagerAdapter
 
         MovieListFragment popularMovieListFragment = new MovieListFragment();
         popularMovieListFragment.setGenre(idGenre, new GenreMoviePopularDB(context), MovieDataURL.GetGenrePopularMovieListURL(idGenre, context));
+        popularMovieListFragment.setLinearList(isLinearList);
 
         MovieListFragment topRateMovieListFragment = new MovieListFragment();
         topRateMovieListFragment.setGenre(idGenre, new GenreMovieTopRateDB(context), MovieDataURL.GetGenreTopRateMovieListURL(idGenre, context));
+        topRateMovieListFragment.setLinearList(isLinearList);
 
         movieListFragments.add(popularMovieListFragment);
         movieListFragments.add(topRateMovieListFragment);

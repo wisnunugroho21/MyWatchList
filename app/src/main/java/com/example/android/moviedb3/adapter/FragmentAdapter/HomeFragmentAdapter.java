@@ -29,7 +29,7 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter
     ArrayList<MovieListFragment> movieListFragments;
     ArrayList<String> pageTitle;
 
-    public HomeFragmentAdapter(FragmentManager fm, Context context) {
+    public HomeFragmentAdapter(FragmentManager fm, Context context, boolean isLinearList) {
         super(fm);
         this.context = context;
 
@@ -38,9 +38,11 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter
 
         MovieListFragment nowShowingMovieListFragment = new MovieListFragment();
         nowShowingMovieListFragment.setMovieListDB(new NowShowingDataDB(context));
+        nowShowingMovieListFragment.setLinearList(isLinearList);
 
         MovieListFragment comingSoonMovieListFragment = new MovieListFragment();
         comingSoonMovieListFragment.setMovieListDB(new ComingSoonDataDB(context));
+        comingSoonMovieListFragment.setLinearList(isLinearList);
 
         movieListFragments.add(nowShowingMovieListFragment);
         movieListFragments.add(comingSoonMovieListFragment);

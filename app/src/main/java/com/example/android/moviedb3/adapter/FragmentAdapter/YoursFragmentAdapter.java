@@ -24,7 +24,7 @@ public class YoursFragmentAdapter extends FragmentStatePagerAdapter
     ArrayList<MovieListFragment> movieListFragments;
     ArrayList<String> pageTitle;
 
-    public YoursFragmentAdapter(FragmentManager fm, Context context) {
+    public YoursFragmentAdapter(FragmentManager fm, Context context, boolean isLinearList) {
         super(fm);
         this.context = context;
 
@@ -33,12 +33,15 @@ public class YoursFragmentAdapter extends FragmentStatePagerAdapter
 
         MovieListFragment favoriteMovieListFragment = new MovieListFragment();
         favoriteMovieListFragment.setMovieListDB(new FavoriteDataDB(context));
+        favoriteMovieListFragment.setLinearList(isLinearList);
 
         MovieListFragment watchMovieListFragment = new MovieListFragment();
         watchMovieListFragment.setMovieListDB(new WatchlistDataDB(context));
+        watchMovieListFragment.setLinearList(isLinearList);
 
         MovieListFragment planToWatchListFragment = new MovieListFragment();
         planToWatchListFragment.setMovieListDB(new PlanToWatchDataDB(context));
+        planToWatchListFragment.setLinearList(isLinearList);
 
         movieListFragments.add(favoriteMovieListFragment);
         movieListFragments.add(watchMovieListFragment);

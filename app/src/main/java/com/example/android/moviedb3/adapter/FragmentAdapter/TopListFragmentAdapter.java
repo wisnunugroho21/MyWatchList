@@ -30,7 +30,7 @@ public class TopListFragmentAdapter extends FragmentStatePagerAdapter
     ArrayList<MovieListFragment> movieListFragments;
     ArrayList<String> pageTitle;
 
-    public TopListFragmentAdapter(FragmentManager fm, Context context) {
+    public TopListFragmentAdapter(FragmentManager fm, Context context, boolean isLinearList) {
         super(fm);
         this.context = context;
 
@@ -39,9 +39,11 @@ public class TopListFragmentAdapter extends FragmentStatePagerAdapter
 
         MovieListFragment popularMovieListFragment = new MovieListFragment();
         popularMovieListFragment.setMovieListDB(new PopularDataDB(context));
+        popularMovieListFragment.setLinearList(isLinearList);
 
         MovieListFragment topRateMovieListFragment = new MovieListFragment();
         topRateMovieListFragment.setMovieListDB(new TopRateDataDB(context));
+        topRateMovieListFragment.setLinearList(isLinearList);
 
         movieListFragments.add(popularMovieListFragment);
         movieListFragments.add(topRateMovieListFragment);

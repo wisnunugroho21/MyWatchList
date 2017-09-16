@@ -22,7 +22,7 @@ public class HomeTVFragmentAdapter  extends FragmentStatePagerAdapter
     ArrayList<TVListFragment> tvListFragments;
     ArrayList<String> pageTitle;
 
-    public HomeTVFragmentAdapter(FragmentManager fm, Context context) {
+    public HomeTVFragmentAdapter(FragmentManager fm, Context context, boolean isLinearList) {
         super(fm);
         this.context = context;
 
@@ -31,9 +31,11 @@ public class HomeTVFragmentAdapter  extends FragmentStatePagerAdapter
 
         TVListFragment airingTodayTVListFragment = new TVListFragment();
         airingTodayTVListFragment.setTVListDB(new AirTodayDataDB(context));
+        airingTodayTVListFragment.setLinearList(isLinearList);
 
         TVListFragment onTheAirTVListFragment = new TVListFragment();
         onTheAirTVListFragment.setTVListDB(new OnTheAirDataDB(context));
+        onTheAirTVListFragment.setLinearList(isLinearList);
 
         tvListFragments.add(airingTodayTVListFragment);
         tvListFragments.add(onTheAirTVListFragment);

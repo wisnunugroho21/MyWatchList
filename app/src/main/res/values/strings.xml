@@ -188,4 +188,7 @@
     <string name="vibrate_notification_value" translatable="false">vibrate</string>
     <string name="sound_notification_value" translatable="false">sound</string>
     <string name="all_set_notification_value" translatable="false">all Set</string>
+
+    <string name="view_mode_label">View Mode</string>
+    <string name="search_label">Search</string>
 </resources>

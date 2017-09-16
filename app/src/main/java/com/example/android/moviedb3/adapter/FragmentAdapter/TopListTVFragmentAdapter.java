@@ -24,7 +24,7 @@ public class TopListTVFragmentAdapter extends FragmentStatePagerAdapter
     ArrayList<TVListFragment> tvListFragments;
     ArrayList<String> pageTitle;
 
-    public TopListTVFragmentAdapter(FragmentManager fm, Context context) {
+    public TopListTVFragmentAdapter(FragmentManager fm, Context context, boolean isLinearList) {
         super(fm);
         this.context = context;
 
@@ -33,9 +33,11 @@ public class TopListTVFragmentAdapter extends FragmentStatePagerAdapter
 
         TVListFragment popularTVListFragment = new TVListFragment();
         popularTVListFragment.setTVListDB(new PopularTVDataDB(context));
+        popularTVListFragment.setLinearList(isLinearList);
 
         TVListFragment topRateTVListFragment = new TVListFragment();
         topRateTVListFragment.setTVListDB(new TopRatedTVDataDB(context));
+        topRateTVListFragment.setLinearList(isLinearList);
 
         tvListFragments.add(popularTVListFragment);
         tvListFragments.add(topRateTVListFragment);

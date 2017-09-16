@@ -21,6 +21,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -60,6 +62,7 @@ public class TVMovieListActivity extends AppCompatActivity
     int btvHeight;
 
     boolean isMovieMode = true;
+    boolean isLinearList = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -90,33 +93,6 @@ public class TVMovieListActivity extends AppCompatActivity
         btvHeight = movieListBottomNavigationView.getHeight();
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        switch (resultCode)
-        {
-            case MovieDBKeyEntry.DatabaseHasChanged.FAVORITE_DATA_CHANGED :
-                SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
-                        MovieDBKeyEntry.MovieListPageIndex.FAVORITE_PAGE_INDEX);
-                break;
-
-            case MovieDBKeyEntry.DatabaseHasChanged.INSERT_PLAN_TO_WATCH_LIST:
-                SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
-                        MovieDBKeyEntry.MovieListPageIndex.PLAN_TO_WATCH_PAGE_INDEX);
-                break;
-
-            case MovieDBKeyEntry.DatabaseHasChanged.INSERT_TO_WATCHED_LIST:
-                SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
-                        MovieDBKeyEntry.MovieListPageIndex.WATCHED_PAGE_INDEX);
-                break;
-
-            case MovieDBKeyEntry.DatabaseHasChanged.REMOVE_MY_LIST:
-                SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
-                        MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
-                break;
-        }
-    }*/
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -134,6 +110,29 @@ public class TVMovieListActivity extends AppCompatActivity
         unregisterSettingChangedListener();
         unregisterMovieListBroadcastReceiver();
         unregisterUpdateYoursMovieListBroadcastReceiver();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_tv_movie_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.view_mode_item_menu:
+                isLinearList = !isLinearList;
+                movieListBottomNavigationView.setSelectedItemId(movieListBottomNavigationView.getSelectedItemId());
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void registerSettingChangedListener()
@@ -220,9 +219,9 @@ public class TVMovieListActivity extends AppCompatActivity
         {
             switch (fragmentAdapterIndex)
             {
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeFragmentAdapter(getSupportFragmentManager(), this);
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListFragmentAdapter(getSupportFragmentManager(), this);
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursFragmentAdapter(getSupportFragmentManager(), this);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeFragmentAdapter(getSupportFragmentManager(), this, isLinearList);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListFragmentAdapter(getSupportFragmentManager(), this, isLinearList);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursFragmentAdapter(getSupportFragmentManager(), this, isLinearList);
 
                 default: return null;
             }
@@ -232,9 +231,9 @@ public class TVMovieListActivity extends AppCompatActivity
         {
             switch (fragmentAdapterIndex)
             {
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeTVFragmentAdapter(getSupportFragmentManager(), this);
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListTVFragmentAdapter(getSupportFragmentManager(), this);
-                case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursTVFragmentAdapter(getSupportFragmentManager(), this);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX : return new HomeTVFragmentAdapter(getSupportFragmentManager(), this, isLinearList);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX: return new TopListTVFragmentAdapter(getSupportFragmentManager(), this, isLinearList);
+                case MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX: return new YoursTVFragmentAdapter(getSupportFragmentManager(), this, isLinearList);
 
                 default: return null;
             }
@@ -248,9 +247,6 @@ public class TVMovieListActivity extends AppCompatActivity
 
         TabLayout.Tab tab = tabLayout.getTabAt(selectedPageIndex);
         tab.select();
-
-        /*tabLayout.setScrollPosition(selectedPageIndex, 0f, true);
-        viewPager.setCurrentItem(selectedPageIndex)*/;
     }
 
     private void startGetDataService()
