@@ -7,6 +7,9 @@ import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * Created by nugroho on 26/08/17.
  */
@@ -206,6 +209,37 @@ public class MovieDataURL
         String regionID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.region_key), context.getString(R.string.region_usa_value));
 
         return "https://api.themoviedb.org/3/discover/tv?api_key=" + API_KEY + "&language=" + languageID + "&sort_by=popularity.desc&with_genres=" + idGenre;
+    }
+
+    public static String GetMovieSearchResult(String query, Context context)
+    {
+        String newQuery = "";
+        try
+        {
+            newQuery = URLEncoder.encode(query, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&language=" + languageID + "&query=" + newQuery;
+    }
+
+    public static String GetTVSearchResult(String query, Context context)
+    {
+        String newQuery = "";
+        try
+        {
+            newQuery = URLEncoder.encode(query, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+        String languageID = PreferencesUtils.GetData(new DefaultStringStatePreference(context), context.getString(R.string.content_language_key), context.getString(R.string.content_language_english_value));
+        return "https://api.themoviedb.org/3/search/tv?api_key=" + API_KEY + "&language=" + languageID + "&query=" + newQuery;
     }
 
 

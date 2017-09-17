@@ -70,6 +70,14 @@ public class MovieData extends BaseData implements Parcelable
         this.plotSypnosis = plotSypnosis;
     }
 
+    public MovieData(String id, String originalTitle, String moviePosterURL, double voteRating) {
+        super(id);
+        this.originalTitle = originalTitle;
+        this.moviePosterURL = moviePosterURL;
+        this.genre = "";
+        this.voteRating = voteRating;
+    }
+
     public MovieData(Parcel in)
     {
         super(in.readString());

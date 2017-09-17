@@ -191,4 +191,7 @@
 
     <string name="view_mode_label">View Mode</string>
     <string name="search_label">Search</string>
+
+    <string name="no_movie_label">No Movie</string>
+    <string name="no_tv_label">No TV</string>
 </resources>

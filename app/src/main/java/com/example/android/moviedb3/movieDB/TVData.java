@@ -74,6 +74,13 @@ public class TVData extends BaseData implements Parcelable
         this.seriesStatus = seriesStatus;
     }
 
+    public TVData(String id, String originalTitle, String tvPosterURL, double voteRating) {
+        super(id);
+        this.originalTitle = originalTitle;
+        this.tvPosterURL = tvPosterURL;
+        this.voteRating = voteRating;
+    }
+
     public TVData(Parcel in)
     {
         super(in.readString());

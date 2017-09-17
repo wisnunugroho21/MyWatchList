@@ -1,5 +1,7 @@
 package com.example.android.moviedb3.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -24,6 +27,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
@@ -45,6 +49,7 @@ import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePrefere
 import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class TVMovieListActivity extends AppCompatActivity
 {
@@ -54,6 +59,7 @@ public class TVMovieListActivity extends AppCompatActivity
     Toolbar toolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
+//    MaterialSearchView materialSearchView;
 
     SettingChangedListener settingChangedListener;
     GetMovieListBroadcastReceiver getMovieListBroadcastReceiver;
@@ -122,12 +128,18 @@ public class TVMovieListActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
 
-        switch (item.getItemId()) {
+        switch (item.getItemId())
+        {
             case R.id.view_mode_item_menu:
                 isLinearList = !isLinearList;
                 movieListBottomNavigationView.setSelectedItemId(movieListBottomNavigationView.getSelectedItemId());
+                return true;
+
+            case R.id.search_item_menu :
+                ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SearchActivity.class, this));
                 return true;
 
             default:
