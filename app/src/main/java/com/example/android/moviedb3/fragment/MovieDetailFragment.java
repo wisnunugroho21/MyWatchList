@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -95,9 +96,11 @@ public class MovieDetailFragment extends Fragment {
     TextView taglineTextView;
     TextView synopsisTextView;
 
-    Button favoriteButton;
-    Button watchListButton;
-    Button shareButton;
+    ConstraintLayout favoriteButton;
+    TextView favoriteTitleTextView;
+    ImageView favoriteImageView;
+    ConstraintLayout watchListButton;
+    ConstraintLayout shareButton;
 
     RecyclerView reviewListRecyclerView;
     Button moreReviewButton;
@@ -148,9 +151,11 @@ public class MovieDetailFragment extends Fragment {
         taglineTextView = (TextView) view.findViewById(R.id.txt_tagline);
         synopsisTextView = (TextView) view.findViewById(R.id.txt_sypnosis);
 
-        favoriteButton = (Button) view.findViewById(R.id.btn_favorite);
-        watchListButton = (Button) view.findViewById(R.id.btn_watchlist);
-        shareButton = (Button) view.findViewById(R.id.btn_share);
+        favoriteButton = (ConstraintLayout) view.findViewById(R.id.btn_favorite);
+        favoriteImageView = (ImageView) view.findViewById(R.id.iv_star_favorite);
+        favoriteTitleTextView = (TextView) view.findViewById(R.id.txt_title_favorite);
+        watchListButton = (ConstraintLayout) view.findViewById(R.id.btn_watchlist);
+        shareButton = (ConstraintLayout) view.findViewById(R.id.btn_share);
 
         reviewListRecyclerView = (RecyclerView) view.findViewById(R.id.rv_review_list);
         moreReviewButton = (Button) view.findViewById(R.id.btn_more_review);
@@ -467,14 +472,14 @@ public class MovieDetailFragment extends Fragment {
     {
         if (!state)
         {
-            favoriteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite_white_24px, 0, 0);
-            favoriteButton.setText(R.string.favorite_label);
+            favoriteImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_white_24px));
+            favoriteTitleTextView.setText(R.string.favorite_label);
         }
 
         else
         {
-            favoriteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white_24px, 0, 0);
-            favoriteButton.setText(R.string.un_favorite_label);
+            favoriteImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_border_white_24px));
+            favoriteTitleTextView.setText(R.string.favorite_label);
         }
     }
 

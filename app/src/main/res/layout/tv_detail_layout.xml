@@ -280,58 +280,133 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_margin="8dp"
                     app:cardBackgroundColor="@color/cardview_dark_background">
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <Button
+                        <android.support.constraint.ConstraintLayout
                             android:id="@+id/btn_share"
-                            style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="0dp"
-                            android:layout_height="75dp"
-                            android:layout_marginTop="0dp"
-                            android:drawableTop="@drawable/ic_share_white_24px"
-                            android:text="@string/share_label"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Colored"
-                            android:textSize="12sp"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toRightOf="@+id/btn_watchlist"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/btn_watchlist" />
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <Button
+                            <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginRight="0dp"
+                                android:layout_marginTop="16dp"
+                                app:layout_constraintBottom_toTopOf="@+id/textView2"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                app:srcCompat="@drawable/ic_share_white_24px" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/share_label"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Notification"
+                                android:textColor="@android:color/white"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <android.support.constraint.ConstraintLayout
                             android:id="@+id/btn_watchlist"
-                            style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="0dp"
-                            android:layout_height="75dp"
-                            android:drawableTop="@drawable/ic_playlist_add_white_24px"
-                            android:text="@string/my_list_label"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Colored"
-                            android:textSize="12sp"
+                            android:layout_height="0dp"
+                            android:background="?attr/selectableItemBackground"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toRightOf="@+id/btn_favorite"
                             app:layout_constraintRight_toLeftOf="@+id/btn_share"
-                            app:layout_constraintTop_toTopOf="@+id/btn_favorite" />
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <Button
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                app:layout_constraintBottom_toTopOf="@+id/textView3"
+                                app:layout_constraintHorizontal_bias="0.484"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                app:srcCompat="@drawable/ic_playlist_add_white_24px" />
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/my_list_label"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Notification"
+                                android:textColor="@android:color/white"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+
+                        </android.support.constraint.ConstraintLayout>
+
+                        <android.support.constraint.ConstraintLayout
                             android:id="@+id/btn_favorite"
-                            style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="0dp"
-                            android:layout_height="75dp"
-                            android:layout_marginTop="0dp"
-                            android:drawableTop="@drawable/ic_favorite_white_24px"
-                            android:text="@string/favorite_label"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Colored"
-                            android:textSize="12sp"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@+id/btn_watchlist"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/iv_star_favorite"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginTop="16dp"
+                                app:layout_constraintBottom_toTopOf="@+id/txt_title_favorite"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                app:srcCompat="@drawable/ic_favorite_white_24px" />
+
+                            <TextView
+                                android:id="@+id/txt_title_favorite"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/favorite_label"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Notification"
+                                android:textColor="@android:color/white"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/iv_star_favorite" />
+
+                        </android.support.constraint.ConstraintLayout>
                     </android.support.constraint.ConstraintLayout>
+
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
