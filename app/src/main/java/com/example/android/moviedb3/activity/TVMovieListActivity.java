@@ -25,10 +25,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
@@ -148,7 +152,7 @@ public class TVMovieListActivity extends AppCompatActivity
             case R.id.view_mode_item_menu:
                 isLinearList = !isLinearList;
                 movieListBottomNavigationView.setSelectedItemId(movieListBottomNavigationView.getSelectedItemId());
-                invalidateOptionsMenu();
+                invalidateOptionsMenu();;
                 return true;
 
             case R.id.search_item_menu :
