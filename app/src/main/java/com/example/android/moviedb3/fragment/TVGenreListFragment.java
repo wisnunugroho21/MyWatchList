@@ -92,6 +92,7 @@ public class TVGenreListFragment extends Fragment
         genreTVListRecyclerView.setAdapter(new TVGenreDataListRecyclerViewAdapter(tvGenreArrayList, new GenreChoosedListener()));
         genreTVListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         genreTVListRecyclerView.setHasFixedSize(true);
+        genreTVListRecyclerView.setNestedScrollingEnabled(false);
     }
 
     public class GenreListObtained implements OnDataObtainedListener<ArrayList<TVGenre>>

@@ -88,6 +88,7 @@ public class GenreListFragment extends Fragment
         genreListRecyclerView.setAdapter(new GenreDataListRecyclerViewAdapter(genreDataArrayList, new GenreChoosedListener()));
         genreListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         genreListRecyclerView.setHasFixedSize(true);
+        genreListRecyclerView.setNestedScrollingEnabled(true);
     }
 
     public class GenreListObtained implements OnDataObtainedListener<ArrayList<GenreData>>

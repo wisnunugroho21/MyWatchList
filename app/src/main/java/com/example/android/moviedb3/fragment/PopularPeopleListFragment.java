@@ -90,6 +90,7 @@ public class PopularPeopleListFragment extends Fragment
         genreListRecyclerView.setAdapter(new PeoplePopularListRecyclerViewAdapter(peopleDataArrayList, getContext(), new PeopleChoosedListener()));
         genreListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         genreListRecyclerView.setHasFixedSize(true);
+        genreListRecyclerView.setNestedScrollingEnabled(false);
     }
 
     public class PeopleListObtained implements OnDataObtainedListener<ArrayList<PeopleData>>
