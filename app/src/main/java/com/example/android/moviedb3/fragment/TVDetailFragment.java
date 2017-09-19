@@ -1,10 +1,15 @@
 package com.example.android.moviedb3.fragment;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,9 +47,7 @@ import com.example.android.moviedb3.localDatabase.PopularTVDataDB;
 import com.example.android.moviedb3.localDatabase.TopRatedTVDataDB;
 import com.example.android.moviedb3.localDatabase.VideoTVDataDB;
 import com.example.android.moviedb3.localDatabase.WatchlistTvDataDB;
-import com.example.android.moviedb3.movieDB.CastData;
 import com.example.android.moviedb3.movieDB.CastTVData;
-import com.example.android.moviedb3.movieDB.CrewData;
 import com.example.android.moviedb3.movieDB.CrewTVData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.MovieDataURL;
@@ -55,7 +58,6 @@ import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringS
 import com.example.android.moviedb3.movieDB.dateToString.DateToStringSetter;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
 import com.example.android.moviedb3.movieDataManager.DatabaseTVInsertandRemove;
-import com.example.android.moviedb3.movieDataManager.MovieDetailGetterAsyncTask;
 import com.example.android.moviedb3.movieDataManager.TVDetailGetterAsyncTask;
 import com.example.android.moviedb3.movieDataManager.TVInfoDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataAvailable.DataAvailableCheck;
@@ -72,9 +74,12 @@ import java.util.ArrayList;
  * Created by nugroho on 12/09/17.
  */
 
-public class TVDetailFragment extends Fragment {
-    ScrollView tvDetailLayout;
-    Toolbar tvDetailToolbar;
+public class TVDetailFragment extends Fragment
+{
+    CoordinatorLayout tvDetailLayout;
+    Toolbar appbarTvDetailToolbar;
+    AppBarLayout tvDetailAppBar;
+
     ImageView coverPosterImageView;
     ImageView mainTVPosterImageView;
     TextView movieTitleTextView;
@@ -109,6 +114,7 @@ public class TVDetailFragment extends Fragment {
 
     private int numberMovieInfoObtained;
     private Boolean favoriteState;
+    private Boolean isToolbarTransparent = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,8 +126,10 @@ public class TVDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tv_detail_layout, container, false);
 
-        tvDetailLayout = (ScrollView) view.findViewById(R.id.tv_detail_layout);
-        tvDetailToolbar = (Toolbar) view.findViewById(R.id.toolbar_tv_detail);
+        tvDetailLayout = (CoordinatorLayout) view.findViewById(R.id.tv_detail_layout);
+        appbarTvDetailToolbar = (Toolbar) view.findViewById(R.id.toolbar_tv_detail_appbar);
+        tvDetailAppBar = (AppBarLayout) view.findViewById(R.id.appbar_tv_detail);
+
         coverPosterImageView = (ImageView) view.findViewById(R.id.iv_cover_poster);
         mainTVPosterImageView = (ImageView) view.findViewById(R.id.iv_main_tv_poster);
         movieTitleTextView = (TextView) view.findViewById(R.id.txt_tv_title);
@@ -153,7 +161,7 @@ public class TVDetailFragment extends Fragment {
         watchListButton.setOnClickListener(new WatchListButtonClickListener());
 
         SetInitialData(savedInstanceState);
-        SetActionBar();
+        SetToolbar();
 
         return view;
     }
@@ -177,12 +185,79 @@ public class TVDetailFragment extends Fragment {
         }
     }
 
-    private void SetActionBar()
+    private void SetToolbar()
     {
+        tvDetailAppBar.addOnOffsetChangedListener( new AppBarLayout.OnOffsetChangedListener()
+        {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset)
+            {
+                int heightCoverPoster = appBarLayout.getTotalScrollRange() * -1;
+                if(verticalOffset > heightCoverPoster)
+                {
+                    if(isToolbarTransparent)
+                    {
+                        SetTransparentActionBar();
+                        isToolbarTransparent = false;
+                    }
+                }
+
+                else
+                {
+                    if(!isToolbarTransparent)
+                    {
+                        SetAppBartActionBar();
+                        isToolbarTransparent = true;
+                    }
+                }
+            }
+        });
+
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-        appCompatActivity.setSupportActionBar(tvDetailToolbar);
+        appCompatActivity.setSupportActionBar(appbarTvDetailToolbar);
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        appCompatActivity.getSupportActionBar().setTitle("");
+    }
+
+    private void SetTransparentActionBar()
+    {
+        int colorFrom = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        int colorTo = ContextCompat.getColor(getContext(), android.R.color.transparent);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(100); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                appbarTvDetailToolbar.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity.getSupportActionBar().setTitle("");
+    }
+
+    private void SetAppBartActionBar()
+    {
+        int colorFrom = ContextCompat.getColor(getContext(), android.R.color.transparent);
+        int colorTo = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(100); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                appbarTvDetailToolbar.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity.getSupportActionBar().setTitle(tvData.getOriginalTitle());
     }
 
     private void SetTVDetail(TVData tvData) {

@@ -1,12 +1,20 @@
 package com.example.android.moviedb3.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,13 +26,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activity.DataInfoListActivity;
-import com.example.android.moviedb3.activity.MovieDetailActivity;
 import com.example.android.moviedb3.activity.PeopleDetailActivity;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.MovieInfoListRecycleViewAdapter;
 import com.example.android.moviedb3.adapter.RecyclerViewAdapter.VideoDataListRecyclerViewAdapter;
@@ -38,7 +44,6 @@ import com.example.android.moviedb3.localDatabase.WatchlistDataDB;
 import com.example.android.moviedb3.movieDB.CastData;
 import com.example.android.moviedb3.movieDB.CrewData;
 import com.example.android.moviedb3.movieDB.MovieInfoData;
-import com.example.android.moviedb3.movieDB.PeopleCastData;
 import com.example.android.moviedb3.movieDB.ReviewData;
 import com.example.android.moviedb3.movieDataManager.DBGetter;
 import com.example.android.moviedb3.movieDataManager.DatabaseMovieInsertandRemove;
@@ -76,8 +81,10 @@ import java.util.ArrayList;
  */
 
 public class MovieDetailFragment extends Fragment {
-    ScrollView movieDetailLayout;
-    Toolbar movieDetailToolbar;
+    CoordinatorLayout movieDetailLayout;
+    Toolbar appBarMovieDetailToolbar;
+    AppBarLayout movieDetailAppBar;
+
     ImageView coverPosterImageView;
     ImageView mainMoviePosterImageView;
     TextView movieTitleTextView;
@@ -115,6 +122,7 @@ public class MovieDetailFragment extends Fragment {
 
     private int numberMovieInfoObtained;
     private Boolean favoriteState;
+    private Boolean isToolbarTransparent = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,8 +134,10 @@ public class MovieDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_detail_layout, container, false);
 
-        movieDetailLayout = (ScrollView) view.findViewById(R.id.movie_detail_layout);
-        movieDetailToolbar = (Toolbar) view.findViewById(R.id.toolbar_movie_detail);
+        movieDetailLayout = (CoordinatorLayout) view.findViewById(R.id.movie_detail_layout);
+        appBarMovieDetailToolbar = (Toolbar) view.findViewById(R.id.toolbar_movie_detail_appbar);
+        movieDetailAppBar = (AppBarLayout) view.findViewById(R.id.appbar_movie_detail);
+
         coverPosterImageView = (ImageView) view.findViewById(R.id.iv_cover_poster);
         mainMoviePosterImageView = (ImageView) view.findViewById(R.id.iv_main_movie_poster);
         movieTitleTextView = (TextView) view.findViewById(R.id.txt_movie_title);
@@ -161,7 +171,7 @@ public class MovieDetailFragment extends Fragment {
         watchListButton.setOnClickListener(new WatchListButtonClickListener());
 
         SetInitialData(savedInstanceState);
-        SetActionBar();
+        SetToolbar();
 
         return view;
     }
@@ -186,12 +196,79 @@ public class MovieDetailFragment extends Fragment {
         }
     }
 
-    private void SetActionBar()
+    private void SetToolbar()
     {
+        movieDetailAppBar.addOnOffsetChangedListener( new AppBarLayout.OnOffsetChangedListener()
+        {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset)
+            {
+                int heightCoverPoster = appBarLayout.getTotalScrollRange() * -1;
+                if(verticalOffset > heightCoverPoster)
+                {
+                    if(isToolbarTransparent)
+                    {
+                        SetTransparentActionBar();
+                        isToolbarTransparent = false;
+                    }
+                }
+
+                else
+                {
+                    if(!isToolbarTransparent)
+                    {
+                        SetAppBartActionBar();
+                        isToolbarTransparent = true;
+                    }
+                }
+            }
+        });
+
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-        appCompatActivity.setSupportActionBar(movieDetailToolbar);
+        appCompatActivity.setSupportActionBar(appBarMovieDetailToolbar);
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        appCompatActivity.getSupportActionBar().setTitle("");
+    }
+
+    private void SetTransparentActionBar()
+    {
+        int colorFrom = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        int colorTo = ContextCompat.getColor(getContext(), android.R.color.transparent);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(100); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                appBarMovieDetailToolbar.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity.getSupportActionBar().setTitle("");
+    }
+
+    private void SetAppBartActionBar()
+    {
+        int colorFrom = ContextCompat.getColor(getContext(), android.R.color.transparent);
+        int colorTo = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(100); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                appBarMovieDetailToolbar.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity.getSupportActionBar().setTitle(movieData.getOriginalTitle());
     }
 
     private void SetMovieDetail(MovieData movieData)
@@ -207,7 +284,6 @@ public class MovieDetailFragment extends Fragment {
                 placeholder(R.drawable.ic_cached_black_48px).
                 error(R.drawable.ic_error_outline_black_48px).
                 into(mainMoviePosterImageView);
-
         movieTitleTextView.setText(movieData.getOriginalTitle());
         genreTextView.setText(movieData.getGenre());
 
@@ -828,6 +904,23 @@ public class MovieDetailFragment extends Fragment {
             }
         }
     }
+
+    /*private class OnMovieAppBarToolbarTransparentChanged implements OnAppBarToolbarTransparentStateChangedListener
+    {
+        @Override
+        public void OnAppBarToolbarTransparentStateChanged(boolean isTransparent)
+        {
+            if(isTransparent)
+            {
+                SetTransparentActionBar();
+            }
+
+            else
+            {
+                SetAppBartActionBar();
+            }
+        }
+    }*/
 }
 
     /*private void SetInitialData(Bundle savedInstanceState)

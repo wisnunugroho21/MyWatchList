@@ -130,7 +130,6 @@ public class TVMovieListActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-
         switch (item.getItemId())
         {
             case R.id.view_mode_item_menu:

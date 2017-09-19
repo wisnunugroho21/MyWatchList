@@ -1,9 +1,14 @@
 package com.example.android.moviedb3.fragment;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.android.moviedb3.R;
@@ -58,8 +62,10 @@ import java.util.ArrayList;
 
 public class PeopleDetailFragment extends Fragment
 {
-    ScrollView peopleDetailLayout;
-    Toolbar peopleDetailToolbar;
+    CoordinatorLayout peopleDetailLayout;
+    Toolbar appbarPeopleDetailToolbar;
+    AppBarLayout appBarPeopleDetail;
+
     ImageView coverPosterImageView;
     ImageView mainPeoplePosterImageView;
     TextView peopleNameTextView;
@@ -95,6 +101,8 @@ public class PeopleDetailFragment extends Fragment
     private int numberPeopleInfoObtained;
     private int rolesNumber = 0;
     private int filmographyNumbers = 0;
+    private Boolean isToolbarTransparent = false;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,8 +114,10 @@ public class PeopleDetailFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.people_detail_layout, container, false);
 
-        peopleDetailLayout = (ScrollView) view.findViewById(R.id.people_detail_layout);
-        peopleDetailToolbar = (Toolbar) view.findViewById(R.id.toolbar_people_detail);
+        peopleDetailLayout = (CoordinatorLayout) view.findViewById(R.id.people_detail_layout);
+        appbarPeopleDetailToolbar = (Toolbar) view.findViewById(R.id.toolbar_tv_detail_appbar);
+        appBarPeopleDetail = (AppBarLayout) view.findViewById(R.id.appbar_people_detail);
+
         coverPosterImageView = (ImageView) view.findViewById(R.id.iv_cover_people);
         mainPeoplePosterImageView = (ImageView) view.findViewById(R.id.iv_main_people_poster);
         peopleNameTextView = (TextView) view.findViewById(R.id.txt_people_name);
@@ -135,7 +145,7 @@ public class PeopleDetailFragment extends Fragment
         noDataTextView = (TextView) view.findViewById(R.id.txt_no_data);
 
         SetInitialData(savedInstanceState);
-        SetActionBar();
+        SetToolbar();
 
         return view;
     }
@@ -156,12 +166,79 @@ public class PeopleDetailFragment extends Fragment
         }
     }
 
-    private void SetActionBar()
+    private void SetToolbar()
     {
+        appBarPeopleDetail.addOnOffsetChangedListener( new AppBarLayout.OnOffsetChangedListener()
+        {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset)
+            {
+                int heightCoverPoster = appBarLayout.getTotalScrollRange() * -1;
+                if(verticalOffset > heightCoverPoster)
+                {
+                    if(isToolbarTransparent)
+                    {
+                        SetTransparentActionBar();
+                        isToolbarTransparent = false;
+                    }
+                }
+
+                else
+                {
+                    if(!isToolbarTransparent)
+                    {
+                        SetAppBartActionBar();
+                        isToolbarTransparent = true;
+                    }
+                }
+            }
+        });
+
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-        appCompatActivity.setSupportActionBar(peopleDetailToolbar);
+        appCompatActivity.setSupportActionBar(appbarPeopleDetailToolbar);
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        appCompatActivity.getSupportActionBar().setTitle("");
+    }
+
+    private void SetTransparentActionBar()
+    {
+        int colorFrom = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        int colorTo = ContextCompat.getColor(getContext(), android.R.color.transparent);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(100); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                appbarPeopleDetailToolbar.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity.getSupportActionBar().setTitle("");
+    }
+
+    private void SetAppBartActionBar()
+    {
+        int colorFrom = ContextCompat.getColor(getContext(), android.R.color.transparent);
+        int colorTo = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(100); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                appbarPeopleDetailToolbar.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity.getSupportActionBar().setTitle(peopleData.getName());
     }
 
     private void SetMovieDetail(PeopleData peopleData)
