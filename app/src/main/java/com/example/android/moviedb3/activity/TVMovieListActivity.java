@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -266,6 +267,37 @@ public class TVMovieListActivity extends AppCompatActivity
         startService(intent);
     }
 
+    private void SendEmailToDeveloper()
+    {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nugroho8dewantoro@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback for My Watchlist apps");
+
+        if (intent.resolveActivity(getPackageManager()) != null)
+        {
+            startActivity(Intent.createChooser(intent, "Send mail via"));
+        }
+
+        else
+        {
+            Toast.makeText(TVMovieListActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+
+
+        /*Intent i = new Intent(Intent.ACTION_SENDTO);
+        i.setData(Uri.parse("mailto:"));
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"nugroho8dewantoro@gmail.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Feedback for My Watchlist apps");
+        i.setType("");
+
+        try {
+            startActivity(Intent.createChooser(i, "Send mail via"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(TVMovieListActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }*/
+    }
+
     private class MainMovieListBottomNavigationView implements BottomNavigationView.OnNavigationItemSelectedListener
     {
         @Override
@@ -310,6 +342,10 @@ public class TVMovieListActivity extends AppCompatActivity
 
                 case R.id.tv_drawer_item_menu:
                     SetIntialTVListFragment();
+                    break;
+
+                case R.id.feedback_drawer_item_menu :
+                    SendEmailToDeveloper();
                     break;
 
                 case R.id.genre_movie_drawer_item_menu:

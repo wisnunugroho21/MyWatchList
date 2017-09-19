@@ -20,6 +20,7 @@ public class MovieDetailGetterAsyncTask
     String movieID;
     Context context;
     OnDataObtainedListener<MovieData> onDataObtainedListener;
+    NetworkMovieDetailAsyncTask networkMovieDetailAsyncTask;
 
     public MovieDetailGetterAsyncTask(String movieID, Context context, OnDataObtainedListener<MovieData> onDataObtainedListener) {
         this.movieID = movieID;
@@ -29,8 +30,24 @@ public class MovieDetailGetterAsyncTask
 
     public void GetData()
     {
-        NetworkMovieDetailAsyncTask networkMovieDetailAsyncTask = new NetworkMovieDetailAsyncTask(movieID, context, onDataObtainedListener);
-        networkMovieDetailAsyncTask.execute();
+        if(networkMovieDetailAsyncTask == null)
+        {
+            networkMovieDetailAsyncTask = new NetworkMovieDetailAsyncTask(movieID, context, onDataObtainedListener);
+            networkMovieDetailAsyncTask.execute();
+        }
+
+        else
+        {
+            networkMovieDetailAsyncTask.cancel(true);
+            networkMovieDetailAsyncTask = null;
+            GetData();
+        }
+    }
+
+    public void CancelGettingData()
+    {
+        networkMovieDetailAsyncTask.cancel(true);
+        networkMovieDetailAsyncTask = null;
     }
 
     private class NetworkMovieDetailAsyncTask extends AsyncTask<Void, Void, MovieData>

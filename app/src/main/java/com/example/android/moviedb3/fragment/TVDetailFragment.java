@@ -164,6 +164,7 @@ public class TVDetailFragment extends Fragment
 
         favoriteButton.setOnClickListener(new FavoriteButtonClickListener());
         watchListButton.setOnClickListener(new WatchListButtonClickListener());
+        shareButton.setOnClickListener(new OnSharedButtonClickListener());
 
         SetInitialData(savedInstanceState);
         SetToolbar();
@@ -501,6 +502,19 @@ public class TVDetailFragment extends Fragment
         startActivity(intent);
     }
 
+    private void ShareURL()
+    {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+
+        String urlMovie = "https://www.themoviedb.org/tv/" + tvData.getId();
+
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share TV Shows");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, urlMovie);
+
+        startActivity(Intent.createChooser(sharingIntent, "Share this tv shows via"));
+    }
+
     private class InsertFavoriteMovie extends AsyncTask<Void, Void, Void>
     {
         @Override
@@ -798,6 +812,15 @@ public class TVDetailFragment extends Fragment
                 intent.putExtra(MovieDBKeyEntry.MovieDataPersistance.PEOPLE_ID_PERSISTANCE_KEY, crewTVData.getPeopleID());
                 startActivity(intent);
             }
+        }
+    }
+
+    private class OnSharedButtonClickListener implements ConstraintLayout.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            ShareURL();
         }
     }
 }

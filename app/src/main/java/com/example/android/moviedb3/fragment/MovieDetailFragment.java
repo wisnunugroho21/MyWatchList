@@ -174,6 +174,7 @@ public class MovieDetailFragment extends Fragment {
 
         favoriteButton.setOnClickListener(new FavoriteButtonClickListener());
         watchListButton.setOnClickListener(new WatchListButtonClickListener());
+        shareButton.setOnClickListener(new OnSharedButtonClickListener());
 
         SetInitialData(savedInstanceState);
         SetToolbar();
@@ -527,6 +528,19 @@ public class MovieDetailFragment extends Fragment {
         intent.putExtra(MovieDBKeyEntry.Messanger.UPDATE_YOURS_MOVIE_LIST, result);
         intent.setAction(MovieDBKeyEntry.Messanger.UPDATE_MOVIE_LIST_MESSANGER);
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+    }
+
+    private void ShareURL()
+    {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+
+        String urlMovie = "https://www.themoviedb.org/movie/" + movieData.getId();
+
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share Movie");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, urlMovie);
+
+        startActivity(Intent.createChooser(sharingIntent, "Share this movie via"));
     }
 
     private class InsertFavoriteMovie extends AsyncTask<Void, Void, Void>
@@ -910,22 +924,15 @@ public class MovieDetailFragment extends Fragment {
         }
     }
 
-    /*private class OnMovieAppBarToolbarTransparentChanged implements OnAppBarToolbarTransparentStateChangedListener
+    private class OnSharedButtonClickListener implements ConstraintLayout.OnClickListener
     {
         @Override
-        public void OnAppBarToolbarTransparentStateChanged(boolean isTransparent)
+        public void onClick(View v)
         {
-            if(isTransparent)
-            {
-                SetTransparentActionBar();
-            }
-
-            else
-            {
-                SetAppBartActionBar();
-            }
+            ShareURL();
         }
-    }*/
+    }
+
 }
 
     /*private void SetInitialData(Bundle savedInstanceState)
