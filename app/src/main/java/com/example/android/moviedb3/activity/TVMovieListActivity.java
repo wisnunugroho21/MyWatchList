@@ -125,6 +125,18 @@ public class TVMovieListActivity extends AppCompatActivity
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_tv_movie_menu, menu);
 
+        MenuItem menuItem = menu.findItem(R.id.view_mode_item_menu);
+
+        if(isLinearList)
+        {
+            menuItem.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_module_white_24px));
+        }
+
+        else
+        {
+            menuItem.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_list_white_24px));
+        }
+
         return true;
     }
 
@@ -136,6 +148,7 @@ public class TVMovieListActivity extends AppCompatActivity
             case R.id.view_mode_item_menu:
                 isLinearList = !isLinearList;
                 movieListBottomNavigationView.setSelectedItemId(movieListBottomNavigationView.getSelectedItemId());
+                invalidateOptionsMenu();
                 return true;
 
             case R.id.search_item_menu :
@@ -283,19 +296,6 @@ public class TVMovieListActivity extends AppCompatActivity
         {
             Toast.makeText(TVMovieListActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
-
-
-        /*Intent i = new Intent(Intent.ACTION_SENDTO);
-        i.setData(Uri.parse("mailto:"));
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"nugroho8dewantoro@gmail.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT, "Feedback for My Watchlist apps");
-        i.setType("");
-
-        try {
-            startActivity(Intent.createChooser(i, "Send mail via"));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(TVMovieListActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }*/
     }
 
     private class MainMovieListBottomNavigationView implements BottomNavigationView.OnNavigationItemSelectedListener
