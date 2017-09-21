@@ -41,8 +41,7 @@ public class DatabasePeopleGetter implements IMovieDBGetter
         protected ArrayList<PeopleData> doInBackground(Void... params)
         {
             DataDB<PeopleData> peopleDataDataDB = new PeopleDataDB(context);
-            ArrayList<PeopleData> peopleDataArrayList = peopleDataDataDB.getAllData();
-            return peopleDataArrayList;
+            return peopleDataDataDB.getAllData();
         }
 
         @Override

@@ -346,14 +346,21 @@ public class TVDetailFragment extends Fragment
 
     private void SetAllRecyclerView(TVData tvData) {
 
-        String castURLurl = MovieDataURL.GetCastTVURL(String.valueOf(tvData.getId()));
-        DBGetter.GetData(new TVInfoDataGetter<>(new CastDataListObtainedListener(), new CastTVDataDB(getContext()), new CastTVListJSONParser(), castURLurl, tvData.getId(), getContext()));
+        try
+        {
+            String castURLurl = MovieDataURL.GetCastTVURL(String.valueOf(tvData.getId()));
+            DBGetter.GetData(new TVInfoDataGetter<>(new CastDataListObtainedListener(), new CastTVDataDB(getContext()), new CastTVListJSONParser(), castURLurl, tvData.getId(), getContext()));
 
-        String crewURL = MovieDataURL.GetCrewTVURL(String.valueOf(tvData.getId()));
-        DBGetter.GetData(new TVInfoDataGetter<>(new CrewDataListObtainedListener(), new CrewTVDataDB(getContext()), new CrewTVListJSONParser(), crewURL, tvData.getId(), getContext()));
+            String crewURL = MovieDataURL.GetCrewTVURL(String.valueOf(tvData.getId()));
+            DBGetter.GetData(new TVInfoDataGetter<>(new CrewDataListObtainedListener(), new CrewTVDataDB(getContext()), new CrewTVListJSONParser(), crewURL, tvData.getId(), getContext()));
 
-        String videoURL = MovieDataURL.GetVideoTVURL(String.valueOf(tvData.getId()), getContext());
-        DBGetter.GetData(new TVInfoDataGetter<>(new VideoDataListObtainedListener(), new VideoTVDataDB(getContext()), new VideoTVListJSONParser(), videoURL, tvData.getId(), getContext()));
+            String videoURL = MovieDataURL.GetVideoTVURL(String.valueOf(tvData.getId()), getContext());
+            DBGetter.GetData(new TVInfoDataGetter<>(new VideoDataListObtainedListener(), new VideoTVDataDB(getContext()), new VideoTVListJSONParser(), videoURL, tvData.getId(), getContext()));
+        }
+        catch (Exception e)
+        {
+            ShowNoData();
+        }
     }
 
     private void CheckAndShowMovieDetail() {

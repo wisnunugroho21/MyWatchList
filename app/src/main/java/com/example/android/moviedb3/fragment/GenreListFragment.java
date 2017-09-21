@@ -80,7 +80,15 @@ public class GenreListFragment extends Fragment
     private void GetGenreList()
     {
         ShowLoadingData();
-        DBGetter.GetData(new DatabaseGenreGetter(getContext(), new GenreListObtained()));
+
+        try
+        {
+            DBGetter.GetData(new DatabaseGenreGetter(getContext(), new GenreListObtained()));
+        }
+        catch (Exception e)
+        {
+            ShowNoDataLayout();
+        }
     }
 
     private void SetGenreRecyclerView(ArrayList<GenreData> genreDataArrayList)

@@ -12,6 +12,7 @@ public class MovieDBKeyEntry
     {
         public static final String GET_MOVIE_LIST_RESULT_RECEIVER = "GetMovieListResultReceiver";
         public static final int GET_MOVIE_LIST_RESULT_SUCCESS = 1978;
+        public static final int GET_MOVIE_LIST_RESULT_FAIL = 1729;
         public static final String GET_MOVIE_LIST_MESSENGER = "GetMovieListMessenger";
     }
 

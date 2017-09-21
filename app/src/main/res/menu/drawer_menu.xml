@@ -8,7 +8,7 @@
         <item android:id="@+id/tv_drawer_item_menu"
             android:icon="@drawable/ic_tv_black_24px"
             android:title="@string/tv_label"/>
-        <item android:title="@string/discover_movie_label">
+        <item android:title="@string/discover_label">
             <menu>
                 <group android:checkableBehavior="none">
                     <item

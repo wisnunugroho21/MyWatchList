@@ -50,7 +50,7 @@ public class PeopleDataGetter implements IMovieDBGetter
     }
 
     @Override
-    public void getData()
+    public void getData() throws Exception
     {
         peopleDB = new PeopleDataDB(context);
 
@@ -74,6 +74,11 @@ public class PeopleDataGetter implements IMovieDBGetter
             }
 
             DatabasePeopleReplace(dataList);
+        }
+
+        else
+        {
+            throw new Exception();
         }
     }
 

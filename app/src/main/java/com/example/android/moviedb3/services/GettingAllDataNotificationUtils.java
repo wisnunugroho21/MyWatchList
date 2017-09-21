@@ -27,10 +27,16 @@ public class GettingAllDataNotificationUtils
         return PendingIntent.getActivity(context, MovieDBKeyEntry.NotificationKey.GETTING_DATA_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    private static PendingIntent createRetryDownloadingIntent(Context context)
+    {
+        Intent intent = new Intent(context, GetMovieListProgressService.class);
+        return PendingIntent.getService(context, MovieDBKeyEntry.NotificationKey.GETTING_DATA_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
     private static Bitmap createLargeIcon(Context context)
     {
         Resources resources = context.getResources();
-        return BitmapFactory.decodeResource(resources, R.drawable.ic_file_download_white_24px);
+        return BitmapFactory.decodeResource(resources, R.drawable.ic_movie_white_24px);
     }
 
     public static Notification createNotificationWithProgress(Context context, int maxValues, int values)
@@ -40,7 +46,7 @@ public class GettingAllDataNotificationUtils
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                .setSmallIcon(R.drawable.ic_file_download_white_24px)
+                .setSmallIcon(R.drawable.ic_movie_white_24px)
                 .setLargeIcon(createLargeIcon(context))
                 .setContentTitle(context.getString(R.string.getting_Data_notification_content_title))
                 .setContentText(contentText)
@@ -58,7 +64,7 @@ public class GettingAllDataNotificationUtils
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                .setSmallIcon(R.drawable.ic_file_download_white_24px)
+                .setSmallIcon(R.drawable.ic_movie_white_24px)
                 .setLargeIcon(createLargeIcon(context))
                 .setContentTitle(context.getString(R.string.getting_Data_notification_content_title))
                 .setContentText(context.getString(R.string.getting_data_notification_completed))
@@ -66,6 +72,24 @@ public class GettingAllDataNotificationUtils
                 .setDefaults(Notification.DEFAULT_LIGHTS)
                 .setAutoCancel(true)
                 .addAction(createSettingCallsNotificationAction(context))
+                .setProgress(0, 0, false);
+
+        builder.setPriority(Notification.PRIORITY_HIGH);
+        return  builder.build();
+    }
+
+    public static Notification createNotificationDownloadFail(Context context)
+    {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                .setSmallIcon(R.drawable.ic_movie_white_24px)
+                .setLargeIcon(createLargeIcon(context))
+                .setContentTitle(context.getString(R.string.downloading_fail))
+                .setContentText(context.getString(R.string.downloading_fail_notification))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.downloading_fail_notification)))
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setAutoCancel(true)
+                .addAction(createRetryNotificationAction(context))
                 .setProgress(0, 0, false);
 
         builder.setPriority(Notification.PRIORITY_HIGH);
@@ -84,6 +108,14 @@ public class GettingAllDataNotificationUtils
 
         return new NotificationCompat.Action
                 (R.drawable.ic_movie_black_24px, context.getString(R.string.new_now_showing_notification_check_movies_action), pendingIntent);
+    }
+
+    private static NotificationCompat.Action createRetryNotificationAction(Context context)
+    {
+        PendingIntent pendingIntent = createRetryDownloadingIntent(context);
+
+        return new NotificationCompat.Action
+                (R.drawable.ic_cached_black_48px, context.getString(R.string.try_again), pendingIntent);
     }
 
     public static void showNotificationOnProgress(Context context, int maxValues, int values)

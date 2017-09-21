@@ -7,7 +7,7 @@ package com.example.android.moviedb3.movieDataManager;
 
 public class DBGetter
 {
-    public static void GetData(IMovieDBGetter movieDBGetter)
+    public static void GetData(IMovieDBGetter movieDBGetter) throws Exception
     {
         movieDBGetter.getData();
     }

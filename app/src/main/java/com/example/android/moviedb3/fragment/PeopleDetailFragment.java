@@ -325,17 +325,24 @@ public class PeopleDetailFragment extends Fragment
 
     private void SetAllRecyclerView(PeopleData peopleData)
     {
-        String peopleMovieCastURL = MovieDataURL.GetPeopleMovieCastURL(String.valueOf(peopleData.getId()), getContext());
-        DBGetter.GetData(new PeopleInfoDataGetter<PeopleCastData>(new PeopleMovieCastDataListObtainedListener(), new PeopleCastDataDB(getContext()), new PeopleCastListJSONParser(), peopleMovieCastURL, peopleData.getId(), getContext()));
+        try
+        {
+            String peopleMovieCastURL = MovieDataURL.GetPeopleMovieCastURL(String.valueOf(peopleData.getId()), getContext());
+            DBGetter.GetData(new PeopleInfoDataGetter<PeopleCastData>(new PeopleMovieCastDataListObtainedListener(), new PeopleCastDataDB(getContext()), new PeopleCastListJSONParser(), peopleMovieCastURL, peopleData.getId(), getContext()));
 
-        String peopleMovieCrewURL = MovieDataURL.GetPeopleMovieCrewURL(String.valueOf(peopleData.getId()), getContext());
-        DBGetter.GetData(new MovieInfoDataGetter<PeopleCrewData>(new PeopleMovieCrewDataListObtainedListener(), new PeopleCrewDataDB(getContext()), new PeopleCrewListJSONParser(), peopleMovieCrewURL, peopleData.getId(), getContext()));
+            String peopleMovieCrewURL = MovieDataURL.GetPeopleMovieCrewURL(String.valueOf(peopleData.getId()), getContext());
+            DBGetter.GetData(new MovieInfoDataGetter<PeopleCrewData>(new PeopleMovieCrewDataListObtainedListener(), new PeopleCrewDataDB(getContext()), new PeopleCrewListJSONParser(), peopleMovieCrewURL, peopleData.getId(), getContext()));
 
-        String peopleTVCastURL = MovieDataURL.GetPeopleTVCastURL(String.valueOf(peopleData.getId()), getContext());
-        DBGetter.GetData(new MovieInfoDataGetter<PeopleCastTvData>(new PeopleTVCastDataListObtainedListener(), new PeopleCastTVDataDB(getContext()), new PeopleCastTvListJSONParser(), peopleTVCastURL, peopleData.getId(), getContext()));
+            String peopleTVCastURL = MovieDataURL.GetPeopleTVCastURL(String.valueOf(peopleData.getId()), getContext());
+            DBGetter.GetData(new MovieInfoDataGetter<PeopleCastTvData>(new PeopleTVCastDataListObtainedListener(), new PeopleCastTVDataDB(getContext()), new PeopleCastTvListJSONParser(), peopleTVCastURL, peopleData.getId(), getContext()));
 
-        String peopleTVCrewURL = MovieDataURL.GetPeopleTVCrewURL(String.valueOf(peopleData.getId()), getContext());
-        DBGetter.GetData(new MovieInfoDataGetter<PeopleCrewTVData>(new PeopleTVCrewDataListObtainedListener(), new PeopleCrewTVDataDB(getContext()), new PeopleCrewTVListJSONParser(), peopleTVCrewURL, peopleData.getId(), getContext()));
+            String peopleTVCrewURL = MovieDataURL.GetPeopleTVCrewURL(String.valueOf(peopleData.getId()), getContext());
+            DBGetter.GetData(new MovieInfoDataGetter<PeopleCrewTVData>(new PeopleTVCrewDataListObtainedListener(), new PeopleCrewTVDataDB(getContext()), new PeopleCrewTVListJSONParser(), peopleTVCrewURL, peopleData.getId(), getContext()));
+        }
+        catch (Exception e)
+        {
+            ShowNoData();
+        }
     }
 
     private void CheckAndShowMovieDetail()

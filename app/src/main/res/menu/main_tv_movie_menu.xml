@@ -9,9 +9,14 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/updtae_list_item_menu"
+        android:icon="@drawable/ic_file_download_white_24px"
+        android:title="@string/update_list"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/view_mode_item_menu"
         android:icon="@drawable/ic_list_white_24px"
         android:title="@string/view_mode_label"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
 </menu>

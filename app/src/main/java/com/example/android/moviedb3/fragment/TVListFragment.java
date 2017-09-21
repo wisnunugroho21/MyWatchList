@@ -101,20 +101,35 @@ public class TVListFragment extends Fragment
         if(idGenre != null && genreTVDataDB != null)
         {
             GetMovieListFromGenreMovie();
-            return;
         }
     }
 
     public void GetMovieListFromDatabase()
     {
         ShowLoadingData();
-        DBGetter.GetData(new DatabaseTVGetter(tvListDB, getContext(), new MainTVListObtainedListener()));
+
+        try
+        {
+            DBGetter.GetData(new DatabaseTVGetter(tvListDB, getContext(), new MainTVListObtainedListener()));
+        }
+        catch (Exception e)
+        {
+            ShowNoDataLayout();
+        }
     }
 
     public void GetMovieListFromGenreMovie()
     {
         ShowLoadingData();
-        DBGetter.GetData(new GenreTVGetter(idGenre, getContext(), new AllGenreMovieObtainedListener(), genreTVDataDB, urlGenreTV));
+
+        try
+        {
+            DBGetter.GetData(new GenreTVGetter(idGenre, getContext(), new AllGenreMovieObtainedListener(), genreTVDataDB, urlGenreTV));
+        }
+        catch (Exception e)
+        {
+            ShowNoDataLayout();
+        }
     }
 
     private void ShowNoDataLayout()
@@ -215,7 +230,15 @@ public class TVListFragment extends Fragment
         @Override
         public void onComplete(boolean isSuccess)
         {
-            DBGetter.GetData(new DatabaseGenreTvGetter(getContext(), new MainTVListObtainedListener(), genreTVDataDB, idGenre));
+            try
+            {
+                DBGetter.GetData(new DatabaseGenreTvGetter(getContext(), new MainTVListObtainedListener(), genreTVDataDB, idGenre));
+            }
+            catch (Exception e)
+            {
+                ShowNoDataLayout();
+            }
+
         }
     }
 

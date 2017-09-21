@@ -6,5 +6,5 @@ package com.example.android.moviedb3.movieDataManager;
 
 public interface IMovieDBGetter
 {
-    void getData();
+    void getData() throws Exception;
 }

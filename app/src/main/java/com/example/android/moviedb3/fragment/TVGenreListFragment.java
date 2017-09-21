@@ -84,7 +84,15 @@ public class TVGenreListFragment extends Fragment
     private void GetGenreList()
     {
         ShowLoadingData();
-        DBGetter.GetData(new DatabaseTVGenreGetter(getContext(), new GenreListObtained()));
+
+        try
+        {
+            DBGetter.GetData(new DatabaseTVGenreGetter(getContext(), new GenreListObtained()));
+        }
+        catch (Exception e)
+        {
+            ShowNoDataLayout();
+        }
     }
 
     private void SetGenreRecyclerView(ArrayList<TVGenre> tvGenreArrayList)

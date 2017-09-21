@@ -51,13 +51,18 @@ public class GenreDataGetter implements IMovieDBGetter
     }
 
     @Override
-    public void getData()
+    public void getData() throws Exception
     {
         ArrayList<GenreData> genreDataArrayList = NetworkDataGetter.GetDataDefaultThread(new NetworkDataGetterDefaultThread<ArrayList<GenreData>>(new GenreListJSONParser()), genreURL);
 
         if(genreDataArrayList != null && NetworkConnectionChecker.IsConnect(context))
         {
             DatabaseGenreReplace(genreDataArrayList);
+        }
+
+        else
+        {
+            throw new Exception();
         }
     }
 

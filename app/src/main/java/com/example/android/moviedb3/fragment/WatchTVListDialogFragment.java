@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import com.example.android.moviedb3.R;
@@ -30,6 +31,7 @@ public class WatchTVListDialogFragment extends DialogFragment
     int watchListState;
     OnDataObtainedListener<Integer> onDataObtainedListener;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -88,7 +90,6 @@ public class WatchTVListDialogFragment extends DialogFragment
         }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                return;
             }
         });
 

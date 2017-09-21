@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class AllDataListReplace<Data> implements IDataReplace
 {
-    DataDB<Data> dataDB;
-    ArrayList<Data> dataList;
+    private DataDB<Data> dataDB;
+    private ArrayList<Data> dataList;
 
     public AllDataListReplace(DataDB<Data> dataDB, ArrayList<Data> dataList) {
         this.dataDB = dataDB;

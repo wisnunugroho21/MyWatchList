@@ -152,11 +152,15 @@ public class TVMovieListActivity extends AppCompatActivity
             case R.id.view_mode_item_menu:
                 isLinearList = !isLinearList;
                 movieListBottomNavigationView.setSelectedItemId(movieListBottomNavigationView.getSelectedItemId());
-                invalidateOptionsMenu();;
+                invalidateOptionsMenu();
                 return true;
 
             case R.id.search_item_menu :
                 ActivityLauncher.LaunchActivity(new DefaultIActivityLauncher(SearchActivity.class, this));
+                return true;
+
+            case R.id.updtae_list_item_menu :
+                startGetDataService();
                 return true;
 
             default:

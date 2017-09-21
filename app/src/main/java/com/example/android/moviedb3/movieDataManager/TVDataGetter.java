@@ -74,13 +74,13 @@ public class TVDataGetter implements IMovieDBGetter
     }
 
     @Override
-    public void getData()
+    public void getData() throws Exception
     {
         ArrayList<String> tvIDList = NetworkDataGetter.GetDataDefaultThread(new NetworkDataGetterDefaultThread<ArrayList<String>>(new TVIDListJSONParser()), tvIDListURL);
 
         if(tvIDList == null || !NetworkConnectionChecker.IsConnect(context))
         {
-            return;
+            throw new Exception();
         }
 
         String[] tvURLList = new String[tvIDList.size()];
@@ -95,6 +95,11 @@ public class TVDataGetter implements IMovieDBGetter
         if(tvDatas != null && NetworkConnectionChecker.IsConnect(context))
         {
             NotExpectedDataErase(tvIDList, tvDatas);
+        }
+
+        else
+        {
+            throw new Exception();
         }
     }
 

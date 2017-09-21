@@ -361,18 +361,26 @@ public class MovieDetailFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
     }
 
-    private void SetAllRecyclerView(MovieData movieData) {
-        String reviewURL = MovieDataURL.GetReviewURL(String.valueOf(movieData.getId()), getContext());
-        DBGetter.GetData(new MovieInfoDataGetter<ReviewData>(new ReviewDataListObtainedListener(), new ReviewDataDB(getContext()), new ReviewListJSONParser(), reviewURL, movieData.getId(), getContext()));
+    private void SetAllRecyclerView(MovieData movieData)
+    {
+        try
+        {
+            String reviewURL = MovieDataURL.GetReviewURL(String.valueOf(movieData.getId()), getContext());
+            DBGetter.GetData(new MovieInfoDataGetter<ReviewData>(new ReviewDataListObtainedListener(), new ReviewDataDB(getContext()), new ReviewListJSONParser(), reviewURL, movieData.getId(), getContext()));
 
-        String castURLurl = MovieDataURL.GetCastURL(String.valueOf(movieData.getId()));
-        DBGetter.GetData(new MovieInfoDataGetter<CastData>(new CastDataListObtainedListener(), new CastDataDB(getContext()), new CastListJSONParser(), castURLurl, movieData.getId(), getContext()));
+            String castURLurl = MovieDataURL.GetCastURL(String.valueOf(movieData.getId()));
+            DBGetter.GetData(new MovieInfoDataGetter<CastData>(new CastDataListObtainedListener(), new CastDataDB(getContext()), new CastListJSONParser(), castURLurl, movieData.getId(), getContext()));
 
-        String crewURL = MovieDataURL.GetCrewURL(String.valueOf(movieData.getId()));
-        DBGetter.GetData(new MovieInfoDataGetter<CrewData>(new CrewDataListObtainedListener(), new CrewDataDB(getContext()), new CrewListJSONParser(), crewURL, movieData.getId(), getContext()));
+            String crewURL = MovieDataURL.GetCrewURL(String.valueOf(movieData.getId()));
+            DBGetter.GetData(new MovieInfoDataGetter<CrewData>(new CrewDataListObtainedListener(), new CrewDataDB(getContext()), new CrewListJSONParser(), crewURL, movieData.getId(), getContext()));
 
-        String videoURL = MovieDataURL.GetVideoURL(String.valueOf(movieData.getId()), getContext());
-        DBGetter.GetData(new MovieInfoDataGetter<VideoData>(new VideoDataListObtainedListener(), new VideoDataDB(getContext()), new VideoListJSONParser(), videoURL, movieData.getId(), getContext()));
+            String videoURL = MovieDataURL.GetVideoURL(String.valueOf(movieData.getId()), getContext());
+            DBGetter.GetData(new MovieInfoDataGetter<VideoData>(new VideoDataListObtainedListener(), new VideoDataDB(getContext()), new VideoListJSONParser(), videoURL, movieData.getId(), getContext()));
+        }
+        catch (Exception e)
+        {
+            ShowNoData();
+        }
     }
 
     private void CheckAndShowMovieDetail() {

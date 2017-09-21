@@ -41,7 +41,7 @@ public class ImageStorage implements IStorage<Bitmap>
         } catch (IOException e)
         {
             Log.e("Image Error" , e.getMessage());
-            Toast.makeText(context, "Error when save image", Toast.LENGTH_SHORT).show();;
+            Toast.makeText(context, "Error when save image", Toast.LENGTH_SHORT).show();
         }
     }
 

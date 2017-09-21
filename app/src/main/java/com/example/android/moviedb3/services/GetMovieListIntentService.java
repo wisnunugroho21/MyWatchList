@@ -53,86 +53,110 @@ public class GetMovieListIntentService extends IntentService
     {
         context = getApplicationContext();
         bundleDataGetter = new BundleDataGetter(intent.getExtras());
+        ResultReceiver resultReceiver = null;
 
-        GetNowShowingMovieList();
-        GetComingSoonMovieList();
-        GetPopularMovieList();
-        GetTopRateMovieList();
-        GetGenreList();
+        if(intent.hasExtra(MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_RESULT_RECEIVER))
+        {
+            resultReceiver = bundleDataGetter.getData(MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_RESULT_RECEIVER);
+        }
 
-        GetAiringTodayTVList();
-        GetOnTheAirTVList();
-        GetPopularTVList();
-        GetTopRateTVList();
-        GetTVGenreList();
+        try
+        {
+            GetNowShowingMovieList();
+            GetComingSoonMovieList();
+            GetPopularMovieList();
+            GetTopRateMovieList();
+            GetGenreList();
 
-        GetPopularPeopleList();
+            GetAiringTodayTVList();
+            GetOnTheAirTVList();
+            GetPopularTVList();
+            GetTopRateTVList();
+            GetTVGenreList();
 
-        GettingAllDataNotificationUtils.showNotificationCompleted(context);
+            GetPopularPeopleList();
 
-        ResultReceiver resultReceiver = bundleDataGetter.getData(MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_RESULT_RECEIVER);
-        resultReceiver.send(MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_RESULT_SUCCESS, null);
+            if(resultReceiver != null)
+            {
+                resultReceiver.send(MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_RESULT_SUCCESS, null);
+                return;
+            }
+
+            else
+            {
+                GettingAllDataNotificationUtils.showNotificationCompleted(context);
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            if(resultReceiver != null)
+            {
+                resultReceiver.send(MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_RESULT_FAIL, null);
+                return;
+            }
+        }
     }
 
-    private void GetNowShowingMovieList()
+    private void GetNowShowingMovieList() throws Exception
     {
         DBGetter.GetData(new MovieDataGetter(context, new NowShowingDataDB(context),
                 getInitialOtherNowShowingMovieListDataDB(), MovieDataURL.GetNowShowingURL(this), new newNowShowingMovieObtained()));
     }
 
-    private void GetComingSoonMovieList()
+    private void GetComingSoonMovieList() throws Exception
     {
         DBGetter.GetData(new MovieDataGetter(context, new ComingSoonDataDB(context),
                 getInitialOtherComingSoonMovieListDataDB(), MovieDataURL.GetComingSoonURL(this)));
     }
 
-    private void GetPopularMovieList()
+    private void GetPopularMovieList() throws Exception
     {
         DBGetter.GetData(new MovieDataGetter(context, new PopularDataDB(context),
                 getInitialOtherPopularMovieListDataDB(), MovieDataURL.GetPopularURL(this)));
     }
 
-    private void GetTopRateMovieList()
+    private void GetTopRateMovieList() throws Exception
     {
         DBGetter.GetData(new MovieDataGetter(context, new TopRateDataDB(context),
                 getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL(this)));
     }
 
-    private void GetGenreList()
+    private void GetGenreList() throws Exception
     {
         DBGetter.GetData(new GenreDataGetter(context, MovieDataURL.GetGenreListURL(this)));
     }
 
-    private void GetAiringTodayTVList()
+    private void GetAiringTodayTVList() throws Exception
     {
         DBGetter.GetData(new TVDataGetter(context, new AirTodayDataDB(context),
                 getInitialOtherAiringTodayTVListDataDB(), MovieDataURL.GetAiringTodayTVURL(this)));
     }
 
-    private void GetOnTheAirTVList()
+    private void GetOnTheAirTVList() throws Exception
     {
         DBGetter.GetData(new TVDataGetter(context, new OnTheAirDataDB(context),
                 getInitialOtherOnTheAirTVListDataDB(), MovieDataURL.GetOnTheAirTVURL(this)));
     }
 
-    private void GetPopularTVList()
+    private void GetPopularTVList() throws Exception
     {
         DBGetter.GetData(new TVDataGetter(context, new PopularTVDataDB(context),
                 getInitialOtherPopularTVListDataDB(), MovieDataURL.GetPopularTVURL(this)));
     }
 
-    private void GetTopRateTVList()
+    private void GetTopRateTVList() throws Exception
     {
         DBGetter.GetData(new TVDataGetter(context, new TopRatedTVDataDB(context),
                 getInitialOtherTopRateTVListDataDB(), MovieDataURL.GetTopRateTVURL(this)));
     }
 
-    private void GetTVGenreList()
+    private void GetTVGenreList() throws Exception
     {
         DBGetter.GetData(new TVGenreDataGetter(context, MovieDataURL.GetTVGenreListURL(this)));
     }
 
-    private void GetPopularPeopleList()
+    private void GetPopularPeopleList() throws Exception
     {
         DBGetter.GetData(new PeopleDataGetter(context));
     }

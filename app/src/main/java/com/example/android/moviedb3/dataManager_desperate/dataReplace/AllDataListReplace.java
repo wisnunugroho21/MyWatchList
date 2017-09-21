@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class AllDataListReplace<Data> implements IReplaceData
 {
-    ArrayList<Data> datas;
-    DataDB<Data> dataDB;
+    private ArrayList<Data> datas;
+    private DataDB<Data> dataDB;
 
     public AllDataListReplace(ArrayList<Data> datas, DataDB<Data> dataDB) {
         this.datas = datas;

@@ -83,47 +83,54 @@ public class GetMovieListRepeatingService extends JobService
         {
             startForeground(notification_id, PeriodUpdateNotificationUtils.createStartPeriodUpdateNotification(context));
 
-            GetNowShowingMovieList();
-            GetComingSoonMovieList();
-            GetPopularMovieList();
-            GetTopRateMovieList();
-            GetGenreList();
-
-            GetAiringTodayTVList();
-            GetOnTheAirTVList();
-            GetPopularTVList();
-            GetTopRateTVList();
-            GetTVGenreList();
-
-            GetPopularPeopleList();
-
-            String typeNotificationString = PreferencesUtils.GetData(new DefaultStringStatePreference(getApplicationContext()), getString(R.string.type_notification_key), getString(R.string.normal_led_notification_value));
-            int typeNotification = 0;
-
-            if(typeNotificationString.equals(getString(R.string.normal_led_notification_value)))
+            try
             {
-                typeNotification = PeriodUpdateNotificationUtils.LIGHT_NOTIFICATION;
+                GetNowShowingMovieList();
+                GetComingSoonMovieList();
+                GetPopularMovieList();
+                GetTopRateMovieList();
+                GetGenreList();
+
+                GetAiringTodayTVList();
+                GetOnTheAirTVList();
+                GetPopularTVList();
+                GetTopRateTVList();
+                GetTVGenreList();
+
+                GetPopularPeopleList();
+
+                String typeNotificationString = PreferencesUtils.GetData(new DefaultStringStatePreference(getApplicationContext()), getString(R.string.type_notification_key), getString(R.string.normal_led_notification_value));
+                int typeNotification = 0;
+
+                if(typeNotificationString.equals(getString(R.string.normal_led_notification_value)))
+                {
+                    typeNotification = PeriodUpdateNotificationUtils.LIGHT_NOTIFICATION;
+                }
+
+                if(typeNotificationString.equals(getString(R.string.vibrate_notification_value)))
+                {
+                    typeNotification = PeriodUpdateNotificationUtils.VIBRATE_NOTIFICATION;
+                }
+
+                if(typeNotificationString.equals(getString(R.string.sound_notification_value)))
+                {
+                    typeNotification = PeriodUpdateNotificationUtils.SOUND_NOTIFICATION;
+                }
+
+                if(typeNotificationString.equals(getString(R.string.all_set_notification_value)))
+                {
+                    typeNotification = PeriodUpdateNotificationUtils.ALL_SET_NOTIFICATION;
+                }
+
+                SendMessageToActivity();
+                PeriodUpdateNotificationUtils.createFinishPeriodUpdateNotification(getApplicationContext(), numberNewNowShowingMovie, typeNotification);
+            }
+            catch (Exception e)
+            {
+
             }
 
-            if(typeNotificationString.equals(getString(R.string.vibrate_notification_value)))
-            {
-                typeNotification = PeriodUpdateNotificationUtils.VIBRATE_NOTIFICATION;
-            }
-
-            if(typeNotificationString.equals(getString(R.string.sound_notification_value)))
-            {
-                typeNotification = PeriodUpdateNotificationUtils.SOUND_NOTIFICATION;
-            }
-
-            if(typeNotificationString.equals(getString(R.string.all_set_notification_value)))
-            {
-                typeNotification = PeriodUpdateNotificationUtils.ALL_SET_NOTIFICATION;
-            }
-
-            SendMessageToActivity();
-            PeriodUpdateNotificationUtils.createFinishPeriodUpdateNotification(getApplicationContext(), numberNewNowShowingMovie, typeNotification);
             stopForeground(true);
-
             return null;
         }
 
@@ -140,65 +147,65 @@ public class GetMovieListRepeatingService extends JobService
             sendBroadcast(intent);
         }
 
-        private void GetNowShowingMovieList()
+        private void GetNowShowingMovieList() throws Exception
         {
             DBGetter.GetData(new MovieDataGetter(context, new NowShowingDataDB(context),
                     getInitialOtherNowShowingMovieListDataDB(), MovieDataURL.GetNowShowingURL(context), new newNowShowingMovieObtained()));
         }
 
-        private void GetComingSoonMovieList()
+        private void GetComingSoonMovieList() throws Exception
         {
             DBGetter.GetData(new MovieDataGetter(context, new ComingSoonDataDB(context),
                     getInitialOtherComingSoonMovieListDataDB(), MovieDataURL.GetComingSoonURL(context)));
         }
 
-        private void GetPopularMovieList()
+        private void GetPopularMovieList() throws Exception
         {
             DBGetter.GetData(new MovieDataGetter(context, new PopularDataDB(context),
                     getInitialOtherPopularMovieListDataDB(), MovieDataURL.GetPopularURL(context)));
         }
 
-        private void GetTopRateMovieList()
+        private void GetTopRateMovieList() throws Exception
         {
             DBGetter.GetData(new MovieDataGetter(context, new TopRateDataDB(context),
                     getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL(context)));
         }
 
-        private void GetGenreList()
+        private void GetGenreList() throws Exception
         {
             DBGetter.GetData(new GenreDataGetter(context, MovieDataURL.GetGenreListURL(context)));
         }
 
-        private void GetAiringTodayTVList()
+        private void GetAiringTodayTVList() throws Exception
         {
             DBGetter.GetData(new TVDataGetter(context, new AirTodayDataDB(context),
                     getInitialOtherAiringTodayTVListDataDB(), MovieDataURL.GetAiringTodayTVURL(context)));
         }
 
-        private void GetOnTheAirTVList()
+        private void GetOnTheAirTVList() throws Exception
         {
             DBGetter.GetData(new TVDataGetter(context, new OnTheAirDataDB(context),
                     getInitialOtherOnTheAirTVListDataDB(), MovieDataURL.GetOnTheAirTVURL(context)));
         }
 
-        private void GetPopularTVList()
+        private void GetPopularTVList() throws Exception
         {
             DBGetter.GetData(new TVDataGetter(context, new PopularTVDataDB(context),
                     getInitialOtherPopularTVListDataDB(), MovieDataURL.GetPopularTVURL(context)));
         }
 
-        private void GetTopRateTVList()
+        private void GetTopRateTVList() throws Exception
         {
             DBGetter.GetData(new TVDataGetter(context, new TopRatedTVDataDB(context),
                     getInitialOtherTopRateTVListDataDB(), MovieDataURL.GetTopRateTVURL(context)));
         }
 
-        private void GetTVGenreList()
+        private void GetTVGenreList() throws Exception
         {
             DBGetter.GetData(new TVGenreDataGetter(context, MovieDataURL.GetTVGenreListURL(context)));
         }
 
-        private void GetPopularPeopleList()
+        private void GetPopularPeopleList() throws Exception
         {
             DBGetter.GetData(new PeopleDataGetter(context));
         }

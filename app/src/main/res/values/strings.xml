@@ -57,7 +57,7 @@
     <string name="people_label">People</string>
     <string name="settings_label">Setting</string>
     <string name="feedback_label">Send Feedback</string>
-    <string name="discover_movie_label">Discover Movie</string>
+    <string name="discover_label">Discover</string>
     <string name="setting__feedback_label">Setting and Feedback</string>
     <string name="genre_movie_label">Genre Movie</string>
     <string name="genre_tv_label">Genre TV</string>
@@ -189,9 +189,16 @@
     <string name="sound_notification_value" translatable="false">sound</string>
     <string name="all_set_notification_value" translatable="false">all Set</string>
 
-    <string name="view_mode_label">View Mode</string>
+    <string name="view_mode_label">Change View Layout</string>
+    <string name="update_list">Update List</string>
     <string name="search_label">Search</string>
 
     <string name="no_movie_label">No Movie</string>
     <string name="no_tv_label">No TV</string>
+
+    <string name="downloading_fail">Fail Downloading</string>
+    <string name="downloading_fail_dialog">Downloading data has been failed because the internet connection has been lost. Do you want to try again ?</string>
+    <string name="downloading_fail_notification">Downloading data has been failed</string>
+    <string name="try_again">Try Again</string>
+    <string name="cancel">Cancel</string>
 </resources>

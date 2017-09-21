@@ -82,7 +82,16 @@ public class PopularPeopleListFragment extends Fragment
     private void GetGenreList()
     {
         ShowLoadingData();
-        DBGetter.GetData(new DatabasePeopleGetter(getContext(), new PeopleListObtained()));
+
+        try
+        {
+            DBGetter.GetData(new DatabasePeopleGetter(getContext(), new PeopleListObtained()));
+        }
+        catch (Exception e)
+        {
+            ShowNoDataLayout();
+        }
+
     }
 
     private void SetGenreRecyclerView(ArrayList<PeopleData> peopleDataArrayList)

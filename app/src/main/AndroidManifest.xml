@@ -15,14 +15,17 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MovieDetailActivity"
-            android:theme="@style/AppTheme.TransparentActionBar" />
+            android:theme="@style/AppTheme.TransparentActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.TVMovieListActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.TransparentActionBar" />
+            android:theme="@style/AppTheme.TransparentActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.SplashActivity"
-            android:theme="@style/AppTheme.TransparentActionBar">
+            android:theme="@style/AppTheme.TransparentActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +35,8 @@
         <activity
             android:name=".activity.GenreListActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".activity.TVMovieListActivity">
+            android:parentActivityName=".activity.TVMovieListActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TVMovieListActivity" />
@@ -40,7 +44,8 @@
         <activity
             android:name=".activity.GenreMovieListActivity"
             android:parentActivityName=".activity.GenreListActivity"
-            android:theme="@style/AppTheme.TransparentActionBar">
+            android:theme="@style/AppTheme.TransparentActionBar"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.GenreListActivity" />
@@ -67,17 +72,20 @@
 
         <activity
             android:name=".activity.SettingActivity"
-            android:parentActivityName=".activity.TVMovieListActivity">
+            android:parentActivityName=".activity.TVMovieListActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TVMovieListActivity" />
         </activity>
         <activity
             android:name=".activity.TVDetailActivity"
-            android:theme="@style/AppTheme.TransparentActionBar" />
+            android:theme="@style/AppTheme.TransparentActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.TVGenreListActivity"
-            android:parentActivityName=".activity.TVMovieListActivity">
+            android:parentActivityName=".activity.TVMovieListActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TVMovieListActivity" />
@@ -85,25 +93,30 @@
         <activity
             android:name=".activity.GenreTVListActivity"
             android:parentActivityName=".activity.TVGenreListActivity"
-            android:theme="@style/AppTheme.TransparentActionBar">
+            android:theme="@style/AppTheme.TransparentActionBar"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.GenreListActivity" />
         </activity>
         <activity
             android:name=".activity.PeoplePopularListActivity"
-            android:parentActivityName=".activity.TVMovieListActivity">
+            android:parentActivityName=".activity.TVMovieListActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TVMovieListActivity" />
         </activity>
         <activity
             android:name=".activity.PeopleDetailActivity"
-            android:theme="@style/AppTheme.TransparentActionBar" />
-        <activity android:name=".activity.DataInfoListActivity" />
+            android:theme="@style/AppTheme.TransparentActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.DataInfoListActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.SearchActivity"
             android:theme="@style/AppTheme.TransparentActionBar"
-            android:parentActivityName=".activity.TVMovieListActivity">
+            android:parentActivityName=".activity.TVMovieListActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TVMovieListActivity" /></activity>

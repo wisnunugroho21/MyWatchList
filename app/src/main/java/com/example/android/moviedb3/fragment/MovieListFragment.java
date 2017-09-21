@@ -38,7 +38,6 @@ import java.util.ArrayList;
 
 public class MovieListFragment extends Fragment
 {
-    private ArrayList<MovieData> movieDataArrayList;
     private DataDB<String> movieListDB;
     private boolean isLinearList = false;
 
@@ -101,13 +100,31 @@ public class MovieListFragment extends Fragment
     public void GetMovieListFromDatabase()
     {
         ShowLoadingData();
-        DBGetter.GetData(new DatabaseMovieGetter(movieListDB, getContext(), new MainMovieListObtainedListener()));
+
+        try
+        {
+            DBGetter.GetData(new DatabaseMovieGetter(movieListDB, getContext(), new MainMovieListObtainedListener()));
+
+        }
+        catch (Exception e)
+        {
+            ShowNoDataLayout();
+        }
+
     }
 
     public void GetMovieListFromGenreMovie()
     {
         ShowLoadingData();
-        DBGetter.GetData(new GenreMovieGetter(idGenre, getContext(), new AllGenreMovieObtainedListener(), genreMovieDataDB, urlGenreMovie));
+
+        try
+        {
+            DBGetter.GetData(new GenreMovieGetter(idGenre, getContext(), new AllGenreMovieObtainedListener(), genreMovieDataDB, urlGenreMovie));
+        }
+        catch (Exception e)
+        {
+            ShowNoDataLayout();
+        }
     }
 
     private void ShowNoDataLayout()
@@ -194,7 +211,7 @@ public class MovieListFragment extends Fragment
 
                 else
                 {
-                    movieDataArrayList = movieDatas;
+                    ArrayList<MovieData> movieDataArrayList = movieDatas;
 
                     SetRecyclerView(movieDataArrayList);
                     ShowRecycleView();
@@ -208,7 +225,14 @@ public class MovieListFragment extends Fragment
         @Override
         public void onComplete(boolean isSuccess)
         {
-            DBGetter.GetData(new DatabaseGenreMovieGetter(getContext(), new MainMovieListObtainedListener(), genreMovieDataDB, idGenre));
+            try
+            {
+                DBGetter.GetData(new DatabaseGenreMovieGetter(getContext(), new MainMovieListObtainedListener(), genreMovieDataDB, idGenre));
+            }
+            catch (Exception e)
+            {
+                ShowNoDataLayout();
+            }
         }
     }
 

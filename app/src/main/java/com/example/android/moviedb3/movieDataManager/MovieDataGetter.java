@@ -75,13 +75,13 @@ public class MovieDataGetter implements IMovieDBGetter
     }
 
     @Override
-    public void getData()
+    public void getData() throws Exception
     {
         ArrayList<String> movieIDList = NetworkDataGetter.GetDataDefaultThread(new NetworkDataGetterDefaultThread<ArrayList<String>>(new MovieIDListJSONParser()), movieIDListURL);
 
         if(movieIDList == null || !NetworkConnectionChecker.IsConnect(context))
         {
-            return;
+            throw new Exception();
         }
 
         String[] movieURLList = new String[movieIDList.size()];
@@ -96,6 +96,11 @@ public class MovieDataGetter implements IMovieDBGetter
         if(movieDatas != null && NetworkConnectionChecker.IsConnect(context))
         {
             NotExpectedDataErase(movieIDList, movieDatas);
+        }
+
+        else
+        {
+            throw new Exception();
         }
     }
 

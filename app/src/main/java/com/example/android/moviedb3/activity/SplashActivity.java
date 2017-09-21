@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
+import com.example.android.moviedb3.eventHandler.OnDataChooseListener;
+import com.example.android.moviedb3.fragment.DownloadingDataFailedDialogFragment;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.services.GetMovieListIntentService;
 import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePreference;
@@ -224,6 +226,33 @@ public class SplashActivity extends AppCompatActivity {
                 AnimateFadeFinishLoadingData();
                 LaunchToNextActivity();
             }
+
+            else if(resultCode == MovieDBKeyEntry.GetDataIntentServiceKey.GET_MOVIE_LIST_RESULT_FAIL)
+            {
+                AnimateFadeFinishLoadingData();
+
+                DownloadingDataFailedDialogFragment downloadingDataFailedDialogFragment = new DownloadingDataFailedDialogFragment();
+                downloadingDataFailedDialogFragment.setOnAgreeToTryAgainListener(new OnAgreeToRetry());
+                downloadingDataFailedDialogFragment.show(getSupportFragmentManager(), "onFailDownloading");
+            }
+        }
+    }
+
+    private class OnAgreeToRetry implements OnDataChooseListener<Boolean>
+    {
+        @Override
+        public void OnDataChoose(Boolean aBoolean)
+        {
+            if(aBoolean)
+            {
+                AnimateFadeLoadingData();
+                startGetDataService();
+            }
+
+            else
+            {
+                finish();
+            }
         }
     }
 }
@@ -320,9 +349,9 @@ public class SplashActivity extends AppCompatActivity {
     {
         DBGetter.GetData(new MovieDataGetterAsyncTask(this,
                 new MainMovieListObtainedListener(), new TopRateDataDB(this),
-                getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL()));
     }
 
+                getInitialOtherTopRateMovieListDataDB(), MovieDataURL.GetTopRateURL()));
     private void GetGenreList()
     {
         DBGetter.GetData(new GenreDataGetterAsyncTask(this, MovieDataURL.GetGenreListURL(), new MainMovieListObtainedListener()));
