@@ -431,7 +431,9 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txt_review_label" />
+                            app:layout_constraintTop_toBottomOf="@+id/txt_review_label"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp" />
 
 
                     </android.support.constraint.ConstraintLayout>
@@ -497,7 +499,9 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txt_cast_label" />
+                            app:layout_constraintTop_toBottomOf="@+id/txt_cast_label"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp" />
 
 
                     </android.support.constraint.ConstraintLayout>
@@ -563,7 +567,9 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txt_crew_label" />
+                            app:layout_constraintTop_toBottomOf="@+id/txt_crew_label"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp" />
 
                     </android.support.constraint.ConstraintLayout>
                 </android.support.v7.widget.CardView>
@@ -621,7 +627,9 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txt_video_label" />
+                            app:layout_constraintTop_toBottomOf="@+id/txt_video_label"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp" />
 
                     </android.support.constraint.ConstraintLayout>
                 </android.support.v7.widget.CardView>
