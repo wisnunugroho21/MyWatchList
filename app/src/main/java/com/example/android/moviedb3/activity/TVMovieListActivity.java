@@ -67,7 +67,7 @@ public class TVMovieListActivity extends AppCompatActivity
     ViewPager viewPager;
     TabLayout tabLayout;
 
-    SettingChangedListener settingChangedListener;
+
     GetMovieListBroadcastReceiver getMovieListBroadcastReceiver;
     UpdateYoursMovieListBroadcastReceiver updateYoursMovieListBroadcastReceiver;
 
@@ -107,7 +107,7 @@ public class TVMovieListActivity extends AppCompatActivity
 
         SetIntialMovieListFragment();
         SetNavigationDrawer();
-        registerSettingChangedListener();
+
         registerMovieListBroadcastReceiver();
         registerUpdateYoursMovieListBroadcastReceiver();
     }
@@ -126,7 +126,6 @@ public class TVMovieListActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
 
-        unregisterSettingChangedListener();
         unregisterMovieListBroadcastReceiver();
         unregisterUpdateYoursMovieListBroadcastReceiver();
 
@@ -178,22 +177,6 @@ public class TVMovieListActivity extends AppCompatActivity
         }
     }
 
-    private void registerSettingChangedListener()
-    {
-        settingChangedListener = new SettingChangedListener();
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(settingChangedListener);
-    }
-
-    private void unregisterSettingChangedListener()
-    {
-        if(settingChangedListener != null)
-        {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            sharedPreferences.unregisterOnSharedPreferenceChangeListener(settingChangedListener);
-        }
-    }
 
     private void registerMovieListBroadcastReceiver()
     {
@@ -423,36 +406,7 @@ public class TVMovieListActivity extends AppCompatActivity
         }
     }
 
-    private class SettingChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener
-    {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-        {
-            Context context = TVMovieListActivity.this;
 
-            if(key.equals(getString(R.string.content_language_key)) || key.equals(getString(R.string.region_key)))
-            {
-                startGetDataService();
-            }
-
-            else if(key.equals(getString(R.string.period_update_key)) || key.equals(getString(R.string.update_period_key)) || key.equals(getString(R.string.only_on_wifi_key)))
-            {
-                boolean isPeriodUpdateTurnOn = PreferencesUtils.GetData(new DefaultBooleanStatePreference(context), getString(R.string.period_update_key), false);
-
-                if(isPeriodUpdateTurnOn)
-                {
-                    SetPeriodUpdateAsyncTask setPeriodUpdateAsyncTask = new SetPeriodUpdateAsyncTask();
-                    setPeriodUpdateAsyncTask.execute();
-                }
-
-                else
-                {
-                    UnSetPeriodUpdateAsyncTask unSetPeriodUpdateAsyncTask = new UnSetPeriodUpdateAsyncTask();
-                    unSetPeriodUpdateAsyncTask.execute();
-                }
-            }
-        }
-    }
 
     private class GetMovieListBroadcastReceiver extends BroadcastReceiver
     {
@@ -463,90 +417,7 @@ public class TVMovieListActivity extends AppCompatActivity
         }
     }
 
-    private class SetPeriodUpdateAsyncTask extends AsyncTask<Void, Void, Boolean>
-    {
-        Context context;
 
-        @Override
-        protected Boolean doInBackground(Void... params)
-        {
-            context = TVMovieListActivity.this;
-
-            String updatePeriodString = PreferencesUtils.GetData(new DefaultStringStatePreference(context), getString(R.string.update_period_key), getString(R.string.update_period_values_12_hours));
-            boolean isWifiOnly = PreferencesUtils.GetData(new DefaultBooleanStatePreference(context), getString(R.string.only_on_wifi_key), false);
-
-            int updatePeriodSecond = 0;
-            if(updatePeriodString.equals(getString(R.string.update_period_label_4_hours)))
-            {
-                updatePeriodSecond = 14400;
-            }
-
-            else if(updatePeriodString.equals(getString(R.string.update_period_label_6_hours)))
-            {
-                updatePeriodSecond = 21600;
-            }
-
-            else if(updatePeriodString.equals(getString(R.string.update_period_label_8_hours)))
-            {
-                updatePeriodSecond = 28800;
-            }
-
-            else if(updatePeriodString.equals(getString(R.string.update_period_values_12_hours)))
-            {
-                updatePeriodSecond = 43200;
-            }
-
-            return JobSchedulerUtils.doJobScheduling(new PeriodicNetworkJobScheduler<>(context, updatePeriodSecond, isWifiOnly, MovieDBKeyEntry.JobSchedulerID.PERIODIC_NETWORK_JOB_KEY, GetMovieListRepeatingService.class))
-                    == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean bool)
-        {
-            if(bool)
-            {
-                Toast.makeText(context, R.string.success_update_period_toas_message, Toast.LENGTH_SHORT).show();
-            }
-
-            else
-            {
-                Toast.makeText(context, R.string.fail_update_period_toas_message, Toast.LENGTH_SHORT).show();
-
-                PreferencesUtils.SetData(new DefaultBooleanStatePreference(context),false, getString(R.string.period_update_key));
-                PreferencesUtils.SetData(new DefaultStringStatePreference(context), getString(R.string.update_period_key), getString(R.string.update_period_values_12_hours));
-                PreferencesUtils.SetData(new DefaultBooleanStatePreference(context), false, getString(R.string.only_on_wifi_key));
-                PreferencesUtils.SetData(new DefaultStringStatePreference(context), getString(R.string.type_notification_key), getString(R.string.normal_led_notification_value));
-            }
-        }
-
-    }
-
-    private class UnSetPeriodUpdateAsyncTask extends AsyncTask<Void, Void, Boolean>
-    {
-        Context context;
-
-        @Override
-        protected Boolean doInBackground(Void... params)
-        {
-            context = TVMovieListActivity.this;
-            return JobSchedulerUtils.cancelJobScheduling(new PeriodicNetworkJobScheduler<>(context, MovieDBKeyEntry.JobSchedulerID.PERIODIC_NETWORK_JOB_KEY)) == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-
-            if(aBoolean)
-            {
-                Toast.makeText(context, R.string.success_cancel_update_period_toas_message, Toast.LENGTH_SHORT).show();
-            }
-
-            else
-            {
-                Toast.makeText(context, R.string.fail_cancel_update_period_toas_message, Toast.LENGTH_SHORT).show();
-                PreferencesUtils.SetData(new DefaultBooleanStatePreference(context),true, getString(R.string.period_update_key));
-            }
-        }
-    }
 
     private class UpdateYoursMovieListBroadcastReceiver extends BroadcastReceiver
     {

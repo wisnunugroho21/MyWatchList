@@ -1,19 +1,32 @@
 package com.example.android.moviedb3.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
+import android.widget.Toast;
 
 import com.example.android.moviedb3.R;
+import com.example.android.moviedb3.activity.TVMovieListActivity;
 import com.example.android.moviedb3.customPreferences.ExtendedPreferenceFragmentCompat;
 import com.example.android.moviedb3.eventHandler.OnDataObtainedListener;
+import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
+import com.example.android.moviedb3.services.GetMovieListProgressService;
+import com.example.android.moviedb3.services.GetMovieListRepeatingService;
+import com.example.android.moviedb3.services.JobSchedulerUtils;
+import com.example.android.moviedb3.services.PeriodicNetworkJobScheduler;
 import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePreference;
+import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 
 /**
  * Created by nugroho on 10/09/17.
@@ -22,6 +35,7 @@ import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 public class SettingFragment extends ExtendedPreferenceFragmentCompat
 {
     ChangedPreferenceSummary changedPreferenceSummary;
+    SettingChangedListener settingChangedListener;
 
     public SettingFragment()
     {
@@ -31,12 +45,16 @@ public class SettingFragment extends ExtendedPreferenceFragmentCompat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        registerSettingChangedListener();
         registerChangedPreferenceSummary();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        unregisterSettingChangedListener();
         unregisterChangedPreferenceSummary();
     }
 
@@ -134,6 +152,30 @@ public class SettingFragment extends ExtendedPreferenceFragmentCompat
         }
     }
 
+    private void startGetDataService()
+    {
+        Intent intent = new Intent(getContext(), GetMovieListProgressService.class);
+        getContext().startService(intent);
+    }
+
+    private void registerSettingChangedListener()
+    {
+        settingChangedListener = new SettingChangedListener();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sharedPreferences.registerOnSharedPreferenceChangeListener(settingChangedListener);
+    }
+
+    private void unregisterSettingChangedListener()
+    {
+        if(settingChangedListener != null)
+        {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            sharedPreferences.unregisterOnSharedPreferenceChangeListener(settingChangedListener);
+        }
+    }
+
+
     private class ChangedPreferenceSummary implements SharedPreferences.OnSharedPreferenceChangeListener
     {
         @Override
@@ -165,6 +207,123 @@ public class SettingFragment extends ExtendedPreferenceFragmentCompat
                     boolean isPeriodUpdateTurnOn = PreferencesUtils.GetData(new DefaultBooleanStatePreference(getContext()), key, false);
                     updatePeriodCategoryPreferences.setEnabled(isPeriodUpdateTurnOn);
                 }
+            }
+
+        }
+    }
+
+    private class SettingChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener
+    {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+        {
+            Context context = getContext();
+
+            if(key.equals(getString(R.string.content_language_key)) || key.equals(getString(R.string.region_key)))
+            {
+                startGetDataService();
+            }
+
+            else if(key.equals(getString(R.string.period_update_key)) || key.equals(getString(R.string.update_period_key)) || key.equals(getString(R.string.only_on_wifi_key)))
+            {
+                boolean isPeriodUpdateTurnOn = PreferencesUtils.GetData(new DefaultBooleanStatePreference(context), getString(R.string.period_update_key), false);
+
+                if(isPeriodUpdateTurnOn)
+                {
+                    SetPeriodUpdateAsyncTask setPeriodUpdateAsyncTask = new SetPeriodUpdateAsyncTask();
+                    setPeriodUpdateAsyncTask.execute();
+                }
+
+                else
+                {
+                    UnSetPeriodUpdateAsyncTask unSetPeriodUpdateAsyncTask = new UnSetPeriodUpdateAsyncTask();
+                    unSetPeriodUpdateAsyncTask.execute();
+                }
+            }
+        }
+    }
+
+    private class SetPeriodUpdateAsyncTask extends AsyncTask<Void, Void, Boolean>
+    {
+        Context context;
+
+        @Override
+        protected Boolean doInBackground(Void... params)
+        {
+            context = getContext();
+
+            String updatePeriodString = PreferencesUtils.GetData(new DefaultStringStatePreference(context), getString(R.string.update_period_key), getString(R.string.update_period_values_12_hours));
+            boolean isWifiOnly = PreferencesUtils.GetData(new DefaultBooleanStatePreference(context), getString(R.string.only_on_wifi_key), false);
+
+            int updatePeriodSecond = 0;
+            if(updatePeriodString.equals(getString(R.string.update_period_label_4_hours)))
+            {
+                updatePeriodSecond = 14400;
+            }
+
+            else if(updatePeriodString.equals(getString(R.string.update_period_label_6_hours)))
+            {
+                updatePeriodSecond = 21600;
+            }
+
+            else if(updatePeriodString.equals(getString(R.string.update_period_label_8_hours)))
+            {
+                updatePeriodSecond = 28800;
+            }
+
+            else if(updatePeriodString.equals(getString(R.string.update_period_values_12_hours)))
+            {
+                updatePeriodSecond = 43200;
+            }
+
+            return JobSchedulerUtils.doJobScheduling(new PeriodicNetworkJobScheduler<>(context, updatePeriodSecond, isWifiOnly, MovieDBKeyEntry.JobSchedulerID.PERIODIC_NETWORK_JOB_KEY, GetMovieListRepeatingService.class))
+                    == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean bool)
+        {
+            if(bool)
+            {
+                Toast.makeText(context, R.string.success_update_period_toas_message, Toast.LENGTH_SHORT).show();
+            }
+
+            else
+            {
+                Toast.makeText(context, R.string.fail_update_period_toas_message, Toast.LENGTH_SHORT).show();
+
+                PreferencesUtils.SetData(new DefaultBooleanStatePreference(context),false, getString(R.string.period_update_key));
+                PreferencesUtils.SetData(new DefaultStringStatePreference(context), getString(R.string.update_period_key), getString(R.string.update_period_values_12_hours));
+                PreferencesUtils.SetData(new DefaultBooleanStatePreference(context), false, getString(R.string.only_on_wifi_key));
+                PreferencesUtils.SetData(new DefaultStringStatePreference(context), getString(R.string.type_notification_key), getString(R.string.normal_led_notification_value));
+            }
+        }
+
+    }
+
+    private class UnSetPeriodUpdateAsyncTask extends AsyncTask<Void, Void, Boolean>
+    {
+        Context context;
+
+        @Override
+        protected Boolean doInBackground(Void... params)
+        {
+            context = getContext();
+            return JobSchedulerUtils.cancelJobScheduling(new PeriodicNetworkJobScheduler<>(context, MovieDBKeyEntry.JobSchedulerID.PERIODIC_NETWORK_JOB_KEY)) == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+
+            if(aBoolean)
+            {
+                Toast.makeText(context, R.string.success_cancel_update_period_toas_message, Toast.LENGTH_SHORT).show();
+            }
+
+            else
+            {
+                Toast.makeText(context, R.string.fail_cancel_update_period_toas_message, Toast.LENGTH_SHORT).show();
+                PreferencesUtils.SetData(new DefaultBooleanStatePreference(context),true, getString(R.string.period_update_key));
             }
         }
     }
