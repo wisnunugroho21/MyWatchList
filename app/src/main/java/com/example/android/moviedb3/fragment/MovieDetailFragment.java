@@ -73,6 +73,7 @@ import com.example.android.moviedb3.movieDB.dateToString.DateToNormalDateStringS
 import com.example.android.moviedb3.movieDB.dateToString.DateToStringSetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -127,6 +128,8 @@ public class MovieDetailFragment extends Fragment {
     private Boolean favoriteState;
     private Boolean isToolbarTransparent = false;
 
+    private FirebaseAnalytics firebaseAnalytics;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,6 +182,9 @@ public class MovieDetailFragment extends Fragment {
         SetInitialData(savedInstanceState);
         SetToolbar();
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        SendMovieDetailAnalytic();
+
         return view;
     }
 
@@ -200,6 +206,16 @@ public class MovieDetailFragment extends Fragment {
             case android.R.id.home : getActivity().finish(); return true;
             default: return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void SendMovieDetailAnalytic()
+    {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("id", movieData.getId());
+        bundle.putString("title", movieData.getOriginalTitle());
+        bundle.putString("genre", movieData.getGenre());
+        firebaseAnalytics.logEvent("movieDetail", bundle);
     }
 
     private void SetToolbar()

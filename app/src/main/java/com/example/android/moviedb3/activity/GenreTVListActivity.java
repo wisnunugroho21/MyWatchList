@@ -14,6 +14,7 @@ import com.example.android.moviedb3.adapter.FragmentAdapter.GenreTVFragmentAdapt
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.movieDB.TVGenre;
 import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class GenreTVListActivity extends AppCompatActivity {
 
@@ -23,6 +24,8 @@ public class GenreTVListActivity extends AppCompatActivity {
 
     TVGenre tvGenre;
     boolean isLinearList;
+
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +41,16 @@ public class GenreTVListActivity extends AppCompatActivity {
 
         SetActionBar(tvGenre.getName());
         SetTVListFragment();
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        SendGenreTVAnalytic();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.main_tv_movie_menu, menu);
+        menuInflater.inflate(R.menu.genre_tv_movie_menu, menu);
 
         return true;
     }
@@ -61,6 +67,15 @@ public class GenreTVListActivity extends AppCompatActivity {
 
             default: return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void SendGenreTVAnalytic()
+    {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("id", tvGenre.getId());
+        bundle.putString("name", tvGenre.getName());
+        firebaseAnalytics.logEvent("genreTV", bundle);
     }
 
     private void SetActionBar(String fragmentTitle)

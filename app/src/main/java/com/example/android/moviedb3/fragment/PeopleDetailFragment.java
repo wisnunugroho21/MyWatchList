@@ -52,6 +52,7 @@ import com.example.android.moviedb3.movieDataManager.MovieInfoDataGetter;
 import com.example.android.moviedb3.movieDataManager.PeopleDetailGetterAsyncTask;
 import com.example.android.moviedb3.movieDataManager.PeopleInfoDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -103,6 +104,7 @@ public class PeopleDetailFragment extends Fragment
     private int filmographyNumbers = 0;
     private Boolean isToolbarTransparent = false;
 
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -147,6 +149,9 @@ public class PeopleDetailFragment extends Fragment
         SetInitialData(savedInstanceState);
         SetToolbar();
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        SendPeopleDetailAnalytic();
+
         return view;
     }
 
@@ -164,6 +169,15 @@ public class PeopleDetailFragment extends Fragment
             case android.R.id.home : getActivity().finish(); return true;
             default: return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void SendPeopleDetailAnalytic()
+    {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("id", peopleData.getId());
+        bundle.putString("name", peopleData.getName());
+        firebaseAnalytics.logEvent("peopleDetail", bundle);
     }
 
     private void SetToolbar()

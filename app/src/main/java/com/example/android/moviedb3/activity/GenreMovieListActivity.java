@@ -1,12 +1,7 @@
 package com.example.android.moviedb3.activity;
 
-import android.content.Intent;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,16 +11,10 @@ import android.view.MenuItem;
 
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.adapter.FragmentAdapter.GenreMovieFragmentAdapter;
-import com.example.android.moviedb3.adapter.FragmentAdapter.HomeFragmentAdapter;
-import com.example.android.moviedb3.adapter.FragmentAdapter.TopListFragmentAdapter;
-import com.example.android.moviedb3.adapter.FragmentAdapter.YoursFragmentAdapter;
-import com.example.android.moviedb3.fragment.GenreListFragment;
-import com.example.android.moviedb3.fragment.MovieListFragment;
-import com.example.android.moviedb3.fragmentShifter.DefaultFragmentShifter;
-import com.example.android.moviedb3.fragmentShifter.FragmentShifter;
 import com.example.android.moviedb3.movieDB.GenreData;
 import com.example.android.moviedb3.movieDB.MovieDBKeyEntry;
 import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class GenreMovieListActivity extends AppCompatActivity {
 
@@ -35,6 +24,8 @@ public class GenreMovieListActivity extends AppCompatActivity {
 
     GenreData genreData;
     boolean isLinearList = false;
+
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,13 +42,16 @@ public class GenreMovieListActivity extends AppCompatActivity {
 
         SetActionBar(genreData.getName());
         SetMovieListFragment();
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        SendGenreMovieAnalytic();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.main_tv_movie_menu, menu);
+        menuInflater.inflate(R.menu.genre_tv_movie_menu, menu);
 
         return true;
     }
@@ -74,6 +68,15 @@ public class GenreMovieListActivity extends AppCompatActivity {
 
             default: return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void SendGenreMovieAnalytic()
+    {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("id", genreData.getId());
+        bundle.putString("name", genreData.getName());
+        firebaseAnalytics.logEvent("genreMovie", bundle);
     }
 
     private void SetActionBar(String fragmentTitle)

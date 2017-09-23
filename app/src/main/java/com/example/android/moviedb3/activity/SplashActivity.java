@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.android.moviedb3.R;
 import com.example.android.moviedb3.activityShifter.ActivityLauncher;
 import com.example.android.moviedb3.activityShifter.DefaultIActivityLauncher;
@@ -25,6 +26,7 @@ import com.example.android.moviedb3.services.GetMovieListIntentService;
 import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePreference;
 import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
+import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -39,6 +41,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
 
         splashActivityLayout = (ConstraintLayout) findViewById(R.id.splash_activity_layout);

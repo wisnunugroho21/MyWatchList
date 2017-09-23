@@ -26,7 +26,6 @@ public class ExampleUnitTest {
         Calendar releaseDate = stringToDateSetter.getDateTime(releaseDateString);
 
         DateToStringSetter dateToStringSetter = new DateToNormalDateStringSetter();
-        String releaseDate = dateToStringSetter.getDateString(movieData.getReleaseDate());
 
 
         assertEquals(4, 2 + 2);

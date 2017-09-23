@@ -176,8 +176,6 @@ public class MovieListFragment extends Fragment
 
             movieListRecyclerView.setHasFixedSize(true);
         }
-
-
     }
 
     private class MainMovieDataChoosedListener implements OnDataChooseListener<MovieData>

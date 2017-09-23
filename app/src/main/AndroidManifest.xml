@@ -120,6 +120,9 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TVMovieListActivity" /></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="42de71c23d948e5ad961c5c7bf49e2cd5a584497" />
     </application>
 
 </manifest><!--

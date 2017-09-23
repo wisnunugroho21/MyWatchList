@@ -15,6 +15,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -54,6 +55,7 @@ import com.example.android.moviedb3.sharedPreferences.DefaultBooleanStatePrefere
 import com.example.android.moviedb3.sharedPreferences.DefaultStringStatePreference;
 import com.example.android.moviedb3.sharedPreferences.PreferencesUtils;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class TVMovieListActivity extends AppCompatActivity
@@ -64,16 +66,16 @@ public class TVMovieListActivity extends AppCompatActivity
     Toolbar toolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
-//    MaterialSearchView materialSearchView;
 
     SettingChangedListener settingChangedListener;
     GetMovieListBroadcastReceiver getMovieListBroadcastReceiver;
     UpdateYoursMovieListBroadcastReceiver updateYoursMovieListBroadcastReceiver;
 
     int btvHeight;
-
     boolean isMovieMode = true;
     boolean isLinearList = false;
+
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -88,7 +90,15 @@ public class TVMovieListActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar_movie_list);
         viewPager = (ViewPager) findViewById(R.id.vp_movie_list);
+
         tabLayout = (TabLayout) findViewById(R.id.tabs_movie_list);
+        tabLayout.addOnTabSelectedListener(new TabTVMovieList());
+
+        btvHeight = movieListBottomNavigationView.getHeight();
+        isMovieMode = true;
+        isLinearList = false;
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) movieListBottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehaviour());
@@ -100,8 +110,6 @@ public class TVMovieListActivity extends AppCompatActivity
         registerSettingChangedListener();
         registerMovieListBroadcastReceiver();
         registerUpdateYoursMovieListBroadcastReceiver();
-
-        btvHeight = movieListBottomNavigationView.getHeight();
     }
 
     @Override
@@ -121,6 +129,8 @@ public class TVMovieListActivity extends AppCompatActivity
         unregisterSettingChangedListener();
         unregisterMovieListBroadcastReceiver();
         unregisterUpdateYoursMovieListBroadcastReceiver();
+
+        viewPager.removeAllViews();
     }
 
     @Override
@@ -306,6 +316,43 @@ public class TVMovieListActivity extends AppCompatActivity
         }
     }
 
+    private class TabTVMovieList implements TabLayout.OnTabSelectedListener
+    {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab)
+        {
+            String id = String.valueOf((int )(Math.random() * Integer.MAX_VALUE + 1000000));
+
+            String movieTV = "";
+            if(isMovieMode)
+            {
+                movieTV = "movie";
+            }
+
+            else
+            {
+                movieTV = "tv";
+            }
+
+            Bundle bundle = new Bundle();
+            bundle.putString("tvOrMovie", movieTV);
+            bundle.putString("listName", tab.getText().toString());
+
+            firebaseAnalytics.logEvent("selectedList", bundle);
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
+    }
+
+
     private class MainMovieListBottomNavigationView implements BottomNavigationView.OnNavigationItemSelectedListener
     {
         @Override
@@ -317,23 +364,22 @@ public class TVMovieListActivity extends AppCompatActivity
                     SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.HOME_PAGE_ADAPTER_INDEX),
                             MovieDBKeyEntry.MovieListPageIndex.NOW_SHOWING_PAGE_INDEX);
                     SetActionBar(getString(R.string.home_label));
-                    return true;
+                    break;
 
                 case R.id.top_list_movie_list_item_menu :
                     SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.TOP_LIST_PAGE_ADAPTER_INDEX),
                             MovieDBKeyEntry.MovieListPageIndex.POPULAR_PAGE_INDEX);
                     SetActionBar(getString(R.string.top_list_label));
-                    return true;
+                    break;
 
                 case R.id.yours_movie_list_item_menu :
                     SetTVMovieListFragment(setFragmentPagerAdapter(MovieDBKeyEntry.MovieListPageAdapterIndex.YOURS_PAGE_ADAPTER_INDEX),
                             MovieDBKeyEntry.MovieListPageIndex.FAVORITE_PAGE_INDEX);
                     SetActionBar(getString(R.string.my_list_label));
-                    return true;
-
-                default:
-                    return true;
+                    break;
             }
+
+            return true;
         }
     }
 

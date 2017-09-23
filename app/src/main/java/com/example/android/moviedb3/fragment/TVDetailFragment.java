@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +66,7 @@ import com.example.android.moviedb3.supportDataManager.dataComparision.IDCompare
 import com.example.android.moviedb3.supportDataManager.dataGetter.BundleDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetter;
 import com.example.android.moviedb3.supportDataManager.dataGetter.NetworkDataGetterAsyncTask;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -119,6 +119,8 @@ public class TVDetailFragment extends Fragment
     private Boolean favoriteState;
     private Boolean isToolbarTransparent = false;
 
+    private FirebaseAnalytics firebaseAnalytics;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +171,9 @@ public class TVDetailFragment extends Fragment
         SetInitialData(savedInstanceState);
         SetToolbar();
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        SendTVDetailAnalytic();
+
         return view;
     }
 
@@ -189,6 +194,16 @@ public class TVDetailFragment extends Fragment
             case android.R.id.home : getActivity().finish(); return true;
             default: return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void SendTVDetailAnalytic()
+    {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("id", tvData.getId());
+        bundle.putString("title", tvData.getOriginalTitle());
+        bundle.putString("genre", tvData.getGenre());
+        firebaseAnalytics.logEvent("tvDetail", bundle);
     }
 
     private void SetToolbar()
