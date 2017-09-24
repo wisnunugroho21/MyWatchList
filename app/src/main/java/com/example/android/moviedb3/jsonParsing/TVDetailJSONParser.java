@@ -151,7 +151,7 @@ public class TVDetailJSONParser implements JSONParser<TVData>
 
                     else
                     {
-                        networkList.add(titleNetwork + " ");
+                        networkList.add(titleNetwork + ", ");
                     }
                 }
             }
