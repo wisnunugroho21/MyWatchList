@@ -190,7 +190,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params)
         {
-//            SetInitialSharedPreference();
+            SetInitialSharedPreference();
 
             try
             {

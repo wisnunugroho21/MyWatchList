@@ -132,6 +132,9 @@ public class DataInfoListFragment<Data extends MovieInfoData> extends Fragment
         dataInfoListRecyclerView.setAdapter(movieInfoListRecycleViewAdapter);
         dataInfoListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         dataInfoListRecyclerView.setHasFixedSize(true);
+
+        noDataTextView.setVisibility(View.GONE);
+        loadingDataProgressBar.setVisibility(View.GONE);
     }
 
     private class OnMovieCastChoosedListener implements OnDataChooseListener<MovieInfoData>
